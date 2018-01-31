@@ -1,5 +1,6 @@
 import numpy as np
 import json
+from collections import OrderedDict
 from nltk.corpus import stopwords, wordnet as wn, words
 from nltk.tokenize import word_tokenize
 from keras.layers import LSTM, GRU, Conv1D, Dense, PReLU, Dropout, Input, Activation, TimeDistributed
@@ -11,11 +12,29 @@ PROBLEM_LENGTH = 50
 TEMPLATE_LENGTH = 20
 
 stop_words = set(stopwords.words('english'))
-vocab = {}
+vocab = OrderedDict()
 # nouns = {x.name().split('.', 1)[0] for x in wn.all_synsets('n')}
 operators = {'+': 1, '-': 2, '*': 3, '/': 4, '=': 5}
 knowns = {'a': 6, 'b': 7, 'c': 8, 'd': 9, 'e': 10, 'f': 11, 'g': 12}
 unknowns = {'m': 13, 'n': 14, 'l': 15, 'o': 16, 'p': 17, 'q': 18}
+
+'''
+Function to map network input (which is numbers back to word problem)
+'''
+
+
+def numbers_to_words(num_vector):
+    keys = list(vocab.keys())
+    return [keys[i - 1] for i in num_vector]
+
+
+'''
+Function to map network output (which is numbers back to template equation)
+'''
+
+
+def derivation_to_equation(num_vector):
+    pass
 
 
 def read_draw():
@@ -48,6 +67,7 @@ def read_draw():
                         y.append(0)
                 y.append(20)
             # print(y)
+            print(numbers_to_words(x))
             X.append(x)
             Y.append(y)
     return X, Y
@@ -57,4 +77,6 @@ def model(input_shape):
     inputs = Input(shape=input_shape)
     l0 = Conv1D(64, 5)(inputs)
     l0 = PReLU()(l0)
-    l0 = Conv1D
+
+
+read_draw()
