@@ -3,13 +3,13 @@ import json
 from collections import OrderedDict
 from nltk.corpus import stopwords, wordnet as wn, words
 from nltk.tokenize import word_tokenize
-from keras.layers import LSTM, GRU, Conv1D, Dense, PReLU, Dropout, Input, Activation, TimeDistributed
+from keras.layers import Bidirectional, LSTM, Conv1D, Dense, PReLU, Dropout, Input, Activation, TimeDistributed
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 
 # Global variables for length of inputs & outputs
-PROBLEM_LENGTH = 50
-TEMPLATE_LENGTH = 20
+PROBLEM_LENGTH = 105
+TEMPLATE_LENGTH = 30
 
 stop_words = set(stopwords.words('english'))
 vocab = OrderedDict()
@@ -40,6 +40,7 @@ def derivation_to_equation(num_vector):
 def read_draw():
     X = []
     Y = []
+    max_len = -10
     with open('0.7 - release/draw.json', 'r') as f:
         datastore = json.load(f)
         for questions in datastore:
@@ -67,16 +68,32 @@ def read_draw():
                         y.append(0)
                 y.append(20)
             # print(y)
-            print(numbers_to_words(x))
+            # print(x)
+            if max_len < len(x):
+                max_len = len(x)
             X.append(x)
             Y.append(y)
+    print('Max length: ' + str(max_len))
     return X, Y
+
+
+def pad_lengths_to_constant(X, Y):
+    newX = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=PROBLEM_LENGTH)
+    newY = pad_sequences(Y, padding='post', truncating='post', value=0., maxlen=TEMPLATE_LENGTH)
+    return newX, newY
+
+
+'''
+Deep neural network model to get F(x) which is to be fed to SPENs
+'''
 
 
 def model(input_shape):
     inputs = Input(shape=input_shape)
-    l0 = Conv1D(64, 5)(inputs)
-    l0 = PReLU()(l0)
+    l0 = Bidirectional(LSTM(32, return_sequences=True))(inputs)
+    l0 = Bidirectional(LSTM(32, return_sequences=True))(l0)
+    model = Model(inputs=inputs, outputs=l0)
 
 
-read_draw()
+def main():
+    X, Y = pad_lengths_to_constant(read_draw())
