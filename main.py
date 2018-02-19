@@ -38,7 +38,7 @@ def derivation_to_equation(num_vector):
     return [all_template_vars[int(i)] for i in num_vector]
 
 
-def read_draw():
+def read_draw(filepath):
     for key in operators.keys():
         all_template_vars[operators[key]] = key
     for key in unknowns.keys():
@@ -48,7 +48,7 @@ def read_draw():
     X = []
     Y = []
     max_len = -10
-    with open('0.7 - release/draw.json', 'r') as f:
+    with open(filepath, 'r') as f:
         datastore = json.load(f)
         for questions in datastore:
             x = []
@@ -74,8 +74,9 @@ def read_draw():
                     else:
                         y.append(0)
                 y.append(20)
-            # print(y)
-            # print(x)
+            #print(y)
+            #print(x)
+
             if max_len < len(x):
                 max_len = len(x)
             X.append(x)
@@ -113,7 +114,7 @@ def feed_forward_model(input_shape):
 
 
 def main():
-    X, Y = read_draw()
+    X, Y = read_draw('0.7 - release/draw.json')
     X, Y = pad_lengths_to_constant(X, Y)
     F = feed_forward_model(X.shape[1:])
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=SEED)
@@ -124,4 +125,5 @@ def main():
         print(derivation_to_equation(y_test[i].reshape((TEMPLATE_LENGTH,))))
 
 
-main()
+if __name__ == "__main__":
+    main()
