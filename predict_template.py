@@ -18,6 +18,18 @@ SEED = 23
 stop_words = set(stopwords.words('english'))
 vocab = OrderedDict()
 
+def read_unique_templates(filepath):
+    unique_templates = []
+
+    with open(filepath, 'r') as f:
+        datastore = json.load(f)
+    for data_sample in datastore:
+        template = data_sample['Template']
+        if not template in unique_templates:
+            unique_templates.append(template)
+
+    return unique_templates
+
 
 def read_draw_template(filepath):
     X = []
@@ -73,7 +85,7 @@ def pad_lengths_to_constant(X):
     return newX
 
 def main():
-    X, Y = read_draw_template('draw_templateindex.json')
+    X, Y = read_draw_template('0.7 - release/draw_template_index.json')
     print(len(X))
     print(len(Y))
     print(Y[:10])
