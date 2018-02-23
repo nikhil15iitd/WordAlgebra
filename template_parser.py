@@ -15,6 +15,7 @@ SLOTS = ['m', 'n', 'a', 'b', 'c', 'd', 'e', 'f'] # unknowns + coeffs
 COEFF_OFFSET = 3
 UNK_OFFSET = 1
 
+
 def derivation_to_y(derivation, templates, vocab):
     """
     Given a vector of derivation (a list of template index + alignments),
@@ -60,68 +61,48 @@ def derivation_to_y(derivation, templates, vocab):
     return equations
 
 
-# 1. 59, 83, 104, 126, 164, 214, 272, 329, 427, 476, 479
-# 2. 513, 504, 501, 493, 488, 483, 482, 473
-def get_gold_derivations(vocab):
+
+def get_gold_derivations(dataset, vocab):
     """
+    @param: dataset: A dictionary loaded from json file
     @param: vocab: A vocabulary dictionary of the entire corpus for mapping string to index. e.g. '2' => 193
     @return: A list of derivation: [ template_index, m,n, a,b,c,d,e,f ]
     """
-    filepath = '0.7 - release/kushman_template_index_fixed.json'
-    with open(filepath, 'r') as f:
-        dataset = json.load(f)
-
     derivations = []
     for index, data_sample in enumerate(dataset):
         print('='*50)
         print(index)
-        print(data_sample['lEquations'][0])
         template_index = data_sample['template_index']
         templates = data_sample['Template']
         equations = data_sample['lEquations']
         alignments = data_sample['Alignment']
 
-        derivation = []
-        derivation.append(template_index)
-        m = None
-        n = None
+        # 1. Add the template index
+        tmp = []
+        tmp.append(template_index)
 
-        # 1. fill the slots for unknowns
-        for i, eq in enumerate(equations):
-            #print('='*50)
-            #print(eq)
-
+        # An attempt to extract unknown string from lEquations:
+        '''for i, eq in enumerate(equations):
             # https://stackoverflow.com/questions/1059559/split-strings-with-multiple-delimiters
             # Will be splitting on: , <space> - ! ? :
-            #tmp = filter(None, re.split("[, \-!?:]+", "Hey, you - what are you doing here!?"))
             instantiated_template = filter(None, re.split("[,\+\-\*\/\=\(\)]+", eq))
             template = list(filter(lambda x: x not in ['+', '-', '*','/', '='], templates[i].split()))
-            if index == 513:
-                print(instantiated_template)
-                print(template)
+            print(instantiated_template)
+            print(template)
             for j, symbol in enumerate(template):
                 if symbol == 'm':
                     m = instantiated_template[j]
                 elif symbol == 'n':
                     n = instantiated_template[j]
+        '''
 
-        #############################################################
-        # TODO: Use your vocab to convert string to word index here
-        #############################################################
-        #derivation.append(vocab[m])
-        #derivation.append(vocab[n])
-        derivation.append(m)
-        derivation.append(n)
+        # 2. fill the slots
+        existing_slots = [a['coeff'] if 'coeff' in a else a['unk'] for a in alignments]
+        print(existing_slots)
 
-
-        # 2. fill the slots for coefficients
-        existing_coeffs = [a['coeff'] for a in alignments]
-        #print(existing_coeffs)
-        #for coeff in COEFFS:
-        #    if coeff in existing_coeffs:
-        #        derivation.append()
-
-        coeff_to_index = {
+        slot_to_index = {
+            'm': 1,
+            'n': 2,
             'a': 3,
             'b': 4,
             'c': 5,
@@ -130,11 +111,28 @@ def get_gold_derivations(vocab):
             'f': 8,
         }
         # init with zero
-        for coeff in COEFFS:
-            derivation.append(0)
+        for slot in SLOTS:
+            tmp.append(0)
         for a in alignments:
-            #print(a['coeff'])
-            derivation[ coeff_to_index[a['coeff']] ] = a['TokenId']#a['Value']
+            if 'coeff' in a:
+                tmp[ slot_to_index[a['coeff']] ] = a['Value']
+            elif 'unk' in a:
+                tmp[ slot_to_index[a['unk']] ] = a['String']
+            else:
+                raise
+        print(tmp)
+
+        # 3. Use the vocab to convert string to word index
+        derivation = tmp[:]
+        for i, slot in enumerate(tmp):
+            if i > 0:
+                #############################################################
+                #  TODO: assign index to bigram text like "audio_cassettes"
+                #############################################################
+                if not slot in vocab:
+                    pass
+                else:
+                    derivation[i] = vocab[slot]
         print(derivation)
         derivations.append(derivation)
 
@@ -148,30 +146,29 @@ def validate_derivation(derivation, dataset):
     Given a vector of derivation (a list of template index + alignments),
     check if it completely matches with the ground truth y.
     """
-
-    #template_index = derivation[0]
     pass
 
 
 def debug():
-    #dataset = read_draw_template('draw_templateindex.json')
-    #filepath = '0.7 - release/draw_template_index.json'
-    filepath = '0.7 - release/kushman_template_index_fixed.json'
+    filepath = '0.7 - release/kushman_template_index_debug.json'
     with open(filepath, 'r') as f:
         dataset = json.load(f)
 
-    pseudo_vocab = {}
-    get_gold_derivations(pseudo_vocab)
+    # Build vocab for question texts
+    from collections import defaultdict
+    word_count = defaultdict(float)
+    for index, data_sample in enumerate(dataset):
+        words = data_sample['sQuestion'].split()
+        for w in words:
+            word_count[w] += 1
+    print(word_count)
 
-    '''
-    pseudo_vocab = { 1: '9', 2: '12', 3: '15', 4: 'pens', 5: 'students' }
-    templates = read_unique_templates(filepath)
-    #deriv = [1, 'x', 'y', 9, 12, 15, 0, 0, 0] # [ template_index, m,n, a,b,c,d,e,f ]
-    deriv = [1, 4, 5, 1, 2, 3, 0, 0, 0] # [ template_index, m,n, a,b,c,d,e,f ]
-    pred_y = derivation_to_y(deriv, templates, pseudo_vocab)
-    print(pred_y)
-    '''
+    word_idx_map = dict()
+    for i, word in enumerate(word_count):
+        word_idx_map[word] = i
+    print(word_idx_map)
 
+    get_gold_derivations(dataset, word_idx_map)
 
 
 
