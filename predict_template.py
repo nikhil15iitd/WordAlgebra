@@ -18,7 +18,6 @@ SEED = 23
 stop_words = set(stopwords.words('english'))
 vocab = OrderedDict()
 
-
 def read_unique_templates(filepath):
     unique_templates = []
 
@@ -55,16 +54,9 @@ def read_draw_template(filepath):
             if max_len < len(x):
                 max_len = len(x)
             X.append(x)
-            Y.append(questions['template_index'])
+            Y.append( questions['template_index'] )
     print('Max length: ' + str(max_len))
     return X, Y
-
-
-def derivation_to_equation(num_vector):
-    '''
-    Function to map network output (which is numbers back to template equation)
-    '''
-    return [all_template_vars[int(i)] for i in num_vector]
 
 
 def feed_forward_model(input_shape):
@@ -75,11 +67,11 @@ def feed_forward_model(input_shape):
     inputs = Input(shape=input_shape)
 
     model = Sequential()
-    model.add(Bidirectional(LSTM(32, return_sequences=False), input_shape=input_shape, ))
-    # print(model.outputs)
+    model.add( Bidirectional(LSTM(32, return_sequences=False), input_shape=input_shape,) )
+    #print(model.outputs)
     model.add(Activation('relu'))
-    # model.add(Dropout(0.5))
-    model.add(Dense(230))  # num_classes=230
+    #model.add(Dropout(0.5))
+    model.add(Dense(230)) # num_classes=230
     model.add(Activation('softmax'))
 
     print(model.outputs)
@@ -87,12 +79,10 @@ def feed_forward_model(input_shape):
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
-
 def pad_lengths_to_constant(X):
     newX = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=PROBLEM_LENGTH)
     newX = np.reshape(newX, (-1, PROBLEM_LENGTH, 1))
     return newX
-
 
 def main():
     X, Y = read_draw_template('0.7 - release/draw_template_index.json')
@@ -114,6 +104,7 @@ def main():
     for i in range(y_pred.shape[0]):
         print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
         print(derivation_to_equation(y_test[i].reshape((TEMPLATE_LENGTH,))))
+
 
 
 if __name__ == "__main__":
