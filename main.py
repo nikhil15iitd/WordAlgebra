@@ -10,6 +10,7 @@ from keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
 from dsbox_spen.dsbox.spen.core import spen, config, energy
 from dsbox_spen.dsbox.spen.utils.metrics import f1_score, hamming_loss
+from template_parser import debug
 
 # Global variables for length of inputs & outputs
 PROBLEM_LENGTH = 105
@@ -119,6 +120,20 @@ def feed_forward_model(input_shape, vocab_size, template_vocab_size):
     return model
 
 
+def feed_forward_mlp_model(input_shape, vocab_size):
+    '''
+    Deep neural network model to get F(x) which is to be fed to SPENs
+    '''
+    inputs = Input(shape=input_shape)
+    l0 = Embedding(vocab_size, 16, input_length=PROBLEM_LENGTH)(inputs)
+    l0 = Bidirectional(LSTM(32, return_sequences=True))(l0)
+    l0 = Bidirectional(LSTM(32))(l0)
+    l0 = Dense(8, activation='softmax')(l0)
+    model = Model(inputs=inputs, outputs=l0)
+    model.compile('adam', 'sparse_categorical_crossentropy', metrics=['acc'])
+    return model
+
+
 def get_layers():
     layers = [(1000, 'relu')]
     enlayers = [(250, 'softplus')]
@@ -126,9 +141,14 @@ def get_layers():
 
 
 def main():
-    X, Y = read_draw()
-    X, Y = pad_lengths_to_constant(X, Y)
-    F = feed_forward_model(X.shape[1:], len(vocab.keys()), len(all_template_vars.keys()))
+    X, Y, vocab_dataset = debug()
+    print(X)
+    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=PROBLEM_LENGTH)
+    print(Y)
+    F = feed_forward_mlp_model(X.shape[1:], len(vocab_dataset.keys()))
+    # X, Y = read_draw()
+    # X, Y = pad_lengths_to_constant(X, Y)
+    # F = feed_forward_model(X.shape[1:], len(vocab.keys()), len(all_template_vars.keys()))
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=SEED)
     ntrain = X_train.shape[0]
     F.fit(X_train, y_train, batch_size=128, epochs=50, validation_data=(X_test, y_test))
