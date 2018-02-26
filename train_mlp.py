@@ -239,12 +239,22 @@ def main():
     y_train = y_train.reshape(-1, 9, 1)
     y_test = y_test.reshape(-1, 9, 1)
 
-    F.fit(X_train, y_train, batch_size=128, epochs=50, validation_data=(X_test, y_test))
-    y_pred = np.argmax(F.predict(X_test), axis=2)
-    for i in range(y_pred.shape[0]):
+    F.fit(X_train, y_train, batch_size=128, epochs=30, validation_data=(X_test, y_test))
+    #y_pred = np.argmax(F.predict(X_test), axis=2)
+    y_pred_train = F.predict(X_test)
+    y_pred_test = F.predict(X_test)
+
+    print(y_pred_train)
+    print(y_pred_test)
+
+    for i in range(y_pred_test.shape[0]):
         print('#'*100)
-        print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
-        print(derivation_to_equation(y_test[i].reshape((TEMPLATE_LENGTH,))))
+        #print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
+        #print(derivation_to_equation(y_test[i].reshape((TEMPLATE_LENGTH,))))
+        #print(derivation_to_equation(y_pred[i]))
+        #print(derivation_to_equation(y_test[i]))
+        print(y_pred_test[i])
+        print(y_test[i])
 
 
 
