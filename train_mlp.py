@@ -118,7 +118,7 @@ def feed_forward_model(input_shape, vocab_size, template_vocab_size):
     return model
 
 
-def feed_forward_mlp_model(input_shape, vocab_size):
+def feed_forward_rnn_model(input_shape, vocab_size):
     '''
     Deep neural network model to get F(x) which is to be fed to SPENs
     '''
@@ -195,6 +195,69 @@ def feed_forward_mlp_model(input_shape, vocab_size):
     model.compile('adam', 'mse', metrics=['acc'])
     return model
 
+def custom_softmax(t):
+    """
+    https://datascience.stackexchange.com/questions/23614/keras-multiple-softmax-in-last-layer-possible
+    """
+    from keras import backend as K
+    sh = K.shape(t)
+    partial_sm = []
+    for i in range(sh[1] // 4):
+        partial_sm.append(K.softmax(t[:, i*4:(i+1)*4]))
+    return K.concatenate(partial_sm)
+
+
+def feed_forward_mlp_model(batch_size, input_shape, vocab_size):
+    '''
+    Deep neural network model to get F(x) which is to be fed to SPENs
+    '''
+    print(input_shape) # 105,
+    print(vocab_size) # => 183
+    print(keras.__version__)
+    num_output = 9 # since the template vector has 9 elems
+    num_classes = 10 # debug
+
+    inputs = Input(shape=input_shape)
+    emb = Embedding(vocab_size, 16, input_length=PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
+
+    l0 = keras.layers.GRU(32, return_sequences=False)(emb) # => (?, 32)
+    print(type(l0)) # => <class 'tensorflow.python.framework.ops.Tensor'>
+
+    # 9 Dense layers for predicting word index in each slot
+    #l0 = Dense(9, activation=custom_softmax)(l0)
+    outputs = []
+    for i in range(num_output):
+        #outputs.append( Dense(num_output, activation='softmax')(l0) )
+        if i == 0:
+            outputs.append( Dense(230, activation='softmax')(l0) ) # template
+        elif i == 1 or i == 2:
+            outputs.append( Dense(vocab_size, activation='softmax')(l0) ) # unknowns
+        elif i > 2 and i < 10:
+            outputs.append( Dense(PROBLEM_LENGTH, activation='softmax')(l0) ) # coeffs
+    print('output shape:')
+    print(outputs[0].shape) # => batch_size x 9
+
+    '''
+    # construct the output vector based on the prediction result from each softmax
+    #from keras import backend as K
+    import tensorflow as tf
+    #output = tf.zeros([batch_size, num_output], tf.int32)
+    output = np.zeros((batch_size, num_output))
+    print(output.shape)
+
+    for i in range(num_output):
+        output[:, i] = list_out[:, i]
+    l0 = tf.convert_to_tensor(output, np.int32)
+    '''
+
+
+    model = Model(inputs=inputs, outputs=outputs)
+    #model = Model(inputs=inputs, outputs=[ outputs[0], outputs[1] ])
+    model.compile('adam', 'sparse_categorical_crossentropy', metrics=['acc'])
+
+    return model
+
+
 
 def get_layers():
     layers = [(1000, 'relu')]
@@ -203,19 +266,6 @@ def get_layers():
 
 
 def main():
-    '''
-    encoder_input_data = np.zeros(
-        (len(input_texts), max_encoder_seq_length, num_encoder_tokens),
-        dtype='float32')
-    decoder_input_data = np.zeros(
-        (len(input_texts), max_decoder_seq_length, num_decoder_tokens),
-        dtype='float32')
-    decoder_target_data = np.zeros(
-        (len(input_texts), max_decoder_seq_length, num_decoder_tokens),
-        dtype='float32')
-    '''
-
-
     (X, Y), vocab_dataset = debug()
     print('#'*100)
     print(X[0])
@@ -224,8 +274,9 @@ def main():
     print(Y)
     Y = np.array(Y)
 
-
-    F = feed_forward_mlp_model(X.shape[1:], len(vocab_dataset.keys()))
+    batch_size = 128
+    F = feed_forward_mlp_model(batch_size, X.shape[1:], len(vocab_dataset.keys()))
+    F.summary()
     # X, Y = read_draw()
     # X, Y = pad_lengths_to_constant(X, Y)
     # F = feed_forward_model(X.shape[1:], len(vocab.keys()), len(all_template_vars.keys()))
@@ -236,16 +287,51 @@ def main():
     # (convert y to one-hot in the case of categorical losses)
     #y_train = keras.utils.to_categorical(y_train)
     #y_test = keras.utils.to_categorical(y_test)
-    y_train = y_train.reshape(-1, 9, 1)
-    y_test = y_test.reshape(-1, 9, 1)
+    #y_train = y_train.reshape(-1, 9, 1)
+    #y_test = y_test.reshape(-1, 9, 1)
 
-    F.fit(X_train, y_train, batch_size=128, epochs=30, validation_data=(X_test, y_test))
+    #F.fit(X_train, y_train, batch_size=batch_size, epochs=30, validation_data=(X_test, y_test))
+    targets = []
+    for i in range(9):
+        #targets.append(y_train[:,i].reshape(-1))
+        targets.append(y_train[:,i])
+
+    test_targets = []
+    for i in range(9):
+        test_targets.append(y_test[:,i])
+
+    print(y_train[:,0].shape)
+    print(type(targets))
+    print(type(y_train[:,0]))
+    #targets = np.array(targets)
+    #test_targets = np.array(test_targets)
+    #print(targets.shape)
+    #print(test_targets.shape)
+
+    F.fit(X_train, targets, batch_size=batch_size, epochs=10, validation_data=(X_test, test_targets))
+    #F.fit(X_train, [ np.array(y_train[:,0]), np.array(y_train[:,1]) ], batch_size=batch_size, epochs=1, validation_data=(X_test, y_test))
+    #F.fit(X_train, [ np.array(np.random.random((8,1))), np.array(np.random.random((8,1))) ], batch_size=batch_size, epochs=1, validation_data=(X_test, y_test))
+    #F.fit(X_train, [ np.array([0,0,0,0,0,0,0,0]), np.array([0,0,0,0,0,0,0,0]) ], batch_size=batch_size, epochs=1, validation_data=(X_test, [ np.array([0,0]), np.array([0,0]) ]))
+    #F.fit(X_train, [ targets[0], targets[1], targets[2], targets[3], targets[4], targets[5], targets[6], targets[7], targets[8] ],
+        #batch_size=batch_size, epochs=30, validation_data=(X_test, y_test))
+
     #y_pred = np.argmax(F.predict(X_test), axis=2)
-    y_pred_train = F.predict(X_test)
-    y_pred_test = F.predict(X_test)
+    #y_pred_train = F.predict(X_test) # => a list of 9 elems because the model returns 9 outputs
+    #y_pred_test = F.predict(X_test)
+    print('='*100)
+    print(F.predict(X_test)[0].shape) # 2, 230
+    print(F.predict(X_test)[1].shape) # 2, 183
+    pred_train = F.predict(X_test)
 
-    print(y_pred_train)
-    print(y_pred_test)
+    preds = []
+    for out in pred_train:
+        tmp = np.argmax(out, axis=1)
+        preds.append(tmp)
+    preds = np.array(preds)
+    # Convert the output back to (N x 9)
+    preds = preds.reshape(-1, 9)
+    print(preds.shape)
+    y_pred_test = preds
 
     for i in range(y_pred_test.shape[0]):
         print('#'*100)

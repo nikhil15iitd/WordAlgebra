@@ -136,7 +136,10 @@ def get_gold_derivations(dataset, vocab):
             tmp.append(0)
         for a in alignments:
             if 'coeff' in a:
-                tmp[slot_to_index[a['coeff']]] = a['Value']
+                # TODO: Use Glove embeddings vector to manage numbers here
+                # for now assign the position index to coeffs
+                #tmp[slot_to_index[a['coeff']]] = a['Value']
+                tmp[slot_to_index[a['coeff']]] = a['TokenId']
             elif 'unk' in a:
                 tmp[slot_to_index[a['unk']]] = a['String']
             else:
@@ -150,6 +153,7 @@ def get_gold_derivations(dataset, vocab):
             derivation[1] = vocab[derivation[1].split('_')[0]]
         if not is_number(derivation[2]):
             derivation[2] = vocab[derivation[2].split('_')[0]]
+
         print(derivation)
         derivations.append(derivation)
 
@@ -185,6 +189,8 @@ def debug():
         word_idx_map[word] = i
     print(word_idx_map)
     print(len(word_idx_map.keys()))
+    print('#'*100)
+
 
     return get_gold_derivations(dataset, word_idx_map), word_idx_map
 
