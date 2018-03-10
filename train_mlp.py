@@ -170,8 +170,11 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size):
     inputs = Input(shape=input_shape)
     emb = Embedding(vocab_size, 16, input_length=config_wordalgebra.PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
 
-    l0 = keras.layers.GRU(32, return_sequences=False)(emb) # => (?, 32)
-    #l0 = keras.layers.Dense(32, activation='relu')
+    #l0 = keras.layers.GRU(32, return_sequences=False)(emb) # => (?, 32)
+    print('emb shape:') # (?, 105, 16)
+    print(emb.shape)
+    l0 = keras.layers.Flatten()(emb)
+    l0 = keras.layers.Dense(128, activation='relu')(l0)
 
     '''
     # 9 Dense layers for predicting word index in each slot
@@ -186,7 +189,7 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size):
     '''
 
     #Dense(num_output, activation='linear')(l0)
-    l0 = Dense(num_output)(l0)
+    l0 = Dense(num_output)(l0) # => outputs logits
 
     #model = Model(inputs=inputs, outputs=outputs)
     model = Model(inputs=inputs, outputs=l0)
