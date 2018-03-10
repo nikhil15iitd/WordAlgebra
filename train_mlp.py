@@ -171,25 +171,57 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size):
     emb = Embedding(vocab_size, 16, input_length=config_wordalgebra.PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
 
     l0 = keras.layers.GRU(32, return_sequences=False)(emb) # => (?, 32)
-    print(type(l0)) # => <class 'tensorflow.python.framework.ops.Tensor'>
+    #l0 = keras.layers.Dense(32, activation='relu')
 
+    '''
     # 9 Dense layers for predicting word index in each slot
-    #l0 = Dense(9, activation=custom_softmax)(l0)
     outputs = []
     for i in range(num_output):
         if i == 0:
             outputs.append( Dense(230, activation='softmax')(l0) ) # template
-        elif i > 0 and i < 8:
+        elif i > 0 and i < num_output+1: # i < 7
             outputs.append( Dense(config_wordalgebra.PROBLEM_LENGTH, activation='softmax')(l0) ) # coeffs
     print('output shape:')
-    print(outputs[0].shape) # => batch_size x 9
+    print(outputs[0].shape) # => batch_size x 7
+    '''
 
-    model = Model(inputs=inputs, outputs=outputs)
+    #Dense(num_output, activation='linear')(l0)
+    l0 = Dense(num_output)(l0)
+
+    #model = Model(inputs=inputs, outputs=outputs)
+    model = Model(inputs=inputs, outputs=l0)
+
     optimizer = keras.optimizers.Adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
-    model.compile(optimizer, 'sparse_categorical_crossentropy', metrics=['acc'])
+    #model.compile(optimizer, 'sparse_categorical_crossentropy', metrics=['acc'])
+    model.compile(optimizer, loss=derivation_loss, metrics=['acc'])
 
     return model
 
+
+############################################################################################
+#   Custom loss function
+#   ref: https://stackoverflow.com/questions/45961428/make-a-custom-loss-function-in-keras
+############################################################################################
+from keras import backend as K
+# ref: https://stackoverflow.com/questions/46594115/euclidean-distance-loss-function-for-rnn-keras
+def euc_dist_keras(y_true, y_pred):
+    return K.sqrt(K.sum(K.square(y_true - y_pred), axis=-1, keepdims=True))
+
+def derivation_loss(y_true, y_pred):
+    """
+    @param: y_true: A tensor containing true labels.
+    @param: y_pred:
+    """
+    #print('debug:')
+    #print(y_true.shape) # (?, ?)
+    #print(y_pred.shape) # (?, 7)
+    return euc_dist_keras(y_true, y_pred)
+
+
+def custom_loss():
+    def derivation(y_true, y_pred):
+        return -derivation_loss(y_true, y_pred)
+    return derivation
 
 
 def get_layers():
@@ -199,39 +231,31 @@ def get_layers():
 
 
 def main():
-    #(X, Y), vocab_dataset = debug()
-    X, Y, vocab_dataset = debug()
-    print('#'*100)
-    print(X[0])
-    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=config_wordalgebra.PROBLEM_LENGTH)
-    print('#'*100)
-    print(Y)
-    Y = np.array(Y)
-
+    template_size = 7
     batch_size = 128
-    F = feed_forward_mlp_model_coeffs(batch_size, X.shape[1:], len(vocab_dataset.keys()))
-    F.summary()
-    # X, Y = read_draw()
-    # X, Y = pad_lengths_to_constant(X, Y)
-    # F = feed_forward_model(X.shape[1:], len(vocab.keys()), len(all_template_vars.keys()))
+
+    X, Y, vocab_dataset = debug()
+    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=config_wordalgebra.PROBLEM_LENGTH)
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=config_wordalgebra.SEED)
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(X_test.shape)
 
+    F = feed_forward_mlp_model_coeffs(batch_size, X.shape[1:], len(vocab_dataset.keys()))
+    #F.summary()
 
-    template_size = 7
-
+    '''
     targets = []
     for i in range(template_size):
         targets.append(y_train[:,i])
-
     test_targets = []
     for i in range(template_size):
         test_targets.append(y_test[:,i])
+    '''
 
 
-    F.fit(X_train, targets, batch_size=batch_size, epochs=100, validation_data=(X_test, test_targets))
+    #F.fit(X_train, targets, batch_size=batch_size, epochs=100, validation_data=(X_test, test_targets))
+    F.fit(X_train, y_train, batch_size=batch_size, epochs=100, validation_data=(X_test, y_test))
     F.save('baseline_debug.h5')
     print('='*100)
     print(F.predict(X_test)[0].shape) # 2, 230
