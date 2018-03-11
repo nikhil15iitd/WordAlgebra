@@ -86,8 +86,8 @@ def get_gold_derivations_coeffs(dataset, vocab):
     X = []
     derivations = []
     for index, data_sample in enumerate(dataset):
-        print('=' * 50)
-        print(index)
+        #print('=' * 50)
+        #print(index)
         words = data_sample['sQuestion'].split()
         x_temp = []
         for w in words:
@@ -220,10 +220,10 @@ def validate_derivation(derivation, dataset):
 
 
 def debug():
-    filepath = '0.7 - release/kushman_template_index_debug.json'
+    #filepath = '0.7 - release/kushman_template_index_debug.json'
     #filepath = '0.7 - release/kushman_template_index_debug2.json'
     #filepath = '0.7 - release/kushman_template_index_0-130.json'
-    #filepath = '0.7 - release/kushman_template_index_org.json'
+    filepath = '0.7 - release/kushman_template_index_org.json'
     with open(filepath, 'r') as f:
         dataset = json.load(f)
     #print(len(list(dataset.keys()) ))

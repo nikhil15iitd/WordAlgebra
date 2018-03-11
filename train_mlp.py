@@ -1,5 +1,5 @@
 import numpy as np
-import json
+import json, os
 
 from collections import OrderedDict
 from nltk.corpus import stopwords
@@ -15,7 +15,43 @@ import config_wordalgebra
 from dataset import read_draw, numbers_to_words, derivation_to_equation
 from template_parser import debug
 
+def load_glove(vocab):
+    # ref: https://blog.keras.io/using-pre-trained-word-embeddings-in-a-keras-model.html
+    GLOVE_DIR = 'glove.6B'
+    EMBEDDING_DIM = 50#50
+    MAX_SEQUENCE_LENGTH = 105
+    vocab_size = len(vocab.keys())
+    word_index = vocab_size
 
+    embeddings_index = {}
+    f = open(os.path.join(GLOVE_DIR, 'glove.6B.%dd.txt'%EMBEDDING_DIM))
+    for line in f:
+        values = line.split()
+        word = values[0]
+        coefs = np.asarray(values[1:], dtype='float32')
+        embeddings_index[word] = coefs
+    f.close()
+    print('Found %s word vectors.' % len(embeddings_index))
+
+    #embedding_matrix = np.zeros((len(word_index) + 1, EMBEDDING_DIM))
+    embedding_matrix = np.zeros((vocab_size+1, EMBEDDING_DIM))
+
+    #for word, i in word_index.items():
+    for word, i in vocab.items():
+        embedding_vector = embeddings_index.get(word)
+        if embedding_vector is not None:
+            # words not found in embedding index will be all-zeros.
+            embedding_matrix[i] = embedding_vector
+
+    from keras.layers import Embedding
+
+    #embedding_layer = Embedding(len(word_index) + 1,
+    embedding_layer = Embedding(vocab_size + 1,
+                                EMBEDDING_DIM,
+                                weights=[embedding_matrix],
+                                input_length=MAX_SEQUENCE_LENGTH,
+                                trainable=False)
+    return embedding_layer
 
 
 def feed_forward_rnn_model(input_shape, vocab_size):
@@ -158,7 +194,7 @@ def feed_forward_mlp_model(batch_size, input_shape, vocab_size):
     return model
 
 
-def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size):
+def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size, emb_layer):
     '''
     Deep neural network model to get F(x) which is to be fed to SPENs
     '''
@@ -168,12 +204,14 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size):
     num_output = 7 # since the template vector has 7 elems (without unknowns)
 
     inputs = Input(shape=input_shape)
-    emb = Embedding(vocab_size, 16, input_length=config_wordalgebra.PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
+    #emb = Embedding(vocab_size, 16, input_length=config_wordalgebra.PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
+    emb = emb_layer(inputs)
 
     #l0 = keras.layers.GRU(32, return_sequences=False)(emb) # => (?, 32)
     print('emb shape:') # (?, 105, 16)
     print(emb.shape)
     l0 = keras.layers.Flatten()(emb)
+    l0 = keras.layers.Dense(128, activation='relu')(l0)
     l0 = keras.layers.Dense(128, activation='relu')(l0)
 
     '''
@@ -194,7 +232,8 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size):
     #model = Model(inputs=inputs, outputs=outputs)
     model = Model(inputs=inputs, outputs=l0)
 
-    optimizer = keras.optimizers.Adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
+    #optimizer = keras.optimizers.Adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
+    optimizer = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
     #model.compile(optimizer, 'sparse_categorical_crossentropy', metrics=['acc'])
     model.compile(optimizer, loss=derivation_loss, metrics=['acc'])
 
@@ -244,7 +283,9 @@ def main():
     print(X_train.shape)
     print(X_test.shape)
 
-    F = feed_forward_mlp_model_coeffs(batch_size, X.shape[1:], len(vocab_dataset.keys()))
+    vocab_size = len(vocab_dataset.keys())
+    emb_layer = load_glove(vocab_dataset)
+    F = feed_forward_mlp_model_coeffs(batch_size, X.shape[1:], vocab_size, emb_layer)
     #F.summary()
 
     '''
@@ -258,18 +299,21 @@ def main():
 
 
     #F.fit(X_train, targets, batch_size=batch_size, epochs=100, validation_data=(X_test, test_targets))
-    F.fit(X_train, y_train, batch_size=batch_size, epochs=100, validation_data=(X_test, y_test))
+    F.fit(X_train, y_train, batch_size=batch_size, epochs=1000, validation_data=(X_test, y_test))
     F.save('baseline_debug.h5')
     print('='*100)
     print(F.predict(X_test)[0].shape) # 2, 230
     print(F.predict(X_test)[1].shape) # 2, 183
     pred_train = F.predict(X_test)
 
+    print('preds shape:')
+    print(pred_train.shape) # (2, 7)
     preds = []
     for out in pred_train:
         tmp = np.argmax(out, axis=1)
         preds.append(tmp)
     preds = np.array(preds)
+
     # Convert the output back to (N x temlpate_size)
     preds = preds.reshape(-1, template_size)
     print(preds.shape)
