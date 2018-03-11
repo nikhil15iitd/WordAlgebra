@@ -2,9 +2,7 @@ import json, nltk
 from collections import OrderedDict
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-import config_wordalgebra
-
-config_wordalgebra.init() # Fetch global variables such as PROBLEM_LENGTH
+import globals
 
 
 stop_words = set(stopwords.words('english'))
@@ -81,6 +79,7 @@ def read_draw(filepath='0.7 - release/draw.json'):
 
 
 if __name__ == "__main__":
+    globals.init() # Fetch global variables such as PROBLEM_LENGTH
     X, Y = read_draw('0.7 - release/draw.json')
     print(X[0])
     print(Y[0])

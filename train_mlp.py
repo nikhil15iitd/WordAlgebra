@@ -11,7 +11,7 @@ from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
 
-import config_wordalgebra
+import globals
 from dataset import read_draw, numbers_to_words, derivation_to_equation
 from template_parser import debug
 
@@ -204,7 +204,7 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size, emb_layer
     num_output = 7 # since the template vector has 7 elems (without unknowns)
 
     inputs = Input(shape=input_shape)
-    #emb = Embedding(vocab_size, 16, input_length=config_wordalgebra.PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
+    #emb = Embedding(vocab_size, 16, input_length=globals.PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
     emb = emb_layer(inputs)
 
     #l0 = keras.layers.GRU(32, return_sequences=False)(emb) # => (?, 32)
@@ -221,7 +221,7 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size, emb_layer
         if i == 0:
             outputs.append( Dense(230, activation='softmax')(l0) ) # template
         elif i > 0 and i < num_output+1: # i < 7
-            outputs.append( Dense(config_wordalgebra.PROBLEM_LENGTH, activation='softmax')(l0) ) # coeffs
+            outputs.append( Dense(globals.PROBLEM_LENGTH, activation='softmax')(l0) ) # coeffs
     print('output shape:')
     print(outputs[0].shape) # => batch_size x 7
     '''
@@ -277,8 +277,8 @@ def main():
     batch_size = 128
 
     X, Y, vocab_dataset = debug()
-    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=config_wordalgebra.PROBLEM_LENGTH)
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=config_wordalgebra.SEED)
+    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=globals.SEED)
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(X_test.shape)
@@ -342,5 +342,5 @@ def main():
 
 
 if __name__ == "__main__":
-    config_wordalgebra.init()
+    globals.init()
     main()

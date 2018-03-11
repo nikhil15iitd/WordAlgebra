@@ -1,4 +1,4 @@
-import config_wordalgebra
+import globals
 from dataset import read_draw, numbers_to_words, derivation_to_equation
 from template_parser import debug
 
@@ -45,7 +45,7 @@ def feed_forward_mlp_model(input_shape, vocab_size):
     Deep neural network model to get F(x) which is to be fed to SPENs
     '''
     inputs = Input(shape=input_shape)
-    l0 = Embedding(vocab_size, 16, input_length=config_wordalgebra.PROBLEM_LENGTH)(inputs)
+    l0 = Embedding(vocab_size, 16, input_length=globals.PROBLEM_LENGTH)(inputs)
     l0 = Bidirectional(LSTM(32, return_sequences=True))(l0)
     l0 = Bidirectional(LSTM(32))(l0)
     l0 = Dense(8, activation='softmax')(l0)
@@ -63,13 +63,13 @@ def get_layers():
 def main():
     X, Y, vocab_dataset = debug()
     print(X)
-    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=config_wordalgebra.PROBLEM_LENGTH)
+    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
     print(Y)
     F = feed_forward_mlp_model(X.shape[1:], len(vocab_dataset.keys()))
     # X, Y = read_draw()
     # X, Y = pad_lengths_to_constant(X, Y)
     # F = feed_forward_model(X.shape[1:], len(vocab.keys()), len(all_template_vars.keys()))
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=config_wordalgebra.SEED)
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=globals.SEED)
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(X_test.shape)
@@ -138,20 +138,20 @@ def main():
             xbatch = xlabeled[indices][:]
             xbatch = np.reshape(xbatch, (xbatch.shape[0], -1))
             ybatch = ylabeled[indices][:]
-            ybatch = pad_sequences(ybatch, maxlen=config_wordalgebra.PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
+            ybatch = pad_sequences(ybatch, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
             ybatch = np.reshape(ybatch, (ybatch.shape[0], -1))
             s.set_train_iter(i)
             s.train_batch(xbatch, ybatch)
 
         if i % 2 == 0:
             yval_out = s.map_predict(xinput=np.reshape(X_test, (X_test.shape[0], -1)))
-            ytest_out = pad_sequences(y_test, maxlen=config_wordalgebra.PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
+            ytest_out = pad_sequences(y_test, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
             ts_f1 = f1_score(yval_out, np.reshape(ytest_out, (ytest_out.shape[0], -1)))
             print(yval_out.shape)
             print(ts_f1)
 
 
 if __name__ == "__main__":
-    config_wordalgebra.init() # Fetch global variables such as PROBLEM_LENGTH
+    globals.init() # Fetch global variables such as PROBLEM_LENGTH
     config = config.Config()
     main()
