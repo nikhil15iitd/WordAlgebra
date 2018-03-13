@@ -215,11 +215,8 @@ def validate_derivation(derivation, dataset):
 
 
 def debug():
-    #filepath = '0.7 - release/kushman_template_index_debug.json'
-    #filepath = '0.7 - release/kushman_template_index_debug2.json'
-    #filepath = '0.7 - release/kushman_template_index_0-130.json'
-
-    filepath = '0.7 - release/kushman_template_index_org.json'
+    filepath = '0.7 - release/kushman_template_index_debug.json'
+    #filepath = '0.7 - release/kushman_template_index_org.json'
     #filepath = '0.7 - release/draw_template_index.json'
     with open(filepath, 'r') as f:
         dataset = json.load(f)
@@ -244,10 +241,7 @@ def debug():
     print('#'*100)
 
 
-    #return get_gold_derivations(dataset, word_idx_map), word_idx_map
-    #return get_gold_derivations_coeffs(dataset, word_idx_map), word_idx_map
-    X, derivations = get_gold_derivations_coeffs(dataset, word_idx_map)
-    return X, np.array(derivations), word_idx_map
+    return get_gold_derivations(dataset, word_idx_map), word_idx_map
 
 
 if __name__ == "__main__":

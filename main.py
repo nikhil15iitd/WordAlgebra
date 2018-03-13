@@ -51,12 +51,12 @@ def feed_forward_mlp_model(input_shape, vocab_size):
     l1 = Dense(7, activation='softmax', name='t_id')(l0)
     l2 = Dense(vocab_size, activation='softmax', name='m')(l0)
     l3 = Dense(vocab_size, activation='softmax', name='n')(l0)
-    l4 = Dense(TEMPLATE_LENGTH, activation='softmax', name='a')(l0)
-    l5 = Dense(TEMPLATE_LENGTH, activation='softmax', name='b')(l0)
-    l6 = Dense(TEMPLATE_LENGTH, activation='softmax', name='c')(l0)
-    l7 = Dense(TEMPLATE_LENGTH, activation='softmax', name='d')(l0)
-    l8 = Dense(TEMPLATE_LENGTH, activation='softmax', name='e')(l0)
-    l9 = Dense(TEMPLATE_LENGTH, activation='softmax', name='f')(l0)
+    l4 = Dense(globals.TEMPLATE_LENGTH, activation='softmax', name='a')(l0)
+    l5 = Dense(globals.TEMPLATE_LENGTH, activation='softmax', name='b')(l0)
+    l6 = Dense(globals.TEMPLATE_LENGTH, activation='softmax', name='c')(l0)
+    l7 = Dense(globals.TEMPLATE_LENGTH, activation='softmax', name='d')(l0)
+    l8 = Dense(globals.TEMPLATE_LENGTH, activation='softmax', name='e')(l0)
+    l9 = Dense(globals.TEMPLATE_LENGTH, activation='softmax', name='f')(l0)
     model = Model(inputs=inputs, outputs=[l1, l2, l3, l4, l5, l6, l7, l8, l9])
     model.compile('adam', {'t_id': 'sparse_categorical_crossentropy', 'm': 'sparse_categorical_crossentropy',
                            'n': 'sparse_categorical_crossentropy', 'a': 'sparse_categorical_crossentropy',
@@ -75,7 +75,7 @@ def get_layers():
 def main():
     derivations, vocab_dataset = debug()
     X, Y = derivations
-    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=PROBLEM_LENGTH)
+    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
     F = feed_forward_mlp_model(X.shape[1:], len(vocab_dataset.keys()))
     # X, Y = read_draw()
     # X, Y = pad_lengths_to_constant(X, Y)
@@ -92,8 +92,8 @@ def main():
 
     y_pred = np.argmax(F.predict(X_test), axis=2)
     for i in range(y_pred.shape[0]):
-        print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
-        print(derivation_to_equation(y_test[i].reshape((TEMPLATE_LENGTH,))))
+        print(derivation_to_equation(y_pred[i].reshape((globals.TEMPLATE_LENGTH,))))
+        print(derivation_to_equation(y_test[i].reshape((globals.TEMPLATE_LENGTH,))))
 
     ###Configurable parameters START
     ln = 1e10
