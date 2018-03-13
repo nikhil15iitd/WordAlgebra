@@ -258,6 +258,34 @@ class SPEN:
     yp_ind = self.loss_augmented_soft_predict(xinput=xbatch, yinput=yt_ind, train=True, ascent=True)
     yp_ind = np.reshape(yp_ind, (-1, self.config.output_num*self.config.dimension))
 
+    # TODO: Address the case when ybatch has varying dimensions
+    '''
+    import keras
+
+    vocab_size=self.config.dimension
+    output_num=9
+    print(self.config.output_num)#105 => 9
+    print(self.config.dimension)#183
+    print(ybatch.shape)
+
+    yt_ind = np.zeros()
+    for i in range(output_num):
+        if i == 0:
+            yt_ind.append( keras.utils.to_categorical(ybatch[:,i], num_classes=230) )
+        elif i == 1 or i == 2:
+            yt_ind.append( keras.utils.to_categorical(ybatch[:,i], num_classes=vocab_size) )
+        else:
+            yt_ind.append( keras.utils.to_categorical(ybatch[:,i], num_classes=105) )
+    yt_ind = np.array(yt_ind)
+    print(yt_ind.shape)
+    dim = 230+vocab_size*2+105*6
+    yt_ind = np.reshape(yt_ind, (-1, dim))
+    print(yt_ind.shape)
+
+    yp_ind = self.loss_augmented_soft_predict(xinput=xbatch, yinput=yt_ind, train=True, ascent=True)
+    yp_ind = np.reshape(yp_ind, (-1, dim))
+    '''
+
     feeddic = {self.x:xbatch, self.yp: yp_ind, self.yt: yt_ind,
                self.learning_rate_ph:self.config.learning_rate,
                self.margin_weight_ph: self.config.margin_weight,
