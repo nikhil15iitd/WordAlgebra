@@ -1,5 +1,6 @@
 import numpy as np
-import json
+import json, os
+
 from collections import OrderedDict
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -9,113 +10,78 @@ from keras.layers import Bidirectional, LSTM, Conv1D, Dense, PReLU, MaxPool1D, I
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
+
+import globals
+from dataset import read_draw, numbers_to_words, derivation_to_equation
 from template_parser import debug
+import tensorflow as tf
 
-# Global variables for length of inputs & outputs
-PROBLEM_LENGTH = 105
-TEMPLATE_LENGTH = 30
-SEED = 23
+class NBatchLogger(keras.callbacks.Callback):
+    """
+    A Logger that log average performance per `display` steps.
+    ref: https://github.com/keras-team/keras/issues/2850
+    """
+    def __init__(self, display):
+        self.step = 0
+        self.display = display
+        self.metric_cache = {}
 
-stop_words = set(stopwords.words('english'))
-vocab = OrderedDict()
-# nouns = {x.name().split('.', 1)[0] for x in wn.all_synsets('n')}
-operators = {'+': 1, '-': 2, '*': 3, '/': 4, '=': 5}
-knowns = {'a': 6, 'b': 7, 'c': 8, 'd': 9, 'e': 10, 'f': 11, 'g': 12}
-unknowns = {'m': 13, 'n': 14, 'l': 15, 'o': 16, 'p': 17, 'q': 18}
-symbols = {'%': 19}
-separators = {',': 20}
-all_template_vars = {0: ' ', 20: ','}
-
-
-def numbers_to_words(num_vector):
-    '''
-    Function to map network input (which is numbers back to word problem)
-    '''
-    keys = list(vocab.keys())
-    return [keys[i - 1] for i in num_vector]
-
-
-def derivation_to_equation(num_vector):
-    '''
-    Function to map network output (which is numbers back to template equation)
-    '''
-    return [all_template_vars[int(i)] for i in num_vector]
-
-
-def read_draw():
-    for key in operators.keys():
-        all_template_vars[operators[key]] = key
-    for key in unknowns.keys():
-        all_template_vars[unknowns[key]] = key
-    for key in knowns.keys():
-        all_template_vars[knowns[key]] = key
-    for key in symbols.keys():
-        all_template_vars[symbols[key]] = key
-    X = []
-    Y = []
-    max_len = -10
-    with open('0.7 - release/draw.json', 'r') as f:
-        datastore = json.load(f)
-        for questions in datastore:
-            x = []
-            y = []
-            # process each question
-            # split into sentences
-            sentences = questions['sQuestion'].split('.')
-            for sentence in sentences:
-                word_tokens = word_tokenize(sentence)
-                for word in word_tokens:
-                    if word not in vocab:
-                        vocab[word] = len(vocab) + 1
-                    x.append(vocab[word])
-                x.append(20)
-            for template in questions['Template']:
-                for slot in template.split(' '):
-                    if slot in knowns:
-                        y.append(knowns[slot])
-                    elif slot in unknowns:
-                        y.append(unknowns[slot])
-                    elif slot in operators:
-                        y.append(operators[slot])
-                    else:
-                        y.append(0)
-                y.append(20)
-            # print(y)
-            # print(x)
-            if max_len < len(x):
-                max_len = len(x)
-            X.append(x)
-            Y.append(y)
-    print('Max length: ' + str(max_len))
-    return X, Y
+    def on_batch_end(self, batch, logs={}):
+        self.step += 1
+        for k in self.params['metrics']:
+            if k in logs:
+                self.metric_cache[k] = self.metric_cache.get(k, 0) + logs[k]
+        if self.step % self.display == 0:
+            metrics_log = ''
+            for (k, v) in self.metric_cache.items():
+                val = v / self.display
+                if abs(val) > 1e-3:
+                    metrics_log += ' - %s: %.4f' % (k, val)
+                else:
+                    metrics_log += ' - %s: %.4e' % (k, val)
+            print('step: {}/{} ... {}'.format(self.step,
+                                          self.params['steps'],
+                                          metrics_log))
+            self.metric_cache.clear()
 
 
-def pad_lengths_to_constant(X, Y):
-    newX = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=PROBLEM_LENGTH)
-    newY = pad_sequences(Y, padding='post', truncating='post', value=0., maxlen=TEMPLATE_LENGTH)
-    newY = np.reshape(newY, (-1, TEMPLATE_LENGTH, 1))
-    return newX, newY
+def load_glove(vocab):
+    # ref: https://blog.keras.io/using-pre-trained-word-embeddings-in-a-keras-model.html
+    GLOVE_DIR = 'glove.6B'
+    EMBEDDING_DIM = 50#50
+    MAX_SEQUENCE_LENGTH = 105
+    vocab_size = len(vocab.keys())
+    word_index = vocab_size
 
+    embeddings_index = {}
+    f = open(os.path.join(GLOVE_DIR, 'glove.6B.%dd.txt'%EMBEDDING_DIM))
+    for line in f:
+        values = line.split()
+        word = values[0]
+        coefs = np.asarray(values[1:], dtype='float32')
+        embeddings_index[word] = coefs
+    f.close()
+    print('Found %s word vectors.' % len(embeddings_index))
 
-def feed_forward_model(input_shape, vocab_size, template_vocab_size):
-    '''
-    Deep neural network model to get F(x) which is to be fed to SPENs
-    '''
-    inputs = Input(shape=input_shape)
-    l0 = Embedding(vocab_size, 16, input_length=PROBLEM_LENGTH)(inputs)
-    l0 = Bidirectional(LSTM(32, return_sequences=True))(l0)
-    l0 = Bidirectional(LSTM(32, return_sequences=True))(l0)
-    l0 = Conv1D(64, 5)(l0)
-    l0 = PReLU()(l0)
-    l0 = Conv1D(64, 5)(l0)
-    l0 = PReLU()(l0)
-    l0 = MaxPool1D(3)(l0)
-    l0 = Conv1D(128, 3)(l0)
-    l0 = PReLU()(l0)
-    l0 = TimeDistributed(Dense(template_vocab_size, activation='softmax'))(l0)
-    model = Model(inputs=inputs, outputs=l0)
-    model.compile('adam', 'sparse_categorical_crossentropy', metrics=['acc'])
-    return model
+    #embedding_matrix = np.zeros((len(word_index) + 1, EMBEDDING_DIM))
+    embedding_matrix = np.zeros((vocab_size+1, EMBEDDING_DIM))
+
+    #for word, i in word_index.items():
+    for word, i in vocab.items():
+        embedding_vector = embeddings_index.get(word)
+        if embedding_vector is not None:
+            # words not found in embedding index will be all-zeros.
+            embedding_matrix[i] = embedding_vector
+
+    from keras.layers import Embedding
+
+    #embedding_layer = Embedding(len(word_index) + 1,
+    embedding_layer = Embedding(vocab_size + 1,
+                                EMBEDDING_DIM,
+                                weights=[embedding_matrix],
+                                input_length=MAX_SEQUENCE_LENGTH,
+                                trainable=False)
+    return embedding_layer
 
 
 def feed_forward_rnn_model(input_shape, vocab_size):
@@ -258,6 +224,99 @@ def feed_forward_mlp_model(batch_size, input_shape, vocab_size):
     return model
 
 
+def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size, emb_layer):
+    '''
+    Deep neural network model to get F(x) which is to be fed to SPENs
+    '''
+    print(input_shape) # 105,
+    print(vocab_size) # => 183
+    print(keras.__version__)
+    num_output = 7 # since the template vector has 7 elems (without unknowns)
+
+    inputs = Input(shape=input_shape)
+    #emb = Embedding(vocab_size, 16, input_length=globals.PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
+    emb = emb_layer(inputs)
+
+    #l0 = keras.layers.GRU(32, return_sequences=False)(emb) # => (?, 32)
+    print('emb shape:') # (?, 105, 16)
+    print(emb.shape)
+    l0 = keras.layers.Flatten()(emb)
+    l0 = keras.layers.Dense(128, activation='relu')(l0)
+    #l0 = keras.layers.Dense(128, activation='relu')(l0)
+
+    # 9 Dense layers for predicting word index in each slot
+    outputs = []
+    for i in range(num_output):
+        if i == 0:
+            outputs.append( Dense(230, activation='softmax')(l0) ) # template
+        elif i > 0 and i < num_output+1: # i < 7
+            outputs.append( Dense(globals.PROBLEM_LENGTH, activation='softmax')(l0) ) # coeffs
+    print('output shape:')
+    print(outputs[0].shape) # => batch_size x 7
+    model = Model(inputs=inputs, outputs=outputs)
+
+    # single last dense layer version
+    #Dense(num_output, activation='linear')(l0)
+    #l0 = Dense(num_output)(l0) # => outputs logits
+    #model = Model(inputs=inputs, outputs=l0)
+
+
+    optimizer = keras.optimizers.Adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
+    #model.compile(optimizer, 'categorical_crossentropy', metrics=['acc']) # tf.nn.softmax_cross_entropy_with_logits equivalent?
+    model.compile(optimizer, loss=custom_loss3, metrics=['acc'])
+
+    return model
+
+
+############################################################################################
+#   Custom loss function
+#   ref: https://stackoverflow.com/questions/45961428/make-a-custom-loss-function-in-keras
+############################################################################################
+from keras import backend as K
+# ref: https://stackoverflow.com/questions/46594115/euclidean-distance-loss-function-for-rnn-keras
+def euc_dist_keras(y_true, y_pred):
+    return K.sqrt(K.sum(K.square(y_true - y_pred), axis=-1, keepdims=True))
+
+def derivation_loss(y_true, y_pred):
+    """
+    @param: y_true: A tensor containing true labels.
+    @param: y_pred:
+    """
+    #print('debug:')
+    #print(y_true.shape) # (?, ?)
+    #print(y_pred.shape) # (?, 7)
+    return euc_dist_keras(y_true, y_pred)
+
+
+def custom_loss():
+    def derivation(y_true, y_pred):
+        return -derivation_loss(y_true, y_pred)
+    return derivation
+
+def custom_loss2(y_true, y_pred):
+    def loss(y_true, y_pred):
+        #return keras.backend.categorical_crossentropy(y_pred, y_true, from_logits=True)
+        loss = 0
+        num_output = 7
+        for i in range(num_output):
+            loss += tf.nn.softmax_cross_entropy_with_logits(labels=y_true[i], logits=y_pred[i])
+            print(loss)
+        return loss
+
+    #return tf.nn.softmax_cross_entropy_with_logits(labels=y_true, logits=y_pred)
+    return loss(y_true, y_pred)
+
+def custom_loss3(y_true, y_pred):
+    def loss(y_true, y_pred):
+        loss = 0
+        num_output = 7
+        for i in range(num_output):
+            print(y_pred[i].shape)
+            #loss += tf.nn.softmax_cross_entropy_with_logits(labels=y_true[i], logits=y_pred[i]) # y_pred[i] is a vector
+            loss += keras.losses.categorical_crossentropy(y_true[i], y_pred[i]) # y_pred[i] is a vector
+        return loss
+    return loss(y_true, y_pred)
+
 
 def get_layers():
     layers = [(1000, 'relu')]
@@ -266,75 +325,78 @@ def get_layers():
 
 
 def main():
-    (X, Y), vocab_dataset = debug()
-    print('#'*100)
-    print(X[0])
-    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=PROBLEM_LENGTH)
-    print('#'*100)
-    print(Y)
-    Y = np.array(Y)
-
+    template_size = 7
     batch_size = 128
-    F = feed_forward_mlp_model(batch_size, X.shape[1:], len(vocab_dataset.keys()))
-    F.summary()
-    # X, Y = read_draw()
-    # X, Y = pad_lengths_to_constant(X, Y)
-    # F = feed_forward_model(X.shape[1:], len(vocab.keys()), len(all_template_vars.keys()))
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=SEED)
-    ntrain = X_train.shape[0]
 
+    X, Y, vocab_dataset = debug()
+    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=globals.SEED)
+    ntrain = X_train.shape[0]
+    print(X_train.shape)
+    print(X_test.shape)
+
+    vocab_size = len(vocab_dataset.keys())
+    emb_layer = load_glove(vocab_dataset)
+    F = feed_forward_mlp_model_coeffs(batch_size, X.shape[1:], vocab_size, emb_layer)
+    F.summary()
 
     # (convert y to one-hot in the case of categorical losses)
-    #y_train = keras.utils.to_categorical(y_train)
-    #y_test = keras.utils.to_categorical(y_test)
-    #y_train = y_train.reshape(-1, 9, 1)
-    #y_test = y_test.reshape(-1, 9, 1)
-
-    #F.fit(X_train, y_train, batch_size=batch_size, epochs=30, validation_data=(X_test, y_test))
     targets = []
-    for i in range(9):
-        #targets.append(y_train[:,i].reshape(-1))
-        targets.append(y_train[:,i])
-
+    for i in range(template_size):
+        if i == 0:
+            targets.append( keras.utils.to_categorical(y_train[:,i], num_classes=230) )
+        else:
+            targets.append( keras.utils.to_categorical(y_train[:,i], num_classes=105) )
     test_targets = []
-    for i in range(9):
-        test_targets.append(y_test[:,i])
+    for i in range(template_size):
+        if i == 0:
+            test_targets.append( keras.utils.to_categorical(y_test[:,i], num_classes=230) )
+        else:
+            test_targets.append( keras.utils.to_categorical(y_test[:,i], num_classes=105) )
+    print(y_train.shape)
+    print(y_test.shape)
 
-    print(y_train[:,0].shape)
-    print(type(targets))
-    print(type(y_train[:,0]))
-    #targets = np.array(targets)
-    #test_targets = np.array(test_targets)
-    #print(targets.shape)
-    #print(test_targets.shape)
 
-    F.fit(X_train, targets, batch_size=batch_size, epochs=10, validation_data=(X_test, test_targets))
-    #F.fit(X_train, [ np.array(y_train[:,0]), np.array(y_train[:,1]) ], batch_size=batch_size, epochs=1, validation_data=(X_test, y_test))
-    #F.fit(X_train, [ np.array(np.random.random((8,1))), np.array(np.random.random((8,1))) ], batch_size=batch_size, epochs=1, validation_data=(X_test, y_test))
-    #F.fit(X_train, [ np.array([0,0,0,0,0,0,0,0]), np.array([0,0,0,0,0,0,0,0]) ], batch_size=batch_size, epochs=1, validation_data=(X_test, [ np.array([0,0]), np.array([0,0]) ]))
-    #F.fit(X_train, [ targets[0], targets[1], targets[2], targets[3], targets[4], targets[5], targets[6], targets[7], targets[8] ],
-        #batch_size=batch_size, epochs=30, validation_data=(X_test, y_test))
-
-    #y_pred = np.argmax(F.predict(X_test), axis=2)
-    #y_pred_train = F.predict(X_test) # => a list of 9 elems because the model returns 9 outputs
-    #y_pred_test = F.predict(X_test)
+    F.fit(X_train, targets, batch_size=batch_size, epochs=100, validation_data=(X_test, test_targets))
+    #F.fit(X_train, y_train, batch_size=batch_size, epochs=100, validation_data=(X_test, y_test))
+    #out_batch = NBatchLogger(display=10) # show every 10 batches
+    #F.fit(X_train, y_train, batch_size=batch_size, epochs=100, validation_data=(X_test, y_test), callbacks=[out_batch], verbose=0)
+    F.save('baseline_debug.h5')
     print('='*100)
-    print(F.predict(X_test)[0].shape) # 2, 230
-    print(F.predict(X_test)[1].shape) # 2, 183
-    pred_train = F.predict(X_test)
+    print(F.predict(X_test)[0].shape) # 7,
+    print(F.predict(X_test)[1].shape) # 7,
+    pred_train = F.predict(X_train)
 
+    '''
+    print('preds shape:')
+    print(pred_train.shape) # (2, 7) or (103,7)
     preds = []
     for out in pred_train:
         tmp = np.argmax(out, axis=1)
         preds.append(tmp)
     preds = np.array(preds)
-    # Convert the output back to (N x 9)
-    preds = preds.reshape(-1, 9)
-    print(preds.shape)
-    y_pred_test = preds
+    print(preds[0])
 
-    for i in range(y_pred_test.shape[0]):
-        print('#'*100)
+
+    # Convert the output back to (N x temlpate_size)
+    preds = preds.reshape(-1, template_size)
+    print(preds.shape)
+    y_pred_test = preds'''
+
+    for i in range(y_train[:10].shape[0]):
+        print('='*100)
+        #print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
+        #print(derivation_to_equation(y_test[i].reshape((TEMPLATE_LENGTH,))))
+        #print(derivation_to_equation(y_pred[i]))
+        #print(derivation_to_equation(y_test[i]))
+        print(y_train[i])
+        print(pred_train[i])
+
+    print('#'*100)
+    print('#'*100)
+
+    for i in range(y_pred_test[:10].shape[0]):
+        print('='*100)
         #print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
         #print(derivation_to_equation(y_test[i].reshape((TEMPLATE_LENGTH,))))
         #print(derivation_to_equation(y_pred[i]))
@@ -343,6 +405,6 @@ def main():
         print(y_test[i])
 
 
-
-
-main()
+if __name__ == "__main__":
+    globals.init()
+    main()

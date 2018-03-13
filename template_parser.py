@@ -77,6 +77,56 @@ def derivation_to_y(derivation, templates, vocab):
     return equations
 
 
+def get_gold_derivations_coeffs(dataset, vocab):
+    """
+    @param: dataset: A dictionary loaded from json file
+    @param: vocab: A vocabulary dictionary of the entire corpus for mapping string to index. e.g. '2' => 193
+    @return: A list of derivation: [ template_index, m,n, a,b,c,d,e,f ]
+    """
+    X = []
+    derivations = []
+    for index, data_sample in enumerate(dataset):
+        #print('=' * 50)
+        #print(index)
+        words = data_sample['sQuestion'].split()
+        x_temp = []
+        for w in words:
+            x_temp.append(vocab[w])
+        X.append(x_temp)
+        template_index = data_sample['template_index']
+        templates = data_sample['Template']
+        equations = data_sample['lEquations']
+        alignments = data_sample['Alignment']
+
+        # 1. Add the template index
+        tmp = []
+        tmp.append(template_index)
+
+
+        # 2. fill the slots
+        existing_slots = [a['coeff'] if 'coeff' in a else a['unk'] for a in alignments]
+        # print(existing_slots)
+
+        slot_to_index = {
+            'a': 1,
+            'b': 2,
+            'c': 3,
+            'd': 4,
+            'e': 5,
+            'f': 6,
+        }
+        # init with zero
+        for slot in COEFFS:
+            tmp.append(0)
+        for a in alignments:
+            if 'coeff' in a:
+                tmp[slot_to_index[a['coeff']]] = a['TokenId']
+        derivation = tmp
+        derivations.append(derivation)
+    #print(derivations)
+    return X, derivations
+
+
 def get_gold_derivations(dataset, vocab):
     """
     @param: dataset: A dictionary loaded from json file
@@ -165,9 +215,16 @@ def validate_derivation(derivation, dataset):
 
 
 def debug():
-    filepath = '0.7 - release/kushman_template_index_debug.json'
+    #filepath = '0.7 - release/kushman_template_index_debug.json'
+    #filepath = '0.7 - release/kushman_template_index_debug2.json'
+    #filepath = '0.7 - release/kushman_template_index_0-130.json'
+
+    filepath = '0.7 - release/kushman_template_index_org.json'
+    #filepath = '0.7 - release/draw_template_index.json'
     with open(filepath, 'r') as f:
         dataset = json.load(f)
+    #print(len(list(dataset.keys()) ))
+    print(len(dataset))
 
     # Build vocab for question texts
     from collections import defaultdict
@@ -187,7 +244,10 @@ def debug():
     print('#'*100)
 
 
-    return get_gold_derivations(dataset, word_idx_map), word_idx_map
+    #return get_gold_derivations(dataset, word_idx_map), word_idx_map
+    #return get_gold_derivations_coeffs(dataset, word_idx_map), word_idx_map
+    X, derivations = get_gold_derivations_coeffs(dataset, word_idx_map)
+    return X, np.array(derivations), word_idx_map
 
 
 if __name__ == "__main__":

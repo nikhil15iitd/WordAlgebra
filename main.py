@@ -1,8 +1,8 @@
+import globals
+from dataset import read_draw, numbers_to_words, derivation_to_equation
+from template_parser import debug
+
 import numpy as np
-import json
-from collections import OrderedDict
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from keras.layers import Bidirectional, LSTM, Conv1D, Dense, PReLU, MaxPool1D, Input, Embedding, TimeDistributed, \
     BatchNormalization
 from keras.models import Model
@@ -10,86 +10,6 @@ from keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
 from dsbox_spen.dsbox.spen.core import spen, config, energy
 from dsbox_spen.dsbox.spen.utils.metrics import f1_score, hamming_loss
-from template_parser import debug
-
-# Global variables for length of inputs & outputs
-PROBLEM_LENGTH = 105
-TEMPLATE_LENGTH = 30
-SEED = 23
-
-stop_words = set(stopwords.words('english'))
-vocab = OrderedDict()
-# nouns = {x.name().split('.', 1)[0] for x in wn.all_synsets('n')}
-operators = {'+': 1, '-': 2, '*': 3, '/': 4, '=': 5}
-knowns = {'a': 6, 'b': 7, 'c': 8, 'd': 9, 'e': 10, 'f': 11, 'g': 12}
-unknowns = {'m': 13, 'n': 14, 'l': 15, 'o': 16, 'p': 17, 'q': 18}
-symbols = {'%': 19}
-separators = {',': 20}
-all_template_vars = {0: ' ', 20: ','}
-config = config.Config()
-
-
-def numbers_to_words(num_vector):
-    '''
-    Function to map network input (which is numbers back to word problem)
-    '''
-    keys = list(vocab.keys())
-    return [keys[i - 1] for i in num_vector]
-
-
-def derivation_to_equation(num_vector):
-    '''
-    Function to map network output (which is numbers back to template equation)
-    '''
-    return [all_template_vars[int(i)] for i in num_vector]
-
-
-def read_draw():
-    for key in operators.keys():
-        all_template_vars[operators[key]] = key
-    for key in unknowns.keys():
-        all_template_vars[unknowns[key]] = key
-    for key in knowns.keys():
-        all_template_vars[knowns[key]] = key
-    for key in symbols.keys():
-        all_template_vars[symbols[key]] = key
-    X = []
-    Y = []
-    max_len = -10
-    with open('0.7 - release/draw.json', 'r') as f:
-        datastore = json.load(f)
-        for questions in datastore:
-            x = []
-            y = []
-            # process each question
-            # split into sentences
-            sentences = questions['sQuestion'].split('.')
-            for sentence in sentences:
-                word_tokens = word_tokenize(sentence)
-                for word in word_tokens:
-                    if word not in vocab:
-                        vocab[word] = len(vocab) + 1
-                    x.append(vocab[word])
-                x.append(20)
-            for template in questions['Template']:
-                for slot in template.split(' '):
-                    if slot in knowns:
-                        y.append(knowns[slot])
-                    elif slot in unknowns:
-                        y.append(unknowns[slot])
-                    elif slot in operators:
-                        y.append(operators[slot])
-                    else:
-                        y.append(0)
-                y.append(20)
-            # print(y)
-            # print(x)
-            if max_len < len(x):
-                max_len = len(x)
-            X.append(x)
-            Y.append(y)
-    print('Max length: ' + str(max_len))
-    return X, Y
 
 
 def pad_lengths_to_constant(X, Y):
@@ -125,7 +45,7 @@ def feed_forward_mlp_model(input_shape, vocab_size):
     Deep neural network model to get F(x) which is to be fed to SPENs
     '''
     inputs = Input(shape=input_shape)
-    l0 = Embedding(vocab_size, 16, input_length=PROBLEM_LENGTH)(inputs)
+    l0 = Embedding(vocab_size, 16, input_length=globals.PROBLEM_LENGTH)(inputs)
     l0 = Bidirectional(LSTM(32, return_sequences=True))(l0)
     l0 = Bidirectional(LSTM(32))(l0)
     l1 = Dense(7, activation='softmax', name='t_id')(l0)
@@ -160,7 +80,7 @@ def main():
     # X, Y = read_draw()
     # X, Y = pad_lengths_to_constant(X, Y)
     # F = feed_forward_model(X.shape[1:], len(vocab.keys()), len(all_template_vars.keys()))
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=SEED)
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=globals.SEED)
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(y_train.shape)
@@ -169,6 +89,7 @@ def main():
            y_train[:, 7], y_train[:, 8]], batch_size=128, epochs=50, validation_data=(
             X_test, [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6],
                      y_test[:, 7], y_test[:, 8]]))
+
     y_pred = np.argmax(F.predict(X_test), axis=2)
     for i in range(y_pred.shape[0]):
         print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
@@ -232,17 +153,20 @@ def main():
             xbatch = xlabeled[indices][:]
             xbatch = np.reshape(xbatch, (xbatch.shape[0], -1))
             ybatch = ylabeled[indices][:]
-            ybatch = pad_sequences(ybatch, maxlen=PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
+            ybatch = pad_sequences(ybatch, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
             ybatch = np.reshape(ybatch, (ybatch.shape[0], -1))
             s.set_train_iter(i)
             s.train_batch(xbatch, ybatch)
 
         if i % 2 == 0:
             yval_out = s.map_predict(xinput=np.reshape(X_test, (X_test.shape[0], -1)))
-            ytest_out = pad_sequences(y_test, maxlen=PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
+            ytest_out = pad_sequences(y_test, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
             ts_f1 = f1_score(yval_out, np.reshape(ytest_out, (ytest_out.shape[0], -1)))
             print(yval_out.shape)
             print(ts_f1)
 
 
-main()
+if __name__ == "__main__":
+    globals.init() # Fetch global variables such as PROBLEM_LENGTH
+    config = config.Config()
+    main()
