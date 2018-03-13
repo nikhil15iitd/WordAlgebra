@@ -86,8 +86,8 @@ def get_gold_derivations_coeffs(dataset, vocab):
     X = []
     derivations = []
     for index, data_sample in enumerate(dataset):
-        #print('=' * 50)
-        #print(index)
+        # print('=' * 50)
+        # print(index)
         words = data_sample['sQuestion'].split()
         x_temp = []
         for w in words:
@@ -101,7 +101,6 @@ def get_gold_derivations_coeffs(dataset, vocab):
         # 1. Add the template index
         tmp = []
         tmp.append(template_index)
-
 
         # 2. fill the slots
         existing_slots = [a['coeff'] if 'coeff' in a else a['unk'] for a in alignments]
@@ -123,7 +122,7 @@ def get_gold_derivations_coeffs(dataset, vocab):
                 tmp[slot_to_index[a['coeff']]] = a['TokenId']
         derivation = tmp
         derivations.append(derivation)
-    #print(derivations)
+    # print(derivations)
     return X, derivations
 
 
@@ -216,11 +215,11 @@ def validate_derivation(derivation, dataset):
 
 def debug():
     filepath = '0.7 - release/kushman_template_index_debug.json'
-    #filepath = '0.7 - release/kushman_template_index_org.json'
-    #filepath = '0.7 - release/draw_template_index.json'
+    # filepath = '0.7 - release/kushman_template_index_org.json'
+    # filepath = '0.7 - release/draw_template_index.json'
     with open(filepath, 'r') as f:
         dataset = json.load(f)
-    #print(len(list(dataset.keys()) ))
+    # print(len(list(dataset.keys()) ))
     print(len(dataset))
 
     # Build vocab for question texts
@@ -238,8 +237,7 @@ def debug():
         word_idx_map[word] = i
     print(word_idx_map)
     print(len(word_idx_map.keys()))
-    print('#'*100)
-
+    print('#' * 100)
 
     return get_gold_derivations(dataset, word_idx_map), word_idx_map
 

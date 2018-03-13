@@ -4,6 +4,15 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import globals
 
+vocab = OrderedDict()
+# nouns = {x.name().split('.', 1)[0] for x in wn.all_synsets('n')}
+operators = {'+': 1, '-': 2, '*': 3, '/': 4, '=': 5}
+knowns = {'a': 6, 'b': 7, 'c': 8, 'd': 9, 'e': 10, 'f': 11, 'g': 12}
+unknowns = {'m': 13, 'n': 14, 'l': 15, 'o': 16, 'p': 17, 'q': 18}
+symbols = {'%': 19}
+separators = {',': 20}
+all_template_vars = {0: ' ', 20: ','}
+
 
 def numbers_to_words(vocab, num_vector):
     '''
@@ -19,17 +28,8 @@ def derivation_to_equation(num_vector):
     '''
     return [all_template_vars[int(i)] for i in num_vector]
 
+
 def read_draw(filepath='0.7 - release/draw.json'):
-    vocab = OrderedDict()
-    # nouns = {x.name().split('.', 1)[0] for x in wn.all_synsets('n')}
-    operators = {'+': 1, '-': 2, '*': 3, '/': 4, '=': 5}
-    knowns = {'a': 6, 'b': 7, 'c': 8, 'd': 9, 'e': 10, 'f': 11, 'g': 12}
-    unknowns = {'m': 13, 'n': 14, 'l': 15, 'o': 16, 'p': 17, 'q': 18}
-    symbols = {'%': 19}
-    separators = {',': 20}
-    all_template_vars = {0: ' ', 20: ','}
-
-
     for key in operators.keys():
         all_template_vars[operators[key]] = key
     for key in unknowns.keys():
@@ -78,8 +78,8 @@ def read_draw(filepath='0.7 - release/draw.json'):
 
 
 if __name__ == "__main__":
-    globals.init() # Fetch global variables such as PROBLEM_LENGTH
-    #stop_words = set(stopwords.words('english'))
+    globals.init()  # Fetch global variables such as PROBLEM_LENGTH
+    # stop_words = set(stopwords.words('english'))
     X, Y = read_draw('0.7 - release/draw.json')
     print(X[0])
     print(Y[0])
