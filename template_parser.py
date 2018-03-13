@@ -184,6 +184,8 @@ def debug():
         word_idx_map[word] = i
     print(word_idx_map)
     print(len(word_idx_map.keys()))
+    print('#'*100)
+
 
     return get_gold_derivations(dataset, word_idx_map), word_idx_map
 

@@ -1,0 +1,5846 @@
+[
+ {
+  "sQuestion": "Tickets for a show cost 6.00 dollars for adults and 4.50 dollars for children . 400 tickets were sold for a total of 2100 dollars . How many adult tickets and how many childrens tickets were sold ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   200.0, 
+   200.0
+  ], 
+  "sample_index": 131, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(6.0*adults)+(4.5*children)=2100.0", 
+   "adults+children=400.0"
+  ], 
+  "iIndex": 3839, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 6.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 4.5, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 2100.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 400.0, 
+    "TokenId": 0
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Joe sold 30 peaches from his tree for a total of 7.50 dollars . He sold the small ones for 20 cents each and the large ones for 35 cents each . How many small ones did he sell ? How many large ones did he sell ?", 
+  "template_index": 1, 
+  "lSolutions": [
+   20.0, 
+   10.0
+  ], 
+  "sample_index": 132, 
+  "Template": [
+   "0.01 * a * m + 0.01 * b * n = c", 
+   "n + m = d"
+  ], 
+  "lEquations": [
+   "(20*.01*small_ones)+(35*.01*large_ones)=7.5", 
+   "small_ones+large_ones=30.0"
+  ], 
+  "iIndex": 6226, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 20.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 35.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 7.5, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 30.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "2 similar tables and 6 similar chairs cost 6600 dollars . If the table cost 500 dollars more than a chair , what is the cost , in dollars , of the table ? What is the cost of the chair ?", 
+  "template_index": 8, 
+  "lSolutions": [
+   1200.0, 
+   700.0
+  ], 
+  "sample_index": 133, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m - n = d"
+  ], 
+  "lEquations": [
+   "(2.0*table)+(6.0*chair)=6600.0", 
+   "500.0+chair=table"
+  ], 
+  "iIndex": 6765, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 0
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 6.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 6600.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 500.0, 
+    "TokenId": 4
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The weight of an object on the moon varies directly to its weight on earth . A person who weights 133 pounds on earth weighs 26.6 pounds on the moon . How many pounds would a 136-pound person weigh on the moon ?", 
+  "template_index": 22, 
+  "lSolutions": [
+   27.2, 
+   0.2
+  ], 
+  "sample_index": 134, 
+  "Template": [
+   "a * m = b", 
+   "c * m - n = 0"
+  ], 
+  "lEquations": [
+   "133*ratio=26.6", 
+   "136.0*ratio=moon_weight"
+  ], 
+  "iIndex": 5540, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 133.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 26.6, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 136.0, 
+    "TokenId": 5
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Trinidad has 2.35 dollars in nickels and dimes . If she has 33 coins in all , how many nickels does she have ? How many dimes does she have ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   19.0, 
+   14.0
+  ], 
+  "sample_index": 135, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(0.05*nickels)+(0.1*dimes)=2.35", 
+   "nickels+dimes=33.0"
+  ], 
+  "iIndex": 1309, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 0.05000000074505806, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 0.10000000149011612, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 2.35, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 33.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     2, 
+     2, 
+     0.1
+    ], 
+    [
+     0, 
+     7, 
+     0.1
+    ]
+   ], 
+   [
+    [
+     1, 
+     10, 
+     0.05
+    ], 
+    [
+     0, 
+     5, 
+     0.05
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "Arianne is mixing a solution for Chemistry class . She has a 25 % copper solution and a 50 % copper solution . How many milliliters of the 25 % solution and 50 % solution should she mix to make 1000 milliliters of a 45 % solution ?", 
+  "template_index": 7, 
+  "lSolutions": [
+   200.0, 
+   800.0
+  ], 
+  "sample_index": 136, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "((25.0*0.01)*twentyfive_solution)+((50.0*0.01)*fifty_solution)=45.0*0.01*1000.0", 
+   "twentyfive_solution+fifty_solution=1000.0"
+  ], 
+  "iIndex": 1675, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 25.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 50.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 1000.0, 
+    "TokenId": 17
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 45.0, 
+    "TokenId": 21
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     1, 
+     3, 
+     25
+    ], 
+    [
+     2, 
+     5, 
+     25
+    ]
+   ], 
+   [
+    [
+     2, 
+     9, 
+     50
+    ], 
+    [
+     1, 
+     9, 
+     50
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "Find two numbers whose sum is 106 and whose difference is 64 .", 
+  "template_index": 11, 
+  "lSolutions": [
+   85.0, 
+   21.0
+  ], 
+  "sample_index": 137, 
+  "Template": [
+   "m + n = a", 
+   "m - n = b"
+  ], 
+  "lEquations": [
+   "number+other_number=106.0", 
+   "number-other_number=64.0"
+  ], 
+  "iIndex": 6014, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 106.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 64.0, 
+    "TokenId": 11
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "586 people attend a banquet at Disney . Residents paid 12.95 dollars and non-residents paid 17.95 dollars . If Disney made 9423.70 dollars from ticket sales for the event , how many residents and non-residents attended ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   219.0, 
+   367.0
+  ], 
+  "sample_index": 138, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(12.95*residents)+(17.95*nonresidents)=9423.7", 
+   "residents+nonresidents=586.0"
+  ], 
+  "iIndex": 3627, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 12.95, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 17.95, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 9423.7, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 586.0, 
+    "TokenId": 0
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "You sell tickets for admission to your school play and collect a total of 104 dollars . Admission prices are 6 dollars for adults and 4 dollars for children . You sold 21 tickets . How many adult tickets did you sell ? How many children 's tickets did you sell ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   10.0, 
+   11.0
+  ], 
+  "sample_index": 139, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(6.0*adults)+(4.0*children)=104.0", 
+   "adults+children=21.0"
+  ], 
+  "iIndex": 3869, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 6.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 4.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 104.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 21.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Stefans school is selling tickets to a choral performance . On the first day of ticket sales the school sold 4 senior citizen tickets and 3 student tickets for 79 dollars . The school took 246 dollars on the second day by selling 12 senior citizen tickets and 10 student tickets . Find the price of a senior citizen ticket and the price of a student ticket .", 
+  "template_index": 0, 
+  "lSolutions": [
+   13.0, 
+   9.0
+  ], 
+  "sample_index": 140, 
+  "Template": [
+   "a * m + b * n = c", 
+   "d * m + e * n = f"
+  ], 
+  "lEquations": [
+   "(4.0*senior_ticket_price)+(3.0*student_ticket_price)=79.0", 
+   "(12.0*senior_ticket_price)+(10.0*student_ticket_price)=246.0"
+  ], 
+  "iIndex": 5017, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 4.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 15
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 79.0, 
+    "TokenId": 19
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 12.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "e", 
+    "SentenceId": 2, 
+    "Value": 10.0, 
+    "TokenId": 16
+   }, 
+   {
+    "coeff": "f", 
+    "SentenceId": 2, 
+    "Value": 246.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Hockey teams receive 2 points when they win and 1 point when they tie . 1 season , a team won a championship with 60 points . They won 12 games more than they tied . How many wins and ties did the team have ?", 
+  "template_index": 8, 
+  "lSolutions": [
+   24.0, 
+   12.0
+  ], 
+  "sample_index": 141, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m - n = d"
+  ], 
+  "lEquations": [
+   "(2.0*win)+(1.0*tie)=60.0", 
+   "win=12.0+tie"
+  ], 
+  "iIndex": 2824, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 1.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 60.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 12.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Jackie has coffee that sells for 9 dollars per pound and coffee that sells for 4 dollars per pound . How many pounds of 9 dollars coffee and how many pounds of 4 dollars coffee must be mixed to get 20 pounds of coffee that sells for 8.25 dollars per pound ?", 
+  "template_index": 7, 
+  "lSolutions": [
+   17.0, 
+   3.0
+  ], 
+  "sample_index": 142, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "(9.0*nine_coffee)+(4.0*four_coffee)=20.0*8.25", 
+   "nine_coffee+four_coffee=20.0"
+  ], 
+  "iIndex": 922, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 9.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 4.0, 
+    "TokenId": 15
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 20.0, 
+    "TokenId": 20
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 8.25, 
+    "TokenId": 27
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     1, 
+     4, 
+     9
+    ], 
+    [
+     0, 
+     6, 
+     9
+    ]
+   ], 
+   [
+    [
+     0, 
+     15, 
+     4
+    ], 
+    [
+     1, 
+     12, 
+     4
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "A chemist is mixing a solution that is 32 % sodium and another solution that is 12 % sodium . How many liters of 32 % and 12 % solution should the chemist use to produce 50 liters of the solution that is 20 % sodium ?", 
+  "template_index": 7, 
+  "lSolutions": [
+   20.0, 
+   30.0
+  ], 
+  "sample_index": 143, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "((32.0*0.01)*thirtytwo_solution)+((12.0*0.01)*twelve_solution)=20.0*0.01*50.0", 
+   "thirtytwo_solution+twelve_solution=50.0"
+  ], 
+  "iIndex": 6459, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 32.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 12.0, 
+    "TokenId": 16
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 50.0, 
+    "TokenId": 16
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 20.0, 
+    "TokenId": 23
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     0, 
+     6, 
+     12
+    ], 
+    [
+     1, 
+     7, 
+     12
+    ]
+   ], 
+   [
+    [
+     1, 
+     4, 
+     32
+    ], 
+    [
+     0, 
+     8, 
+     32
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "Admission to an amusement park is 8 dollars for adults and 5 dollars for children . If 201 dollars was paid for 33 tickets , how many adult tickets were purchased ? How many children 's tickets were purchased ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   12.0, 
+   21.0
+  ], 
+  "sample_index": 144, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(8.0*adults)+(5.0*children)=201.0", 
+   "adults+children=33.0"
+  ], 
+  "iIndex": 7412, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 8.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 5.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 201.0, 
+    "TokenId": 1
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 33.0, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "E-Chem Testing has a solution that is 80 % base and another that is 30 % base . A technician needs 150 liters of a solution that is 62 % base . The 150 liters will be prepared by mixing the two solutions on hand . How much of the 80 % base and the 30 % base should be used ?", 
+  "template_index": 7, 
+  "lSolutions": [
+   96.0, 
+   54.0
+  ], 
+  "sample_index": 145, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "80.0*0.01*eighty_base+30.0*0.01*thirty_base=62.0*0.01*150.0", 
+   "eighty_base+thirty_base=150.0"
+  ], 
+  "iIndex": 6102, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 80.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 30.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 150.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 62.0, 
+    "TokenId": 10
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     2, 
+     1, 
+     150
+    ], 
+    [
+     1, 
+     3, 
+     150
+    ]
+   ], 
+   [
+    [
+     3, 
+     4, 
+     80
+    ], 
+    [
+     0, 
+     7, 
+     80
+    ]
+   ], 
+   [
+    [
+     3, 
+     9, 
+     30
+    ], 
+    [
+     0, 
+     14, 
+     30
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "In a family there are two cars . The sum of the average miles per gallon obtained by the two cars in a particular week is 75 miles per gallon . The first car has consumed 25 gallons during that week , and the second has consumed 35 gallons , for a total of 2275 miles driven by the two cars combined . What was the average gas mileage obtained by the first car that week ? What was the average gas mileage obtained by the second car that week ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   35.0, 
+   40.0
+  ], 
+  "sample_index": 146, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(25.0*first)+(35.0*second)=2275.0", 
+   "first+second=75.0"
+  ], 
+  "iIndex": 2359, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 25.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 35.0, 
+    "TokenId": 16
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 2275.0, 
+    "TokenId": 23
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 75.0, 
+    "TokenId": 18
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A small publishing company has a 1 time product cost for editing and printing of 56,430.00 dollars . Variable cost per book is 8.25 dollars . The publisher is selling the book to the store for 21.75 dollars . How many books must the publisher print and sell so that the production cost will equal the money obtained from sells ?", 
+  "template_index": 16, 
+  "lSolutions": [
+   4180.0
+  ], 
+  "sample_index": 147, 
+  "Template": [
+   "a * m - b * m = c"
+  ], 
+  "lEquations": [
+   "(21.75*books)-(8.25*books)=56430.0"
+  ], 
+  "iIndex": 3202, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 21.75, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 8.25, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 56430.0, 
+    "TokenId": 15
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "There are 24 kids in Mrs Jones ' class . There are twice as many girls as boys . How many boys and girls are there ?", 
+  "template_index": 6, 
+  "lSolutions": [
+   8.0, 
+   16.0
+  ], 
+  "sample_index": 148, 
+  "Template": [
+   "m + n = a", 
+   "n - b * m = 0"
+  ], 
+  "lEquations": [
+   "boys+girls=24.0", 
+   "girls=2.0*boys"
+  ], 
+  "iIndex": 3772, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 24.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "For his long distance phone calls , John pays a 5 dollars monthly fee plus 25 cents per minute . Last month , John 's long distance bill was 12.02 dollars . For how many minutes was John billed ?", 
+  "template_index": 13, 
+  "lSolutions": [
+   28.08
+  ], 
+  "sample_index": 149, 
+  "Template": [
+   "0.01 * a * m = b - c"
+  ], 
+  "lEquations": [
+   "5.0+((25.0*0.01)*minutes)=12.02"
+  ], 
+  "iIndex": 580, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 25.0, 
+    "TokenId": 15
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 12.02, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 5.0, 
+    "TokenId": 10
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The first agency charges 20.25 dollars per day and 0.14 dollars per mile . The second agency charges 18.25 dollars per day and 0.22 dollars per mile . How many miles would you have to drive before the first agency is less expensive than the second ?", 
+  "template_index": 12, 
+  "lSolutions": [
+   25.0
+  ], 
+  "sample_index": 150, 
+  "Template": [
+   "a * m - b * m = c - d"
+  ], 
+  "lEquations": [
+   "20.25+(0.14*miles)=18.25+(0.22*miles)"
+  ], 
+  "iIndex": 5298, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 0.14, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 0.22, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 18.25, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 20.25, 
+    "TokenId": 4
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "High school graduating class is made up of 466 students . There are 212 more girls than boys . How many boys are in the class ?", 
+  "template_index": 11, 
+  "lSolutions": [
+   127.0, 
+   339.0
+  ], 
+  "sample_index": 151, 
+  "Template": [
+   "m + n = a", 
+   "m - n = b"
+  ], 
+  "lEquations": [
+   "212.0+boys=girls", 
+   "girls+boys=466.0"
+  ], 
+  "iIndex": 7, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 466.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 212.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "One integer is twice another , and their sum is 96 . Find the smaller and larger integer .", 
+  "template_index": 6, 
+  "lSolutions": [
+   32.0, 
+   64.0
+  ], 
+  "sample_index": 152, 
+  "Template": [
+   "m + n = a", 
+   "n - b * m = 0"
+  ], 
+  "lEquations": [
+   "2.0*smaller=larger", 
+   "smaller+larger=96.0"
+  ], 
+  "iIndex": 2481, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 96.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A high school sold gift wrap . The gift wrap in solid colors sold for 4.00 dollars per roll and the print gift wrap sold for 6.00 dollars per roll . The total number of rolls sold was 480 rolls , and the total amount of money collected was 2,340.00 dollars . How many solid rolls were sold ? How many print rolls were sold ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   270.0, 
+   210.0
+  ], 
+  "sample_index": 153, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(4.0*solid)+(6.0*print)=2340.0", 
+   "solid+print=480.0"
+  ], 
+  "iIndex": 2239, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 4.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 6.0, 
+    "TokenId": 19
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 2340.0, 
+    "TokenId": 18
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 480.0, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The sum of 5 and a number is 20 . Find the number .", 
+  "template_index": 23, 
+  "lSolutions": [
+   15.0
+  ], 
+  "sample_index": 154, 
+  "Template": [
+   "m = a - b"
+  ], 
+  "lEquations": [
+   "5.0+number=20.0"
+  ], 
+  "iIndex": 3583, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 20.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 5.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A semi truck travels on a paved road for 2 hours at an average speed of 20 miles per hour faster than it travels on a dirt road . The time spent on the dirt is 3 hours . If the entire trip is 200 miles , how fast is the truck traveling on the dirt road ?", 
+  "template_index": 8, 
+  "lSolutions": [
+   32.0, 
+   52.0
+  ], 
+  "sample_index": 155, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m - n = d"
+  ], 
+  "lEquations": [
+   "(2.0*paved_speed)+(3.0*dirt_speed)=200.0", 
+   "paved_speed=20.0+dirt_speed"
+  ], 
+  "iIndex": 5043, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 200.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 20.0, 
+    "TokenId": 16
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "In a class of 35 students the number of girls is 0.4 of the number of boys . Find the number of girls in the class .", 
+  "template_index": 6, 
+  "lSolutions": [
+   10.0, 
+   25.0
+  ], 
+  "sample_index": 156, 
+  "Template": [
+   "m + n = a", 
+   "n - b * m = 0"
+  ], 
+  "lEquations": [
+   "0.4*boys=girls", 
+   "boys+girls=35.0"
+  ], 
+  "iIndex": 5824, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 35.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 0.4, 
+    "TokenId": 11
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A person wishes to invest 2,400.00 dollars , part at 9 % and part at 6 % . If the total interest desired at the end of the year is 189.00 dollars , how much should be invested at each rate ?", 
+  "template_index": 1, 
+  "lSolutions": [
+   1500.0, 
+   900.0
+  ], 
+  "sample_index": 157, 
+  "Template": [
+   "0.01 * a * m + 0.01 * b * n = c", 
+   "n + m = d"
+  ], 
+  "lEquations": [
+   "((6.0*0.01)*six_interest)+((9.0*0.01)*nine_interest)=189.0", 
+   "six_interest+nine_interest=2400.0"
+  ], 
+  "iIndex": 2584, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 9.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 6.0, 
+    "TokenId": 15
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 189.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 2400.0, 
+    "TokenId": 5
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "An embossing shop etches metal with acid solutions . The owner is discussing a certain job with the job supervisor , and they decide to use 30 ounces of a 40 % solution . Upon checking the acid solution supplies , the supervisor has found some 25 % acid solution and some 50 % acid solution , but there is no 40 % acid solution . The owner explains to the supervisor how the two existing solutions can be mixed to obtain a 40 % acid solution . How much of each solution is needed ?", 
+  "template_index": 7, 
+  "lSolutions": [
+   18.0, 
+   12.0
+  ], 
+  "sample_index": 158, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "((25.0*0.01)*twentyfive_solution)+((50.0*0.01)*fifty_solution)=40.0*0.01*30.0", 
+   "twentyfive_solution+fifty_solution=30.0"
+  ], 
+  "iIndex": 2100, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 25.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 50.0, 
+    "TokenId": 18
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 30.0, 
+    "TokenId": 17
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 40.0, 
+    "TokenId": 21
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     1, 
+     21, 
+     40
+    ], 
+    [
+     2, 
+     27, 
+     40
+    ], 
+    [
+     3, 
+     17, 
+     40
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "Tickets for a concert were priced at 9 dollars for students and 11 dollars for non-students . There were 2,000 tickets sold for a total of 20,960 dollars . How many student ticket were sold ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   520.0, 
+   1480.0
+  ], 
+  "sample_index": 159, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(9.0*students)+(11.0*non_students)=20960.0", 
+   "students+non_students=2000.0"
+  ], 
+  "iIndex": 6094, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 9.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 11.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 20960.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 2000.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Jack collects baseball and football cards . He has 125 cards total . The number of baseball cards he has is five more than three times the number of football cards . How many baseball and football cards does he have ?", 
+  "template_index": 21, 
+  "lSolutions": [
+   95.0, 
+   30.0
+  ], 
+  "sample_index": 160, 
+  "Template": [
+   "m - a * n = b", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "baseball+football=125.0", 
+   "baseball=5.0+(3.0*football)"
+  ], 
+  "iIndex": 376, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 3.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 5.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 125.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A jazz concert brought in 191,000 dollars with the sale of 7400 tickets . If tickets were sold for 20 dollars and 30 dollars each , how many 20-dollar tickets were sold ? How many 30-dollar tickets ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   3100.0, 
+   4300.0
+  ], 
+  "sample_index": 161, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(20.0*twenty)+(30.0*thirty)=191000.0", 
+   "twenty+thirty=7400.0"
+  ], 
+  "iIndex": 2722, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 20.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 30.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 191000.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 7400.0, 
+    "TokenId": 11
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     2, 
+     2, 
+     30
+    ], 
+    [
+     1, 
+     8, 
+     30
+    ]
+   ], 
+   [
+    [
+     1, 
+     5, 
+     20
+    ], 
+    [
+     1, 
+     14, 
+     20
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "0.5 of a number is 2 more than 0.25 of the number . Find the number .", 
+  "template_index": 16, 
+  "lSolutions": [
+   8.0
+  ], 
+  "sample_index": 162, 
+  "Template": [
+   "a * m - b * m = c"
+  ], 
+  "lEquations": [
+   "0.5*number=2.0+(0.25*number)"
+  ], 
+  "iIndex": 2086, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 0.5, 
+    "TokenId": 0
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 0.25, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 5
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The Willey Farm Collective , farmed by several branches of the Willeys , has 4500 acres of land available for raising corn and wheat . The cost of raising corn is 42 dollars an acre , while the cost of wheat is 35 dollars an acre . The Collective 's available capital is 165,200 dollars . How many acres of corn should the Collective plant ? How many acres of wheat should the collective plant ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   1100.0, 
+   3400.0
+  ], 
+  "sample_index": 163, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(42.0*corn)+(35.0*soybeans)=165200.0", 
+   "corn+soybeans=4500.0"
+  ], 
+  "iIndex": 6336, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 42.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 35.0, 
+    "TokenId": 17
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 165200.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 4500.0, 
+    "TokenId": 14
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "There are 21 animals total , all sheep and chickens . If there are 56 legs total , how many of the 21 animals are sheep ? How many are chickens ?", 
+  "template_index": 19, 
+  "lSolutions": [
+   7.0, 
+   14.0
+  ], 
+  "sample_index": 164, 
+  "Template": [
+   "m + n = a", 
+   "2 * m + 4 * n = b"
+  ], 
+  "lEquations": [
+   "(4.0*sheep)+(2.0*chickens)=56.0", 
+   "sheep+chickens=21.0"
+  ], 
+  "iIndex": 6241, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 21.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 56.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     0, 
+     2, 
+     21
+    ], 
+    [
+     1, 
+     11, 
+     21
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "The Jurassic Zoo charges 8 dollars for each adult and 4 dollars for each child . Total bill for the 201 people was 964 dollars . How many children were at the zoo ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   161.0, 
+   40.0
+  ], 
+  "sample_index": 165, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(8.0*adult)+(4.0*child)=964.0", 
+   "child+adult=201.0"
+  ], 
+  "iIndex": 3079, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 8.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 4.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 964.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 201.0, 
+    "TokenId": 4
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Nine books are to be bought by a student . Some cost 6 dollars each and the remainder cost 6.50 dollars each . The total amount spent was 56 dollars . How many 6-dollar books were sold ? How many 6.50-dollar books were sold ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   5.0, 
+   4.0
+  ], 
+  "sample_index": 166, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(6.0*some)+(6.5*remainder)=56.0", 
+   "some+remainder=9.0"
+  ], 
+  "iIndex": 7364, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 6.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 6.5, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 56.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 9.0, 
+    "TokenId": 0
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     3, 
+     2, 
+     6
+    ], 
+    [
+     1, 
+     2, 
+     6
+    ]
+   ], 
+   [
+    [
+     1, 
+     9, 
+     6.5
+    ], 
+    [
+     4, 
+     2, 
+     6.5
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "You buy 25 boxes of candy and spend 28.00 dollars . A box of peppermint cost 1.00 dollars a box and candy canes cost 1.30 dollars a box . How many boxes of peppermint did you buy ? How many boxes of candy canes ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   15.0, 
+   10.0
+  ], 
+  "sample_index": 167, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(1.0*peppermint)+(1.3*candy_canes)=28.0", 
+   "peppermint+candy_canes=25.0"
+  ], 
+  "iIndex": 3379, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 1.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 1.3, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 28.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 25.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Mary began walking home from school , heading south at a rate of 4 miles per hour . Sharon left school at the same time heading north at 6 miles per hour . How long will it take for them to be 3 miles apart ?", 
+  "template_index": 5, 
+  "lSolutions": [
+   0.3
+  ], 
+  "sample_index": 168, 
+  "Template": [
+   "a * m + b * m = c"
+  ], 
+  "lEquations": [
+   "(4.0*hours)+(6.0*hours)=3.0"
+  ], 
+  "iIndex": 5892, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 4.0, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 6.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 3.0, 
+    "TokenId": 9
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A mechanic charged 45 dollars an hour , plus 225 dollars for the parts . If the total bill was 450 dollars , how man hours did the job take ?", 
+  "template_index": 17, 
+  "lSolutions": [
+   5.0
+  ], 
+  "sample_index": 169, 
+  "Template": [
+   "a * m = b - c"
+  ], 
+  "lEquations": [
+   "(45.0*hours)+225.0=450.0"
+  ], 
+  "iIndex": 5706, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 45.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 450.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 225.0, 
+    "TokenId": 9
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The difference between 3 times a number and 1 is the same as twice a number . Find the number .", 
+  "template_index": 16, 
+  "lSolutions": [
+   1.0
+  ], 
+  "sample_index": 170, 
+  "Template": [
+   "a * m - b * m = c"
+  ], 
+  "lEquations": [
+   "(3.0*number)-1.0=2.0*number"
+  ], 
+  "iIndex": 5184, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 3.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 1.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 13
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The school is selling tickets to a performance . They have adult and child tickets . Each adult ticket is 5 dollars and each child ticket is 3 dollars . By the end of the week , there was 178 dollars in sales from 42 tickets sold . How many adult tickets were sold ? How many child tickets ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   26.0, 
+   16.0
+  ], 
+  "sample_index": 171, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(5.0*adult)+(3.0*child)=178.0", 
+   "adult+child=42.0"
+  ], 
+  "iIndex": 7606, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 5.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 3.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 3, 
+    "Value": 178.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 3, 
+    "Value": 42.0, 
+    "TokenId": 14
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Honda day shift produced 4 times as much as second shift . The total production for the month was 5,500 cars . How many did the day shift produce ? How many did the second shift produce ?", 
+  "template_index": 6, 
+  "lSolutions": [
+   4400.0, 
+   1100.0
+  ], 
+  "sample_index": 172, 
+  "Template": [
+   "m + n = a", 
+   "n - b * m = 0"
+  ], 
+  "lEquations": [
+   "day_shift+second_shift=5500.0", 
+   "day_shift=4.0*second_shift"
+  ], 
+  "iIndex": 5844, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 5500.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 4.0, 
+    "TokenId": 4
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Latoya purchased a prepaid phone card for 30 dollars . Long distance calls cost 16 cents a minute using this card . Latoya used her card only once to make a long distance call . If the remaining credit on her card is 26.48 dollars , how many minutes did her call last ?", 
+  "template_index": 13, 
+  "lSolutions": [
+   22.0
+  ], 
+  "sample_index": 173, 
+  "Template": [
+   "0.01 * a * m = b - c"
+  ], 
+  "lEquations": [
+   "16*.01*minutes=30.0-26.48"
+  ], 
+  "iIndex": 2617, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 16.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 30.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 3, 
+    "Value": 26.48, 
+    "TokenId": 8
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Sara and Jim both decided to save some money each week . Sara has already saved 4100 dollars , and she plans to save 10 dollars a week . Jim plans to save 15 dollars a week . In how many weeks will Jim and Sara have saved the same amount ?", 
+  "template_index": 16, 
+  "lSolutions": [
+   820.0
+  ], 
+  "sample_index": 174, 
+  "Template": [
+   "a * m - b * m = c"
+  ], 
+  "lEquations": [
+   "4100.0+(10.0*weeks)=15.0*weeks"
+  ], 
+  "iIndex": 5925, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 15.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 10.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 4100.0, 
+    "TokenId": 4
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A grocer bought 12 bushels of Baldwin and McInotosh apples . Baldwins costs 95 cents a bushel , but McIntosh cost only 90 cents a bushel . If he paid 11.00 dollars for the lot , how many bushels of Baldwins did he get ? How many bushels of McIntosh ?", 
+  "template_index": 1, 
+  "lSolutions": [
+   4.0, 
+   8.0
+  ], 
+  "sample_index": 175, 
+  "Template": [
+   "0.01 * a * m + 0.01 * b * n = c", 
+   "n + m = d"
+  ], 
+  "lEquations": [
+   "(95*.01*baldwin)+(90*.01*mcinotosh)=11.0", 
+   "baldwin+mcinotosh=12.0"
+  ], 
+  "iIndex": 443, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 95.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 90.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 11.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 12.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Tim and Judy mix two kinds of feed for pedigreed dogs . They wish to make 35 pounds of feed worth 0.36 dollars per pound by mixing one kind worth 0.18 dollars per pound with another worth 0.53 dollars per pound . How many pounds of the cheaper kind should they use in the mix ?", 
+  "template_index": 7, 
+  "lSolutions": [
+   17.0, 
+   18.0
+  ], 
+  "sample_index": 176, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "(0.18*cheaper_feed)+(0.53*expensive_feed)=35.0*0.36", 
+   "cheaper_feed+expensive_feed=35.0"
+  ], 
+  "iIndex": 6354, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 0.18, 
+    "TokenId": 18
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 0.53, 
+    "TokenId": 25
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 35.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 0.36, 
+    "TokenId": 9
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The second of two numbers is 4 more than the first . The sum is 56 . Find the first and second numbers .", 
+  "template_index": 11, 
+  "lSolutions": [
+   26.0, 
+   30.0
+  ], 
+  "sample_index": 177, 
+  "Template": [
+   "m + n = a", 
+   "m - n = b"
+  ], 
+  "lEquations": [
+   "4.0+first=second", 
+   "second+first=56.0"
+  ], 
+  "iIndex": 179, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 56.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 4.0, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "About 4.9 million households had one brand of personal computers in 2001 . The use of these computers grew at an average rate of 0.275 million households a year . In 2001 , about 2.5 million households used another type of computer . The use of these computers grew at an average rate of 0.7 million households a year . How long will it take for the two types of computers to be in the same number of households ?", 
+  "template_index": 12, 
+  "lSolutions": [
+   5.647
+  ], 
+  "sample_index": 178, 
+  "Template": [
+   "a * m - b * m = c - d"
+  ], 
+  "lEquations": [
+   "4900000+(275000*years)=2500000+(700000*years)"
+  ], 
+  "iIndex": 2121, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 275000.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 3, 
+    "Value": 700000.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 2500000.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 4900000.0, 
+    "TokenId": 1
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A motorist drove 2 hours at one speed and then for 3 hours at another speed . He covered a distance of 252 kilometers . If he had travelled 4 hours at the first speed and 1 hour at the second speed , he would have covered 244 kilometers . Find two speeds ?", 
+  "template_index": 0, 
+  "lSolutions": [
+   48.0, 
+   52.0
+  ], 
+  "sample_index": 179, 
+  "Template": [
+   "a * m + b * n = c", 
+   "d * m + e * n = f"
+  ], 
+  "lEquations": [
+   "(2.0*first_speed)+(3.0*second_speed)=252.0", 
+   "(4.0*first_speed)+(1.0*second_speed)=244.0"
+  ], 
+  "iIndex": 1658, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 1.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 4.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 244.0, 
+    "TokenId": 22
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 3.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "e", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "f", 
+    "SentenceId": 1, 
+    "Value": 252.0, 
+    "TokenId": 5
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A dealer has some hard candy worth 2 dollars a pound and some worth 3 dollars a pound . He wishes to make a mixture of 80 pounds that he can sell for 2.20 dollars per pound . How many pounds of each kind should he use ?", 
+  "template_index": 7, 
+  "lSolutions": [
+   64.0, 
+   16.0
+  ], 
+  "sample_index": 180, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "(2.0*two_dollars)+(3.0*three_dollars)=80.0*2.2", 
+   "two_dollars+three_dollars=80.0"
+  ], 
+  "iIndex": 6176, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 3.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 80.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 2.2, 
+    "TokenId": 14
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A carpenter gave an estimate of 980 dollars to build a cover over a patio . His hourly rate is 28 dollars and he expects to need 560 dollars in materials . How many hours will the job take ?", 
+  "template_index": 17, 
+  "lSolutions": [
+   15.0
+  ], 
+  "sample_index": 181, 
+  "Template": [
+   "a * m = b - c"
+  ], 
+  "lEquations": [
+   "(28.0*hours)+560.0=980.0"
+  ], 
+  "iIndex": 6341, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 28.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 980.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 560.0, 
+    "TokenId": 11
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "One year Walt invested 12,000 dollars . He invested part of the money at 7 % and the rest at 9 % . He made a total of 970 dollars in interest . How much was invested at 7 % ?", 
+  "template_index": 1, 
+  "lSolutions": [
+   5500.0, 
+   6500.0
+  ], 
+  "sample_index": 182, 
+  "Template": [
+   "0.01 * a * m + 0.01 * b * n = c", 
+   "n + m = d"
+  ], 
+  "lEquations": [
+   "((7.0*0.01)*low_investment)+((9.0*0.01)*high_investment)=970.0", 
+   "low_investment+high_investment=12000.0"
+  ], 
+  "iIndex": 2802, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 7.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 9.0, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 970.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 12000.0, 
+    "TokenId": 4
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     3, 
+     5, 
+     7
+    ], 
+    [
+     1, 
+     7, 
+     7
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "Snookers Lumber can convert logs into either lumber or plywood . In a given day , the mill turns out three times as many units of plywood as lumber . It makes a profit of 30 dollars on a unit of lumber and 50 dollars on a unit of plywood . Snookers lumber must produce and sell ___ units of lumber and ___ units of plywood to make a profit of 18360 dollars ?", 
+  "template_index": 18, 
+  "lSolutions": [
+   102.0, 
+   306.0
+  ], 
+  "sample_index": 183, 
+  "Template": [
+   "a * m + b * n = c", 
+   "d * m - n = 0"
+  ], 
+  "lEquations": [
+   "(30.0*lumber)+(50.0*plywood)=18360.0", 
+   "plywood=3.0*lumber"
+  ], 
+  "iIndex": 2189, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 30.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 50.0, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 3, 
+    "Value": 18360.0, 
+    "TokenId": 20
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 9
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The length of a rectangular field is 24 meters . This is 3 meters less than twice the width . Find the width .", 
+  "template_index": 20, 
+  "lSolutions": [
+   13.5
+  ], 
+  "sample_index": 184, 
+  "Template": [
+   "a * m = b + c"
+  ], 
+  "lEquations": [
+   "(2.0*width)-3.0=24.0"
+  ], 
+  "iIndex": 1366, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 24.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The Lakers scored a total of 80 points in a basketball game against the Bulls . The Lakers made a total of 37 baskets , consisting of 2 point baskets and 3 point baskets . How many 2 point baskets did the Lakers make ? How many 3 point baskets did the Lakers make ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   31.0, 
+   6.0
+  ], 
+  "sample_index": 185, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(2.0*two)+(3.0*three)=80.0", 
+   "two+three=37.0"
+  ], 
+  "iIndex": 5014, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 15
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 80.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 37.0, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     3, 
+     2, 
+     3
+    ], 
+    [
+     1, 
+     15, 
+     3
+    ]
+   ], 
+   [
+    [
+     2, 
+     2, 
+     2
+    ], 
+    [
+     1, 
+     11, 
+     2
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "The Kings won two less than three times as many games as they lost . They played 82 games . How many wins and losses did the team have ?", 
+  "template_index": 9, 
+  "lSolutions": [
+   61.0, 
+   21.0
+  ], 
+  "sample_index": 186, 
+  "Template": [
+   "a * m - n = b", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "won+lost=82.0", 
+   "won=(3.0*lost)-2.0"
+  ], 
+  "iIndex": 158, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 3.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 82.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Find a number such that 1 more than 0.6667 the number is 0.75 the number .", 
+  "template_index": 16, 
+  "lSolutions": [
+   12.0048
+  ], 
+  "sample_index": 187, 
+  "Template": [
+   "a * m - b * m = c"
+  ], 
+  "lEquations": [
+   "1.0+0.6667*number=0.75*number"
+  ], 
+  "iIndex": 1194, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 0.75, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 0.6667, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 1.0, 
+    "TokenId": 5
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Adult tickets for a play cost 11 dollars and the child tickets cost 10 dollars . If there were 23 people at a performance and the theater collected 246 dollars from tickets sales , how many children attended the play ? How many adults attended the play ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   7.0, 
+   16.0
+  ], 
+  "sample_index": 188, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(10.0*children)+(11.0*adult)=246.0", 
+   "children+adult=23.0"
+  ], 
+  "iIndex": 1106, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 11.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 10.0, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 246.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 23.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A chemistry lab can be used by 38 students at one time . The lab has 16 work-stations . Some set up for 2 students and the others set up for 3 students . How many work-stations accommodate 2 students ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   10.0, 
+   6.0
+  ], 
+  "sample_index": 189, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(2.0*two_students)+(3.0*three_students)=38.0", 
+   "two_students+three_students=16.0"
+  ], 
+  "iIndex": 298, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 2.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 3.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 38.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 16.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     3, 
+     4, 
+     2
+    ], 
+    [
+     2, 
+     4, 
+     2
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "In a family there are two cars . In a given week , the first car gets an average of 25 miles per gallon , and the second car gets 40 miles per gallon . The two cars combined drives a total of 1825 miles in that one week , for a total gas consumption of 55 gallons . How many gallons were consumed by the 25 mile per gallon car and how many gallons were consumed by the 40 mile per gallon car that week ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   25.0, 
+   30.0
+  ], 
+  "sample_index": 190, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(25.0*twentyfive_car)+(40.0*forty_car)=1825.0", 
+   "twentyfive_car+forty_car=55.0"
+  ], 
+  "iIndex": 2040, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 25.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 40.0, 
+    "TokenId": 22
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 1825.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 55.0, 
+    "TokenId": 21
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     3, 
+     20, 
+     40
+    ], 
+    [
+     1, 
+     22, 
+     40
+    ]
+   ], 
+   [
+    [
+     3, 
+     7, 
+     25
+    ], 
+    [
+     1, 
+     12, 
+     25
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "The attendance at a school concert was 578 people . Admission cost 2.00 dollars for adults and 1.50 dollars for children . The receipts were 985.00 dollars . How many adults and how many children attended the concert ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   236.0, 
+   342.0
+  ], 
+  "sample_index": 191, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(2.0*adults)+(1.5*children)=985.0", 
+   "adults+children=578.0"
+  ], 
+  "iIndex": 2529, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 1.5, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 985.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 578.0, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "On a college entrance exam , each correct answer adds 1 point to your raw score , each unanswered question adds nothing and each incorrect answer subtracts 0.25 point . You answer 82 out of 85 questions for a raw score of 67 . How many questions did you answer correctly ?", 
+  "template_index": 14, 
+  "lSolutions": [
+   70.0, 
+   12.0
+  ], 
+  "sample_index": 192, 
+  "Template": [
+   "a * m - b * n = c", 
+   "n + m = d"
+  ], 
+  "lEquations": [
+   "(1.0*correct)-(0.25*incorrect)=67.0", 
+   "correct+incorrect=82.0"
+  ], 
+  "iIndex": 667, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 1.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 0.25, 
+    "TokenId": 27
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 67.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 82.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The difference between 0.75 of a line and 0.4 of the same line is 28 centimeters . Find the length of the line .", 
+  "template_index": 16, 
+  "lSolutions": [
+   80.0
+  ], 
+  "sample_index": 193, 
+  "Template": [
+   "a * m - b * m = c"
+  ], 
+  "lEquations": [
+   "(0.75*length_of_line)-(0.4*length_of_line)=28.0"
+  ], 
+  "iIndex": 6804, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 0.75, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 0.4, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 28.0, 
+    "TokenId": 14
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The sum of two numbers is 85 . The difference of twice of one of them and the other one is 5 . Find both numbers .", 
+  "template_index": 9, 
+  "lSolutions": [
+   30.0, 
+   55.0
+  ], 
+  "sample_index": 194, 
+  "Template": [
+   "a * m - n = b", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "(2.0*number)-other_number=5.0", 
+   "number+other_number=85.0"
+  ], 
+  "iIndex": 7126, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 5.0, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 85.0, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Soft drinks are on sale at the grocery store for 2.99 dollars for a 12 pack . How much would each can of soft drink cost if purchased individually , in dollars ?", 
+  "template_index": 10, 
+  "lSolutions": [
+   0.2491
+  ], 
+  "sample_index": 195, 
+  "Template": [
+   "a * m = b"
+  ], 
+  "lEquations": [
+   "individual_cost=2.99/12.0"
+  ], 
+  "iIndex": 1692, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 12.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 2.99, 
+    "TokenId": 10
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The maximum load that a horizontal beam can carry is directly proportional to its width . If a beam 1.5 inches wide can support a load of 250 pounds , find the load that a beam of the same type can support if its width is 3.5 inches ?", 
+  "template_index": 22, 
+  "lSolutions": [
+   583.3333, 
+   166.66666
+  ], 
+  "sample_index": 196, 
+  "Template": [
+   "a * m = b", 
+   "c * m - n = 0"
+  ], 
+  "lEquations": [
+   "1.5*load_per_width=250.0", 
+   "3.5*load_per_width=load"
+  ], 
+  "iIndex": 5073, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 1.5, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 250.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 3.5, 
+    "TokenId": 30
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Steve invests in a circus production . The coast includes an overhead of 81,000 dollars , plus production costs of 7,000 dollars per performance . A sold-out performance brings in 16,000 dollars , Determine the number of sold-out performances , x , needed to break even .", 
+  "template_index": 16, 
+  "lSolutions": [
+   9.0
+  ], 
+  "sample_index": 197, 
+  "Template": [
+   "a * m - b * m = c"
+  ], 
+  "lEquations": [
+   "81000.0+(7000.0*x)=16000.0*x"
+  ], 
+  "iIndex": 5286, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 16000.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 7000.0, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 81000.0, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "If 3.5 pounds of ground beef costs 9.77 dollars , how much does 5.6 pounds of ground beef cost ?", 
+  "template_index": 22, 
+  "lSolutions": [
+   15.632, 
+   2.7914
+  ], 
+  "sample_index": 198, 
+  "Template": [
+   "a * m = b", 
+   "c * m - n = 0"
+  ], 
+  "lEquations": [
+   "3.5*price_pound=9.77", 
+   "5.6*price_pound=cost"
+  ], 
+  "iIndex": 6953, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 3.5, 
+    "TokenId": 1
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 9.77, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 5.6, 
+    "TokenId": 13
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The value of a sport utility vehicle this year is 16,000 dollars , which is 0.8 of what its value was last year . Find the value of the vehicle last year .", 
+  "template_index": 10, 
+  "lSolutions": [
+   20000.0
+  ], 
+  "sample_index": 199, 
+  "Template": [
+   "a * m = b"
+  ], 
+  "lEquations": [
+   "16000.0/0.8=last"
+  ], 
+  "iIndex": 5077, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 0.8, 
+    "TokenId": 15
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 16000.0, 
+    "TokenId": 10
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The total attendance at a rally was 750 people . Tickets bought before the rally were 2 dollars each , and tickets bought at the door were 2.75 dollars each . How many tickets were bought at the door if the total receipts were 1706.25 dollars ? How many tickets were bought before the rally ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   275.0, 
+   475.0
+  ], 
+  "sample_index": 200, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(2.75*door)+(2.0*before)=1706.25", 
+   "door+before=750.0"
+  ], 
+  "iIndex": 266, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 2.75, 
+    "TokenId": 17
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 1706.25, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 750.0, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "At a hotel one night , 260 rooms were booked . Some were single rooms and some were double rooms . The single rooms cost 35 dollars each and the double rooms cost 60 dollars . The hotel made 14000 dollars that night . How many single rooms and double rooms were booked ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   64.0, 
+   196.0
+  ], 
+  "sample_index": 201, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(35.0*single)+(60.0*double)=14000.0", 
+   "single+double=260.0"
+  ], 
+  "iIndex": 5872, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 35.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 60.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 3, 
+    "Value": 14000.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 260.0, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Kay spends 250 minutes per week exercising . Her ratio of time spent on aerobics to time spent on weight training is 3 to 2 . How many minutes per week does she spend on aerobics ? How many minutes per week does she spend on weight training ?", 
+  "template_index": 4, 
+  "lSolutions": [
+   150.0, 
+   100.0
+  ], 
+  "sample_index": 202, 
+  "Template": [
+   "a * m - b * n = 0", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "2.0*aerobics=3.0*weight_training", 
+   "aerobics+weight_training=250.0"
+  ], 
+  "iIndex": 5454, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 16
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 250.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A freight train and an express train leave towns 390 kilometers apart , traveling toward one another . The freight train travels 30 kilometers per hour slower than the express train . They pass one another 3 hours later . How fast is the freight train , in miles per hour ? How fast is the express train ?", 
+  "template_index": 15, 
+  "lSolutions": [
+   50.0, 
+   80.0
+  ], 
+  "sample_index": 203, 
+  "Template": [
+   "a * m + a * n = b", 
+   "n - m = c"
+  ], 
+  "lEquations": [
+   "(3.0*freight)+(3.0*express)=390.0", 
+   "freight=express-30.0"
+  ], 
+  "iIndex": 2196, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 3.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 390.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 30.0, 
+    "TokenId": 4
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "An airplane has a total of 387 seats . The number of coach class seats is 2 more than 4 times the number of first-class seats . How many first class and coach class seats are there on the plane ?", 
+  "template_index": 21, 
+  "lSolutions": [
+   77.0, 
+   310.0
+  ], 
+  "sample_index": 204, 
+  "Template": [
+   "m - a * n = b", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "coach_seats+first_seats=387.0", 
+   "coach_seats=(4.0*first_seats)+2.0"
+  ], 
+  "iIndex": 3151, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 4.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 387.0, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A writing workshop enrolls novelists and poets in a ratio of 5 to 3 . There are 24 people at the workshop . How many novelists are there ? How many poets are there ?", 
+  "template_index": 4, 
+  "lSolutions": [
+   15.0, 
+   9.0
+  ], 
+  "sample_index": 205, 
+  "Template": [
+   "a * m - b * n = 0", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "3.0*novelists=5.0*poets", 
+   "novelists+poets=24.0"
+  ], 
+  "iIndex": 2598, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 5.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 3.0, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 24.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "During a 4th of July weekend , 32 vehicles became trapped on the Sunshine Skyway Bridge while it was being repaved . A recent city ordinance decreed that only cars with 4 wheels and trucks with six wheels could be on the bridge at any given time . If there were 148 tires that needed to be replaced to due to damage , how many cars and trucks were involved in the incident ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   22.0, 
+   10.0
+  ], 
+  "sample_index": 206, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(4.0*cars)+(6.0*trucks)=148.0", 
+   "cars+trucks=32.0"
+  ], 
+  "iIndex": 6958, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 4.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 6.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 148.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 32.0, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A woman has 450 dollars invested , part at 2 % and the remainder at 3 % simple interest . If the total annual income is 11 dollars , how much is invested at 2 % , in dollars ? How much is invested at 3 % ?", 
+  "template_index": 1, 
+  "lSolutions": [
+   250.0, 
+   200.0
+  ], 
+  "sample_index": 207, 
+  "Template": [
+   "0.01 * a * m + 0.01 * b * n = c", 
+   "n + m = d"
+  ], 
+  "lEquations": [
+   "((2.0*0.01)*low_interest)+((3.0*0.01)*high_interest)=11.0", 
+   "low_interest+high_interest=450.0"
+  ], 
+  "iIndex": 7053, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 3.0, 
+    "TokenId": 15
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 11.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 450.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     0, 
+     15, 
+     3
+    ], 
+    [
+     2, 
+     5, 
+     3
+    ]
+   ], 
+   [
+    [
+     0, 
+     9, 
+     2
+    ], 
+    [
+     1, 
+     14, 
+     2
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "Apples cost 0.60 dollars per pound and grapes cost 1.00 dollars per pound . Jenny bought 12 pounds of fruit and paid 10.00 dollars . How many pounds of apples did she buy ? How many pounds of grapes ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   5.0, 
+   7.0
+  ], 
+  "sample_index": 208, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(0.6*apples)+(1.0*oranges)=10.0", 
+   "apples+oranges=12.0"
+  ], 
+  "iIndex": 2649, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 1.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 0.6, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 10.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 12.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Your science test is worth 100 points and contains 38 questions . There are two-point and five-point questions on the test . How many two-point questions and five-point questions are on the test ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   30.0, 
+   8.0
+  ], 
+  "sample_index": 209, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(2.0*two_point_questions)+(5.0*five_point_questions)=100.0", 
+   "two_point_questions+five_point_questions=38.0"
+  ], 
+  "iIndex": 6351, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 5.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 100.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 38.0, 
+    "TokenId": 9
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     2, 
+     2, 
+     2
+    ], 
+    [
+     1, 
+     2, 
+     2
+    ]
+   ], 
+   [
+    [
+     1, 
+     4, 
+     5
+    ], 
+    [
+     2, 
+     5, 
+     5
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "Mrs. Naidu bought 155 dollars in groceries . She paid her bill with 5-dollar notes and 20-dollar notes using a total of 13 notes . How many 5-dollar notes were used ? How many 20-dollar notes were used ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   7.0, 
+   6.0
+  ], 
+  "sample_index": 210, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(5.0*five)+(20.0*twenty)=155.0", 
+   "five+twenty=13.0"
+  ], 
+  "iIndex": 7363, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 5.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 20.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 155.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 13.0, 
+    "TokenId": 14
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     3, 
+     2, 
+     20
+    ], 
+    [
+     1, 
+     8, 
+     20
+    ]
+   ], 
+   [
+    [
+     2, 
+     2, 
+     5
+    ], 
+    [
+     1, 
+     5, 
+     5
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "You are selling tickets for a high school play . Student tickets cost 4 dollars and general admission tickets cost 6 dollars . You sell 525 tickets and collect 2876 dollars . How many student tickets and general admission tickets did you sell ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   137.0, 
+   388.0
+  ], 
+  "sample_index": 211, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(4.0*student_ticket)+(6.0*admission_ticket)=2876.0", 
+   "student_ticket+admission_ticket=525.0"
+  ], 
+  "iIndex": 1695, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 4.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 6.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 2876.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 525.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A chemist needs to make 30 ounces of a 25 % alcohol solution by mixing together a 15 % alcohol solution with a 40 % alcohol solution . How many ounces of the 15 % solution should he use ? How many ounces of the 40 % solution ?", 
+  "template_index": 7, 
+  "lSolutions": [
+   18.0, 
+   12.0
+  ], 
+  "sample_index": 212, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "((15.0*0.01)*fifteen_solution)+((40.0*0.01)*forty_solution)=25.0*0.01*30.0", 
+   "fifteen_solution+forty_solution=30.0"
+  ], 
+  "iIndex": 6238, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 15.0, 
+    "TokenId": 17
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 40.0, 
+    "TokenId": 23
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 30.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 25.0, 
+    "TokenId": 9
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     0, 
+     17, 
+     15
+    ], 
+    [
+     1, 
+     5, 
+     15
+    ]
+   ], 
+   [
+    [
+     2, 
+     5, 
+     40
+    ], 
+    [
+     0, 
+     23, 
+     40
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "A grain storage warehouse has a total of 30 bins . Some hold 20 tons of grain each . The rest hold 15 tons each . The capacity of the warehouse is 510 tons . How many 20 ton bins are there ? How many 15 ton bins ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   12.0, 
+   18.0
+  ], 
+  "sample_index": 213, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(20.0*twenty_bins)+(15.0*fifteen_bins)=510.0", 
+   "twenty_bins+fifteen_bins=30.0"
+  ], 
+  "iIndex": 881, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 20.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 15.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 3, 
+    "Value": 510.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 30.0, 
+    "TokenId": 8
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     1, 
+     2, 
+     20
+    ], 
+    [
+     4, 
+     2, 
+     20
+    ]
+   ], 
+   [
+    [
+     2, 
+     3, 
+     15
+    ], 
+    [
+     5, 
+     2, 
+     15
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "There are 22 chickens and cows on a farm . Together they have 60 legs . How many chickens are there ? How many cows ?", 
+  "template_index": 19, 
+  "lSolutions": [
+   14.0, 
+   8.0
+  ], 
+  "sample_index": 214, 
+  "Template": [
+   "m + n = a", 
+   "2 * m + 4 * n = b"
+  ], 
+  "lEquations": [
+   "(2.0*chickens)+(4.0*cows)=60.0", 
+   "chickens+cows=22.0"
+  ], 
+  "iIndex": 6322, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 22.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 60.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Maria added a white vinegar solution of acetic acid in water . There are 2 strengths of white vinegar , a 5 % solution and a 10 % solution . How many milliliters of the 5 % solution and the 10 % solution must she mix to make 50 milliliters of a 9 % vinegar solution ?", 
+  "template_index": 7, 
+  "lSolutions": [
+   10.0, 
+   40.0
+  ], 
+  "sample_index": 215, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "((5.0*0.01)*five_solution)+((10.0*0.01)*ten_solution)=9.0*0.01*50.0", 
+   "five_solution+ten_solution=50.0"
+  ], 
+  "iIndex": 3159, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 5.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 10.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 50.0, 
+    "TokenId": 18
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 9.0, 
+    "TokenId": 22
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     2, 
+     5, 
+     5
+    ], 
+    [
+     1, 
+     9, 
+     5
+    ]
+   ], 
+   [
+    [
+     2, 
+     10, 
+     10
+    ], 
+    [
+     1, 
+     14, 
+     10
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "You are running a concession stand . You are selling hot dogs and soda . Each hot dog costs 1.50 dollars and each soda costs 0.50 dollars . You made a total of 78.50 dollars . You sold a total of 87 hot dogs and sodas combined . You must report the number of hot dogs and sodas sold . How many hot dogs and sodas were sold ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   35.0, 
+   52.0
+  ], 
+  "sample_index": 216, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(1.5*hot_dogs)+(0.5*sodas)=78.5", 
+   "hot_dogs+sodas=87.0"
+  ], 
+  "iIndex": 6373, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 1.5, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 0.5, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 3, 
+    "Value": 78.5, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 4, 
+    "Value": 87.0, 
+    "TokenId": 5
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Your teacher is giving you a test worth 100 points containing 40 questions . There are 2-point and 4-point questions on the test . How many questions are worth two points ? How many questions are worth four points ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   30.0, 
+   10.0
+  ], 
+  "sample_index": 217, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(2.0*two_point)+(4.0*four_point)=100.0", 
+   "two_point+four_point=40.0"
+  ], 
+  "iIndex": 17, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 4.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 100.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 40.0, 
+    "TokenId": 11
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     1, 
+     2, 
+     2
+    ], 
+    [
+     2, 
+     5, 
+     2
+    ]
+   ], 
+   [
+    [
+     3, 
+     5, 
+     4
+    ], 
+    [
+     1, 
+     4, 
+     4
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "You have 160 dollars and save 7 dollars per week . Your friend has 210 dollars and saves 5 dollars per week . After how many weeks will each of you have saved the same amount of money ?", 
+  "template_index": 12, 
+  "lSolutions": [
+   25.0
+  ], 
+  "sample_index": 218, 
+  "Template": [
+   "a * m - b * m = c - d"
+  ], 
+  "lEquations": [
+   "160.0+(7.0*week)=210.0+(5.0*week)"
+  ], 
+  "iIndex": 2089, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 7.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 5.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 210.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 160.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "An auditorium has 500 balcony seats and 1800 main-level seats . If tickets for balcony seats will cost 15 dollars less than tickets for main-level seats , what should the prices be for the main-level seats and prices for the balcony seats , so that the total revenue from a sellout performance will be 84,500 ?", 
+  "template_index": 8, 
+  "lSolutions": [
+   40.0, 
+   25.0
+  ], 
+  "sample_index": 219, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m - n = d"
+  ], 
+  "lEquations": [
+   "(500.0*balcony)+(1800.0*main)=84500.0", 
+   "balcony=main-15.0"
+  ], 
+  "iIndex": 6999, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 1800.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 500.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 84500.0, 
+    "TokenId": 43
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 15.0, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "If your gross pay is 450 dollars , while your net pay is 315 dollars , how much do you pay in taxes ? Assume that all tax dollars are not included in net pay .", 
+  "template_index": 23, 
+  "lSolutions": [
+   135.0
+  ], 
+  "sample_index": 220, 
+  "Template": [
+   "m = a - b"
+  ], 
+  "lEquations": [
+   "taxes=450.0-315.0"
+  ], 
+  "iIndex": 6478, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 450.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 315.0, 
+    "TokenId": 13
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Two rainstorms occurred in one week in a certain area . In the first storm 30 milliliters of rain fell per hour , and in the second storm 15 milliliters of rain fell per hour . Rain fell that week for a total of 45 hours , for a total rainfall of 975 milliliters . How many hours was the first storm and the second storm .", 
+  "template_index": 2, 
+  "lSolutions": [
+   20.0, 
+   25.0
+  ], 
+  "sample_index": 221, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(30.0*rainfall_thirty)+(15.0*rainfall_fifteen)=975.0", 
+   "rainfall_thirty+rainfall_fifteen=45.0"
+  ], 
+  "iIndex": 2354, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 30.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 15.0, 
+    "TokenId": 17
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 975.0, 
+    "TokenId": 16
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 45.0, 
+    "TokenId": 8
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "There are some 2-dollar coins and some 5-dollar coins . There are 40 coins , which give a total amount of 125 dollars . How many 2-dollar coins are there ? How many 5-dollar coins are there ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   25.0, 
+   15.0
+  ], 
+  "sample_index": 222, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(2.0*two)+(5.0*five)=125.0", 
+   "two+five=40.0"
+  ], 
+  "iIndex": 7135, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 5.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 125.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 40.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     3, 
+     2, 
+     5
+    ], 
+    [
+     0, 
+     7, 
+     5
+    ]
+   ], 
+   [
+    [
+     2, 
+     2, 
+     2
+    ], 
+    [
+     0, 
+     3, 
+     2
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "A manufacturer produces two models of the same toy , Model A and Model B. Model A takes 4 hours to produce and costs 8 dollars each . Model B takes 3 hours to produce and costs 7 dollars each . If the manufacturer allots a total of 5800 hours and 12,600 dollars for production each week , how many of each model will be produced ?", 
+  "template_index": 0, 
+  "lSolutions": [
+   700.0, 
+   1000.0
+  ], 
+  "sample_index": 223, 
+  "Template": [
+   "a * m + b * n = c", 
+   "d * m + e * n = f"
+  ], 
+  "lEquations": [
+   "(4.0*model_a)+(3.0*model_b)=5800.0", 
+   "(8.0*model_a)+(7.0*model_b)=12600.0"
+  ], 
+  "iIndex": 2120, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 4.0, 
+    "TokenId": 18
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 5800.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 8.0, 
+    "TokenId": 24
+   }, 
+   {
+    "coeff": "e", 
+    "SentenceId": 1, 
+    "Value": 7.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "f", 
+    "SentenceId": 2, 
+    "Value": 12600.0, 
+    "TokenId": 10
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Two rainstorms occurred in one week in a certain area . The first storm lasted 20 hours , and the second storm lasted 40 hours , for a total 1800 milliliters of rain . What was the rate of rainfall in milliliters per hour for the first and second storms if the sum of the two rates was 55 milliliters per hour ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   20.0, 
+   35.0
+  ], 
+  "sample_index": 224, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(20.0*first)+(40.0*second)=1800.0", 
+   "first+second=55.0"
+  ], 
+  "iIndex": 474, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 20.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 40.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 1800.0, 
+    "TokenId": 18
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 55.0, 
+    "TokenId": 24
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A 20-foot board is cut into 2 pieces . Twice the length of the shorter piece is 4 feet more than the length of the longer piece . Find the length of the shorter piece .", 
+  "template_index": 9, 
+  "lSolutions": [
+   8.0, 
+   12.0
+  ], 
+  "sample_index": 225, 
+  "Template": [
+   "a * m - n = b", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "2.0*shorter=4.0+longer", 
+   "shorter+longer=20.0"
+  ], 
+  "iIndex": 6952, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 0
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 4.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 20.0, 
+    "TokenId": 1
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A grain-storage warehouse has a total of 30 bins . Some hold 20 tons of grain each . The rest hold 15 tons each . How many of each type of bin are there if the capacity of the warehouse is 510 tons ? How many 20 ton bins ? How many 15 ton bins ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   12.0, 
+   18.0
+  ], 
+  "sample_index": 226, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(20.0*twenty_ton)+(15.0*fifteen_ton)=510.0", 
+   "twenty_ton+fifteen_ton=30.0"
+  ], 
+  "iIndex": 878, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 20.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 15.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 3, 
+    "Value": 510.0, 
+    "TokenId": 16
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 30.0, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     1, 
+     2, 
+     20
+    ], 
+    [
+     4, 
+     2, 
+     20
+    ]
+   ], 
+   [
+    [
+     2, 
+     3, 
+     15
+    ], 
+    [
+     5, 
+     2, 
+     15
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "A theater sells children 's tickets for 4 dollars and adult tickets for 7 dollars . One night 575 tickets worth 3575 dollars were sold . How many adult tickets were sold ? How many children 's tickets ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   425.0, 
+   150.0
+  ], 
+  "sample_index": 227, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(7.0*adult_tickets)+(4.0*children_tickets)=3575.0", 
+   "adult_tickets+children_tickets=575.0"
+  ], 
+  "iIndex": 44, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 4.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 7.0, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 3575.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 575.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The sum of 2 numbers is 15 . 3 times one of the numbers is 11 less than 5 times the other . What is the smaller number ? What is the larger number ?", 
+  "template_index": 14, 
+  "lSolutions": [
+   7.0, 
+   8.0
+  ], 
+  "sample_index": 228, 
+  "Template": [
+   "a * m - b * n = c", 
+   "n + m = d"
+  ], 
+  "lEquations": [
+   "3.0*number_one=(5.0*number_two)-11.0", 
+   "number_one+number_two=15.0"
+  ], 
+  "iIndex": 5783, 
+  "Alignment": [
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 0
+   }, 
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 5.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 11.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 15.0, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Mrs.Martin bought 3 cups of coffee and 2 bagels and spent 12.75 dollars . Mr.Martin bought 2 cups of coffee and 5 bagels and spent 14.00 dollars . Find the cost of one cup of coffee and the cost of one bagel .", 
+  "template_index": 0, 
+  "lSolutions": [
+   3.25, 
+   1.5
+  ], 
+  "sample_index": 229, 
+  "Template": [
+   "a * m + b * n = c", 
+   "d * m + e * n = f"
+  ], 
+  "lEquations": [
+   "(3.0*coffee)+(2.0*bagel)=12.75", 
+   "(2.0*coffee)+(5.0*bagel)=14.0"
+  ], 
+  "iIndex": 6254, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 3.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 12.75, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "e", 
+    "SentenceId": 1, 
+    "Value": 5.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "f", 
+    "SentenceId": 1, 
+    "Value": 14.0, 
+    "TokenId": 11
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Find two numbers whose sum is 14 if one number is 3 times as large as the other number .", 
+  "template_index": 6, 
+  "lSolutions": [
+   3.5, 
+   10.5
+  ], 
+  "sample_index": 230, 
+  "Template": [
+   "m + n = a", 
+   "n - b * m = 0"
+  ], 
+  "lEquations": [
+   "first_number+second_number=14.0", 
+   "first_number=3.0*second_number"
+  ], 
+  "iIndex": 3648, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 14.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 3.0, 
+    "TokenId": 11
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "If the product of 5 and a number is increased by 4 , the result is 19 . What is the number ?", 
+  "template_index": 17, 
+  "lSolutions": [
+   3.0
+  ], 
+  "sample_index": 231, 
+  "Template": [
+   "a * m = b - c"
+  ], 
+  "lEquations": [
+   "(5.0*number)+4.0=19.0"
+  ], 
+  "iIndex": 154, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 5.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 19.0, 
+    "TokenId": 16
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 4.0, 
+    "TokenId": 11
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "In 1 day , a store sold 1.6 as many DVDs as CDs . The total number of DVDs and CDs sold that day was 273 . How many DVDs were sold ?", 
+  "template_index": 6, 
+  "lSolutions": [
+   168.0, 
+   105.0
+  ], 
+  "sample_index": 232, 
+  "Template": [
+   "m + n = a", 
+   "n - b * m = 0"
+  ], 
+  "lEquations": [
+   "dvds+cds=273.0", 
+   "dvds=1.6*cds"
+  ], 
+  "iIndex": 5018, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 273.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 1.6, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "They charged 7 dollars for adults and 5 dollars for children . 127 adults and children attended , and 839 dollars was made from ticket sales . How many children and adults went to the film premiere ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   25.0, 
+   102.0
+  ], 
+  "sample_index": 233, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(5.0*children)+(7.0*adults)=839.0", 
+   "children+adults=127.0"
+  ], 
+  "iIndex": 7134, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 7.0, 
+    "TokenId": 2
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 5.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 839.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 127.0, 
+    "TokenId": 0
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Bob invested 6100 dollars in 2 funds , which pay 7 % and 6 % simple interest respectively . The combined interest he earned for both funds was 405 dollars for one year . How many dollars was invested at 7 % ? How much was invested at 6 % ?", 
+  "template_index": 1, 
+  "lSolutions": [
+   3900.0, 
+   2200.0
+  ], 
+  "sample_index": 234, 
+  "Template": [
+   "0.01 * a * m + 0.01 * b * n = c", 
+   "n + m = d"
+  ], 
+  "lEquations": [
+   "(7*0.01*fundone)+(6*0.01*fundtwo)=405.0", 
+   "fundone+fundtwo=6100.0"
+  ], 
+  "iIndex": 1075, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 7.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 6.0, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 405.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 6100.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     3, 
+     5, 
+     6
+    ], 
+    [
+     0, 
+     13, 
+     6
+    ]
+   ], 
+   [
+    [
+     2, 
+     6, 
+     7
+    ], 
+    [
+     0, 
+     10, 
+     7
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "A bottle of wine with a cork cost 2.10 dollars . A bottle of wine without a cork costs 2.00 dollars more than the cork . What is the price of the cork ?", 
+  "template_index": 11, 
+  "lSolutions": [
+   0.05, 
+   2.05
+  ], 
+  "sample_index": 235, 
+  "Template": [
+   "m + n = a", 
+   "m - n = b"
+  ], 
+  "lEquations": [
+   "wine+cork=2.1", 
+   "wine=2.0+cork"
+  ], 
+  "iIndex": 1089, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 2.1, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 8
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "For a matinee , a movie theater charges 4.50 dollars for children and 6.75 dollars for adults . At today 's matinee , there are 20 more children than adults and the total receipts are 405 dollars . How many children are at today 's matinee ?", 
+  "template_index": 8, 
+  "lSolutions": [
+   48.0, 
+   28.0
+  ], 
+  "sample_index": 236, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m - n = d"
+  ], 
+  "lEquations": [
+   "(4.5*children)+(6.75*adults)=405.0", 
+   "children=20.0+adults"
+  ], 
+  "iIndex": 6882, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 4.5, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 6.75, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 405.0, 
+    "TokenId": 17
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 20.0, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Three times a number is the same as the difference of twice the number and seven . Find the number .", 
+  "template_index": 16, 
+  "lSolutions": [
+   -7.0
+  ], 
+  "sample_index": 237, 
+  "Template": [
+   "a * m - b * m = c"
+  ], 
+  "lEquations": [
+   "3.0*number=(2.0*number)-7.0"
+  ], 
+  "iIndex": 3543, 
+  "Alignment": [
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 3.0, 
+    "TokenId": 0
+   }, 
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 7.0, 
+    "TokenId": 15
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The grocer has peanuts for 3.75 dollars a pound and walnuts for 2.75 dollars a pound . How many pounds of peanuts and walnuts must we mix to get 40 pounds of mixture to sell for 3.00 dollars per pound .", 
+  "template_index": 7, 
+  "lSolutions": [
+   10.0, 
+   30.0
+  ], 
+  "sample_index": 238, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "(3.75*peanuts)+(2.75*walnuts)=3.0*40.0", 
+   "peanuts+walnuts=40.0"
+  ], 
+  "iIndex": 343, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 3.75, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 2.75, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 40.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 19
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The total cost of a shirt and a sweater is 80.34 dollars . If the price of the shirt is 7.43 dollars less than the sweater , what was the price of the shirt , in dollars ?", 
+  "template_index": 11, 
+  "lSolutions": [
+   36.455, 
+   43.885
+  ], 
+  "sample_index": 239, 
+  "Template": [
+   "m + n = a", 
+   "m - n = b"
+  ], 
+  "lEquations": [
+   "shirt+sweater=80.34", 
+   "shirt=sweater-7.43"
+  ], 
+  "iIndex": 5870, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 80.34, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 7.43, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Wal-Mart sells thermometers for 2 dollars and hot-water bottles for 6 dollars . In December , Wal-Mart 's total sales for these two items was 1200 dollars . Customers bought 7 times as many thermometers as hot-water bottles . How many thermometers did Wal-Mart sell ? How many hot-water bottles ?", 
+  "template_index": 18, 
+  "lSolutions": [
+   420.0, 
+   60.0
+  ], 
+  "sample_index": 240, 
+  "Template": [
+   "a * m + b * n = c", 
+   "d * m - n = 0"
+  ], 
+  "lEquations": [
+   "(2.0*thermometers)+(6.0*bottles)=1200.0", 
+   "thermometers=7.0*bottles"
+  ], 
+  "iIndex": 222, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 6.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 1200.0, 
+    "TokenId": 12
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 7.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A swim team has 5 times as many girls as boys . There are a total of 96 people on the swim team . How many girls and boys are their on the team ?", 
+  "template_index": 6, 
+  "lSolutions": [
+   80.0, 
+   16.0
+  ], 
+  "sample_index": 241, 
+  "Template": [
+   "m + n = a", 
+   "n - b * m = 0"
+  ], 
+  "lEquations": [
+   "girls+boys=96.0", 
+   "girls=5.0*boys"
+  ], 
+  "iIndex": 5054, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 96.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 5.0, 
+    "TokenId": 4
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "White vinegar is a solution of acetic acid in water . There are two strengths of white vinegar , a 5 % solution and a 10 % solution . How many milliliters of each solution must be mixed to make 50 milliliters of a 9 % vinegar solution ?", 
+  "template_index": 7, 
+  "lSolutions": [
+   10.0, 
+   40.0
+  ], 
+  "sample_index": 242, 
+  "Template": [
+   "a * m + b * n = c * d", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "((5.0*0.01)*five_vinegar)+((10.0*0.01)*ten_vinegar)=9.0*0.01*50.0", 
+   "five_vinegar+ten_vinegar=50.0"
+  ], 
+  "iIndex": 7070, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 5.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 10.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 50.0, 
+    "TokenId": 11
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 2, 
+    "Value": 9.0, 
+    "TokenId": 15
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Student Council wants to rent a banquet hall for the prom . Caesar 's charges 800 dollars to rent the room and 30 dollars for each meal . Venus Hall charges 500 dollars to rent the room and 35 dollars for each meal . How many guests must attend the prom for the costs of the two halls to be the same ?", 
+  "template_index": 12, 
+  "lSolutions": [
+   60.0
+  ], 
+  "sample_index": 243, 
+  "Template": [
+   "a * m - b * m = c - d"
+  ], 
+  "lEquations": [
+   "800.0+(30.0*guests)=500.0+(35.0*guests)"
+  ], 
+  "iIndex": 2504, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 30.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 35.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 500.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 800.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The sum of 2 numbers is 70 . The larger number is 2 more than 3 times the smaller number . Find the smaller number . Find the larger number .", 
+  "template_index": 21, 
+  "lSolutions": [
+   17.0, 
+   53.0
+  ], 
+  "sample_index": 244, 
+  "Template": [
+   "m - a * n = b", 
+   "m + n = c"
+  ], 
+  "lEquations": [
+   "smaller+larger=70.0", 
+   "larger=(3.0*smaller)+2.0"
+  ], 
+  "iIndex": 5701, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 2.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 70.0, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The difference of 3 times a number and 5 is 40 . Find the number .", 
+  "template_index": 20, 
+  "lSolutions": [
+   15.0
+  ], 
+  "sample_index": 245, 
+  "Template": [
+   "a * m = b + c"
+  ], 
+  "lEquations": [
+   "(3.0*number)-5.0=40.0"
+  ], 
+  "iIndex": 2130, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 3.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 5.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 40.0, 
+    "TokenId": 10
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Think of a number , half it and the result is 9 . Find the number .", 
+  "template_index": 10, 
+  "lSolutions": [
+   18.0
+  ], 
+  "sample_index": 246, 
+  "Template": [
+   "a * m = b"
+  ], 
+  "lEquations": [
+   "0.5*number=9.0"
+  ], 
+  "iIndex": 3591, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 0.5, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 9.0, 
+    "TokenId": 11
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "The cost of 12 gallons of regular gasoline and 18 gallons of premium gasoline is 44.46 dollars . Premium costs 0.22 dollars more per gallon than regular . What is the cost per gallon of each type of gasoline ?", 
+  "template_index": 8, 
+  "lSolutions": [
+   1.35, 
+   1.57
+  ], 
+  "sample_index": 247, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m - n = d"
+  ], 
+  "lEquations": [
+   "(12.0*cost_regulargas)+(18.0*cost_premiumgas)=44.46", 
+   "cost_premiumgas=0.22+cost_regulargas"
+  ], 
+  "iIndex": 2708, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 18.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 12.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 44.46, 
+    "TokenId": 15
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 1, 
+    "Value": 0.22, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Rita received a 70 dollars gift card for a coffee store . She used it in buying some coffee that cost 8.58 dollars per pound . After buying the coffee , she had 35.68 dollars left on her card . How many pounds of coffee did she buy ?", 
+  "template_index": 17, 
+  "lSolutions": [
+   4.0
+  ], 
+  "sample_index": 248, 
+  "Template": [
+   "a * m = b - c"
+  ], 
+  "lEquations": [
+   "70.0-(8.58*pounds)=35.68"
+  ], 
+  "iIndex": 3828, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 8.58, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 70.0, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 35.68, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A textbook costs a bookstore 44 dollars , and the store sells it for 55 dollars . Find the amount of profit based on the selling price .", 
+  "template_index": 23, 
+  "lSolutions": [
+   11.0
+  ], 
+  "sample_index": 249, 
+  "Template": [
+   "m = a - b"
+  ], 
+  "lEquations": [
+   "profit=55.0-44.0"
+  ], 
+  "iIndex": 6004, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 55.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 44.0, 
+    "TokenId": 5
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A piggy bank has 50 coins . The coins are either nickels or dimes . The bank has 4.55 dollars in total . How many coins are nickels ? How many are dimes ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   9.0, 
+   41.0
+  ], 
+  "sample_index": 250, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(0.05*nickels)+(0.1*dimes)=4.55", 
+   "nickels+dimes=50.0"
+  ], 
+  "iIndex": 3311, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 0.05000000074505806, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 0.10000000149011612, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 4.55, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 50.0, 
+    "TokenId": 4
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     1, 
+     4, 
+     0.05
+    ], 
+    [
+     3, 
+     4, 
+     0.05
+    ]
+   ], 
+   [
+    [
+     1, 
+     6, 
+     0.1
+    ], 
+    [
+     4, 
+     3, 
+     0.1
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "Suppose you invest 1,500 dollars in equipment to put pictures on T-shirts . You buy each T-shirt for 3 dollars . After you have placed the pictures on a shirt , you sell it for 20 dollars . How many T-shirts must you sell to break even ?", 
+  "template_index": 16, 
+  "lSolutions": [
+   88.23529
+  ], 
+  "sample_index": 251, 
+  "Template": [
+   "a * m - b * m = c"
+  ], 
+  "lEquations": [
+   "1500.0+(3.0*shirts)=20.0*shirts"
+  ], 
+  "iIndex": 6072, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 2, 
+    "Value": 20.0, 
+    "TokenId": 14
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 1500.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A farmer grows only sunflowers and flax on his 240 acre farm . This year he wants to plant 80 more acres of sunflowers than flax . How many acres of sunflowers does the farmer need to plant ? How many acres of flax ?", 
+  "template_index": 11, 
+  "lSolutions": [
+   160.0, 
+   80.0
+  ], 
+  "sample_index": 252, 
+  "Template": [
+   "m + n = a", 
+   "m - n = b"
+  ], 
+  "lEquations": [
+   "sunflowers+flax=240.0", 
+   "sunflowers=80.0+flax"
+  ], 
+  "iIndex": 3393, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 240.0, 
+    "TokenId": 9
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 80.0, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A car traveled 715 kilometers in 11 hours . What was its average speed ?", 
+  "template_index": 10, 
+  "lSolutions": [
+   65.0
+  ], 
+  "sample_index": 253, 
+  "Template": [
+   "a * m = b"
+  ], 
+  "lEquations": [
+   "average_speed=715.0/11.0"
+  ], 
+  "iIndex": 5206, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 11.0, 
+    "TokenId": 6
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 715.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "193 tickets were sold for the Class of 2003 ice cream picnic . Each student ticket costs 0.50 dollars each , and each non-student ticket costs 1.50 dollars each . A total of 206.50 dollars was collected . How many student tickets were sold ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   83.0, 
+   110.0
+  ], 
+  "sample_index": 254, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(0.5*student_tickets)+(1.5*nonstudent_tickets)=206.5", 
+   "student_tickets+nonstudent_tickets=193.0"
+  ], 
+  "iIndex": 3354, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 0.5, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 1.5, 
+    "TokenId": 13
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 2, 
+    "Value": 206.5, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 193.0, 
+    "TokenId": 0
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A recipe calls for 2 cups of sugar . You find that you only have 0.3333 cups of sugar left . What fraction of the recipe can you make ?", 
+  "template_index": 10, 
+  "lSolutions": [
+   0.16665
+  ], 
+  "sample_index": 255, 
+  "Template": [
+   "a * m = b"
+  ], 
+  "lEquations": [
+   "fraction=0.3333/2.0"
+  ], 
+  "iIndex": 6540, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 2.0, 
+    "TokenId": 4
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 1, 
+    "Value": 0.3333, 
+    "TokenId": 6
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "A teacher gives out a test of 30 problems . Each computation problem is worth 3 points . Each word problem is worth 5 points . The total points you can receive on the test is 110 points . How many computation problems are there ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   20.0, 
+   10.0
+  ], 
+  "sample_index": 256, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(3.0*computation_problem)+(5.0*word_problem)=110.0", 
+   "computation_problem+word_problem=30.0"
+  ], 
+  "iIndex": 2570, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 1, 
+    "Value": 3.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 2, 
+    "Value": 5.0, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 3, 
+    "Value": 110.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 30.0, 
+    "TokenId": 7
+   }
+  ], 
+  "Equiv": []
+ }, 
+ {
+  "sQuestion": "Sam has 30 nickels and dimes worth 2.40 dollars . How many nickels does he have ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   12.0, 
+   18.0
+  ], 
+  "sample_index": 257, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(0.05*nickels)+(0.1*dimes)=2.4", 
+   "nickels+dimes=30.0"
+  ], 
+  "iIndex": 2247, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 0.10000000149011612, 
+    "TokenId": 5
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 0.05000000074505806, 
+    "TokenId": 3
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 0, 
+    "Value": 2.4, 
+    "TokenId": 7
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 30.0, 
+    "TokenId": 2
+   }
+  ], 
+  "Equiv": [
+   [
+    [
+     0, 
+     3, 
+     0.05
+    ], 
+    [
+     1, 
+     2, 
+     0.05
+    ]
+   ]
+  ]
+ }, 
+ {
+  "sQuestion": "A building with 12 units consists of 1 bedrooms costing 360 dollars and 2 bedrooms costing 450 dollars respectively . When all units are full the total is 4950 dollars . How many 2 bedroom units are there ?", 
+  "template_index": 2, 
+  "lSolutions": [
+   7.0, 
+   5.0
+  ], 
+  "sample_index": 258, 
+  "Template": [
+   "a * m + b * n = c", 
+   "m + n = d"
+  ], 
+  "lEquations": [
+   "(360.0*one_bedroom)+(450.0*two_bedroom)=4950.0", 
+   "one_bedroom+two_bedroom=12.0"
+  ], 
+  "iIndex": 5110, 
+  "Alignment": [
+   {
+    "coeff": "a", 
+    "SentenceId": 0, 
+    "Value": 360.0, 
+    "TokenId": 10
+   }, 
+   {
+    "coeff": "b", 
+    "SentenceId": 0, 
+    "Value": 450.0, 
+    "TokenId": 16
+   }, 
+   {
+    "coeff": "c", 
+    "SentenceId": 1, 
+    "Value": 4950.0, 
+    "TokenId": 8
+   }, 
+   {
+    "coeff": "d", 
+    "SentenceId": 0, 
+    "Value": 12.0, 
+    "TokenId": 3
+   }
+  ], 
+  "Equiv": []
+ }
+]
