@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split
 import globals
 from dataset import read_draw, numbers_to_words, derivation_to_equation
 from template_parser import debug
+import tensorflow as tf
 
 class NBatchLogger(keras.callbacks.Callback):
     """
@@ -241,9 +242,8 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size, emb_layer
     print(emb.shape)
     l0 = keras.layers.Flatten()(emb)
     l0 = keras.layers.Dense(128, activation='relu')(l0)
-    l0 = keras.layers.Dense(128, activation='relu')(l0)
+    #l0 = keras.layers.Dense(128, activation='relu')(l0)
 
-    '''
     # 9 Dense layers for predicting word index in each slot
     outputs = []
     for i in range(num_output):
@@ -253,18 +253,17 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size, emb_layer
             outputs.append( Dense(globals.PROBLEM_LENGTH, activation='softmax')(l0) ) # coeffs
     print('output shape:')
     print(outputs[0].shape) # => batch_size x 7
-    '''
+    model = Model(inputs=inputs, outputs=outputs)
 
+    # single last dense layer version
     #Dense(num_output, activation='linear')(l0)
-    l0 = Dense(num_output)(l0) # => outputs logits
+    #l0 = Dense(num_output)(l0) # => outputs logits
+    #model = Model(inputs=inputs, outputs=l0)
 
-    #model = Model(inputs=inputs, outputs=outputs)
-    model = Model(inputs=inputs, outputs=l0)
 
-    #optimizer = keras.optimizers.Adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
-    optimizer = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
-    #model.compile(optimizer, 'sparse_categorical_crossentropy', metrics=['acc'])
-    model.compile(optimizer, loss=derivation_loss, metrics=['acc'])
+    optimizer = keras.optimizers.Adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
+    #model.compile(optimizer, 'categorical_crossentropy', metrics=['acc']) # tf.nn.softmax_cross_entropy_with_logits equivalent?
+    model.compile(optimizer, loss=custom_loss3, metrics=['acc'])
 
     return model
 
@@ -294,6 +293,30 @@ def custom_loss():
         return -derivation_loss(y_true, y_pred)
     return derivation
 
+def custom_loss2(y_true, y_pred):
+    def loss(y_true, y_pred):
+        #return keras.backend.categorical_crossentropy(y_pred, y_true, from_logits=True)
+        loss = 0
+        num_output = 7
+        for i in range(num_output):
+            loss += tf.nn.softmax_cross_entropy_with_logits(labels=y_true[i], logits=y_pred[i])
+            print(loss)
+        return loss
+
+    #return tf.nn.softmax_cross_entropy_with_logits(labels=y_true, logits=y_pred)
+    return loss(y_true, y_pred)
+
+def custom_loss3(y_true, y_pred):
+    def loss(y_true, y_pred):
+        loss = 0
+        num_output = 7
+        for i in range(num_output):
+            print(y_pred[i].shape)
+            #loss += tf.nn.softmax_cross_entropy_with_logits(labels=y_true[i], logits=y_pred[i]) # y_pred[i] is a vector
+            loss += keras.losses.categorical_crossentropy(y_true[i], y_pred[i]) # y_pred[i] is a vector
+        return loss
+    return loss(y_true, y_pred)
+
 
 def get_layers():
     layers = [(1000, 'relu')]
@@ -315,54 +338,64 @@ def main():
     vocab_size = len(vocab_dataset.keys())
     emb_layer = load_glove(vocab_dataset)
     F = feed_forward_mlp_model_coeffs(batch_size, X.shape[1:], vocab_size, emb_layer)
-    #F.summary()
+    F.summary()
 
-    '''
+    # (convert y to one-hot in the case of categorical losses)
     targets = []
     for i in range(template_size):
-        targets.append(y_train[:,i])
+        if i == 0:
+            targets.append( keras.utils.to_categorical(y_train[:,i], num_classes=230) )
+        else:
+            targets.append( keras.utils.to_categorical(y_train[:,i], num_classes=105) )
     test_targets = []
     for i in range(template_size):
-        test_targets.append(y_test[:,i])
-    '''
+        if i == 0:
+            test_targets.append( keras.utils.to_categorical(y_test[:,i], num_classes=230) )
+        else:
+            test_targets.append( keras.utils.to_categorical(y_test[:,i], num_classes=105) )
+    print(y_train.shape)
+    print(y_test.shape)
 
 
-    #F.fit(X_train, targets, batch_size=batch_size, epochs=100, validation_data=(X_test, test_targets))
-    F.fit(X_train, y_train, batch_size=batch_size, epochs=1000, validation_data=(X_test, y_test))
+    F.fit(X_train, targets, batch_size=batch_size, epochs=100, validation_data=(X_test, test_targets))
+    #F.fit(X_train, y_train, batch_size=batch_size, epochs=100, validation_data=(X_test, y_test))
     #out_batch = NBatchLogger(display=10) # show every 10 batches
     #F.fit(X_train, y_train, batch_size=batch_size, epochs=100, validation_data=(X_test, y_test), callbacks=[out_batch], verbose=0)
     F.save('baseline_debug.h5')
     print('='*100)
-    print(F.predict(X_test)[0].shape) # 2, 230
-    print(F.predict(X_test)[1].shape) # 2, 183
-    pred_train = F.predict(X_test)
+    print(F.predict(X_test)[0].shape) # 7,
+    print(F.predict(X_test)[1].shape) # 7,
+    pred_train = F.predict(X_train)
 
+    '''
     print('preds shape:')
-    print(pred_train.shape) # (2, 7)
+    print(pred_train.shape) # (2, 7) or (103,7)
     preds = []
     for out in pred_train:
         tmp = np.argmax(out, axis=1)
         preds.append(tmp)
     preds = np.array(preds)
+    print(preds[0])
+
 
     # Convert the output back to (N x temlpate_size)
     preds = preds.reshape(-1, template_size)
     print(preds.shape)
-    y_pred_test = preds
+    y_pred_test = preds'''
 
-    for i in range(y_pred_test.shape[0]):
+    for i in range(y_train[:10].shape[0]):
         print('='*100)
         #print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
         #print(derivation_to_equation(y_test[i].reshape((TEMPLATE_LENGTH,))))
         #print(derivation_to_equation(y_pred[i]))
         #print(derivation_to_equation(y_test[i]))
-        print(y_pred_test[i])
-        print(y_test[i])
+        print(y_train[i])
+        print(pred_train[i])
 
     print('#'*100)
     print('#'*100)
 
-    for i in range(y_pred_test.shape[0]):
+    for i in range(y_pred_test[:10].shape[0]):
         print('='*100)
         #print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
         #print(derivation_to_equation(y_test[i].reshape((TEMPLATE_LENGTH,))))
