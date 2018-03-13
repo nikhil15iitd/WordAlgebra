@@ -186,9 +186,6 @@ def get_gold_derivations(dataset, vocab):
             tmp.append(0)
         for a in alignments:
             if 'coeff' in a:
-                # TODO: Use Glove embeddings vector to manage numbers here
-                # for now assign the position index to coeffs
-                #tmp[slot_to_index[a['coeff']]] = a['Value']
                 tmp[slot_to_index[a['coeff']]] = a['TokenId']
             elif 'unk' in a:
                 tmp[slot_to_index[a['unk']]] = a['String']
@@ -203,12 +200,10 @@ def get_gold_derivations(dataset, vocab):
             derivation[1] = vocab[derivation[1].split('_')[0]]
         if not is_number(derivation[2]):
             derivation[2] = vocab[derivation[2].split('_')[0]]
-
         print(derivation)
-        derivations.append(derivation)
+        derivations.append(np.array(derivation))
 
-    print(derivations)
-    return X, derivations
+    return X, np.array(derivations)
 
 
 def validate_derivation(derivation, dataset):

@@ -48,9 +48,21 @@ def feed_forward_mlp_model(input_shape, vocab_size):
     l0 = Embedding(vocab_size, 16, input_length=globals.PROBLEM_LENGTH)(inputs)
     l0 = Bidirectional(LSTM(32, return_sequences=True))(l0)
     l0 = Bidirectional(LSTM(32))(l0)
-    l0 = Dense(8, activation='softmax')(l0)
-    model = Model(inputs=inputs, outputs=l0)
-    model.compile('adam', 'sparse_categorical_crossentropy', metrics=['acc'])
+    l1 = Dense(7, activation='softmax', name='t_id')(l0)
+    l2 = Dense(vocab_size, activation='softmax', name='m')(l0)
+    l3 = Dense(vocab_size, activation='softmax', name='n')(l0)
+    l4 = Dense(TEMPLATE_LENGTH, activation='softmax', name='a')(l0)
+    l5 = Dense(TEMPLATE_LENGTH, activation='softmax', name='b')(l0)
+    l6 = Dense(TEMPLATE_LENGTH, activation='softmax', name='c')(l0)
+    l7 = Dense(TEMPLATE_LENGTH, activation='softmax', name='d')(l0)
+    l8 = Dense(TEMPLATE_LENGTH, activation='softmax', name='e')(l0)
+    l9 = Dense(TEMPLATE_LENGTH, activation='softmax', name='f')(l0)
+    model = Model(inputs=inputs, outputs=[l1, l2, l3, l4, l5, l6, l7, l8, l9])
+    model.compile('adam', {'t_id': 'sparse_categorical_crossentropy', 'm': 'sparse_categorical_crossentropy',
+                           'n': 'sparse_categorical_crossentropy', 'a': 'sparse_categorical_crossentropy',
+                           'b': 'sparse_categorical_crossentropy', 'c': 'sparse_categorical_crossentropy',
+                           'd': 'sparse_categorical_crossentropy', 'e': 'sparse_categorical_crossentropy',
+                           'f': 'sparse_categorical_crossentropy'})
     return model
 
 
@@ -61,10 +73,9 @@ def get_layers():
 
 
 def main():
-    X, Y, vocab_dataset = debug()
-    print(X)
-    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
-    print(Y)
+    derivations, vocab_dataset = debug()
+    X, Y = derivations
+    X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=PROBLEM_LENGTH)
     F = feed_forward_mlp_model(X.shape[1:], len(vocab_dataset.keys()))
     # X, Y = read_draw()
     # X, Y = pad_lengths_to_constant(X, Y)
@@ -72,9 +83,13 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=globals.SEED)
     ntrain = X_train.shape[0]
     print(X_train.shape)
-    print(X_test.shape)
-    print(y_test.shape)
-    F.fit(X_train, y_train, batch_size=128, epochs=50, validation_data=(X_test, y_test))
+    print(y_train.shape)
+    F.fit(X_train,
+          [y_train[:, 0], y_train[:, 1], y_train[:, 2], y_train[:, 3], y_train[:, 4], y_train[:, 5], y_train[:, 6],
+           y_train[:, 7], y_train[:, 8]], batch_size=128, epochs=50, validation_data=(
+            X_test, [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6],
+                     y_test[:, 7], y_test[:, 8]]))
+
     y_pred = np.argmax(F.predict(X_test), axis=2)
     for i in range(y_pred.shape[0]):
         print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
