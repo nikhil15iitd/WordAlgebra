@@ -3,6 +3,7 @@ from dataset import read_draw, numbers_to_words, derivation_to_equation
 from template_parser import debug
 import os
 import numpy as np
+import keras
 from keras.layers import Bidirectional, LSTM, Conv1D, Dense, PReLU, MaxPool1D, Input, Embedding, TimeDistributed, \
     BatchNormalization
 from keras.models import Model
@@ -24,6 +25,8 @@ def feed_forward_mlp_model(input_shape, vocab_size, emb_layer):
     emb = emb_layer(inputs)
     l0 = Bidirectional(LSTM(32, return_sequences=True))(emb)
     l0 = Bidirectional(LSTM(32))(l0)
+    #l0 = keras.layers.Flatten()(emb)
+    #l0 = keras.layers.Dense(128, activation='relu')(l0)
     l1 = Dense(7, activation='softmax', name='t_id')(l0)
     l2 = Dense(vocab_size, activation='softmax', name='m')(l0)
     l3 = Dense(vocab_size, activation='softmax', name='n')(l0)
@@ -94,6 +97,7 @@ def main():
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(y_train.shape)
+
     F.fit(X_train,
           [y_train[:, 0], y_train[:, 1], y_train[:, 2], y_train[:, 3], y_train[:, 4], y_train[:, 5], y_train[:, 6],
            y_train[:, 7], y_train[:, 8]], batch_size=128, epochs=50, validation_data=(
@@ -124,7 +128,7 @@ def main():
     config.learning_rate = lr
     config.dropout = dp
     config.dimension = len(vocab_dataset.keys())
-    config.output_num = input_num
+    config.output_num = output_num
     config.input_num = input_num
     config.en_layer_info = en_layers
     config.layer_info = f_layers
@@ -151,6 +155,8 @@ def main():
     indices = np.arange(labeled_num)
     xlabeled = X_train[indices][:]
     ylabeled = y_train[indices][:]
+    print(xlabeled.shape)
+    print(ylabeled.shape)
 
     total_num = xlabeled.shape[0]
     for i in range(1, 100):
@@ -163,16 +169,22 @@ def main():
             xbatch = xlabeled[indices][:]
             xbatch = np.reshape(xbatch, (xbatch.shape[0], -1))
             ybatch = ylabeled[indices][:]
-            ybatch = pad_sequences(ybatch, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
+            #ybatch = pad_sequences(ybatch, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
             ybatch = np.reshape(ybatch, (ybatch.shape[0], -1))
             s.set_train_iter(i)
             s.train_batch(xbatch, ybatch)
 
         if i % 2 == 0:
             yval_out = s.map_predict(xinput=np.reshape(X_test, (X_test.shape[0], -1)))
-            ytest_out = pad_sequences(y_test, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post',
-                                      value=0.)
-            ts_f1 = f1_score(yval_out, np.reshape(ytest_out, (ytest_out.shape[0], -1)))
+            #ytest_out = pad_sequences(y_test, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post',
+            #                          value=0.)
+            #ts_f1 = f1_score(yval_out, np.reshape(ytest_out, (ytest_out.shape[0], -1)))
+            yt_ind = s.var_to_indicator(y_test)
+            yt_ind = np.reshape(yt_ind, (-1, s.config.output_num*s.config.dimension))
+            print(yval_out)
+            print(y_test)
+
+            ts_f1 = f1_score(yval_out, yt_ind)
             print(yval_out.shape)
             print(ts_f1)
 

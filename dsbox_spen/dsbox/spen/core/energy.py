@@ -34,6 +34,7 @@ class EnergyModel:
             pred = tf.matmul(output, W) + b
             logits = tf.reshape(pred, [-1, nsteps * self.config.dimension])
 
+
         return logits
 
     def get_feature_net_rnn_custom(self, xinput, reuse=False):
@@ -129,6 +130,16 @@ class EnergyModel:
         with tf.variable_scope(self.config.spen_variable_scope):
             with tf.variable_scope(self.config.fx_variable_scope) as scope:
                 logits2 = self.get_feature_net_rnn(xinput, reuse=reuse)
+                with tf.variable_scope("logits2") as scope2:
+                    if reuse:
+                        scope2.reuse_variables()
+                    # Add another dense layer to project it to the dimension of derivation y
+                    WW = tf.get_variable("WW", dtype=tf.float32,
+                                        shape=[self.config.input_num * self.config.dimension, self.config.output_num * self.config.dimension])
+                    bb = tf.get_variable("bb", shape=[self.config.output_num * self.config.dimension],
+                                        dtype=tf.float32, initializer=tf.zeros_initializer())
+                    logits2 = tf.matmul(logits2, WW) + bb
+
                 logits3 = self.get_feature_net_mlp(xinput, output_size, reuse=reuse)  # + logits2
 
                 # mult_ = tf.multiply(logits, yinput)

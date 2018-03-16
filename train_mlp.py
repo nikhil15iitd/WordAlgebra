@@ -173,7 +173,7 @@ def custom_softmax(t):
     return K.concatenate(partial_sm)
 
 
-def feed_forward_mlp_model(batch_size, input_shape, vocab_size):
+def feed_forward_mlp_model(batch_size, input_shape, vocab_size, emb_layer=None):
     '''
     Deep neural network model to get F(x) which is to be fed to SPENs
     '''
@@ -184,13 +184,13 @@ def feed_forward_mlp_model(batch_size, input_shape, vocab_size):
     num_classes = 10 # debug
 
     inputs = Input(shape=input_shape)
-    emb = Embedding(vocab_size, 16, input_length=PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
-
+    if emb_layer:
+        emb = emb_layer(inputs)
+    else:
+        emb = Embedding(vocab_size, 16, input_length=globals.PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
     l0 = keras.layers.GRU(32, return_sequences=False)(emb) # => (?, 32)
-    print(type(l0)) # => <class 'tensorflow.python.framework.ops.Tensor'>
 
     # 9 Dense layers for predicting word index in each slot
-    #l0 = Dense(9, activation=custom_softmax)(l0)
     outputs = []
     for i in range(num_output):
         #outputs.append( Dense(num_output, activation='softmax')(l0) )
@@ -199,9 +199,7 @@ def feed_forward_mlp_model(batch_size, input_shape, vocab_size):
         elif i == 1 or i == 2:
             outputs.append( Dense(vocab_size, activation='softmax')(l0) ) # unknowns
         elif i > 2 and i < 10:
-            outputs.append( Dense(PROBLEM_LENGTH, activation='softmax')(l0) ) # coeffs
-    print('output shape:')
-    print(outputs[0].shape) # => batch_size x 9
+            outputs.append( Dense(globals.PROBLEM_LENGTH, activation='softmax')(l0) ) # coeffs
 
     '''
     # construct the output vector based on the prediction result from each softmax
@@ -287,26 +285,13 @@ def derivation_loss(y_true, y_pred):
     #print(y_pred.shape) # (?, 7)
     return euc_dist_keras(y_true, y_pred)
 
-
+'''
 def custom_loss():
     def derivation(y_true, y_pred):
         return -derivation_loss(y_true, y_pred)
     return derivation
-
-def custom_loss2(y_true, y_pred):
-    def loss(y_true, y_pred):
-        #return keras.backend.categorical_crossentropy(y_pred, y_true, from_logits=True)
-        loss = 0
-        num_output = 7
-        for i in range(num_output):
-            loss += tf.nn.softmax_cross_entropy_with_logits(labels=y_true[i], logits=y_pred[i])
-            print(loss)
-        return loss
-
-    #return tf.nn.softmax_cross_entropy_with_logits(labels=y_true, logits=y_pred)
-    return loss(y_true, y_pred)
-
-def custom_loss3(y_true, y_pred):
+'''
+def custom_loss(y_true, y_pred):
     def loss(y_true, y_pred):
         loss = 0
         num_output = 7
@@ -325,10 +310,11 @@ def get_layers():
 
 
 def main():
-    template_size = 7
+    template_size = 9
     batch_size = 128
 
-    X, Y, vocab_dataset = debug()
+    derivations, vocab_dataset = debug()
+    X, Y = derivations
     X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=globals.SEED)
     ntrain = X_train.shape[0]
@@ -337,25 +323,36 @@ def main():
 
     vocab_size = len(vocab_dataset.keys())
     emb_layer = load_glove(vocab_dataset)
-    F = feed_forward_mlp_model_coeffs(batch_size, X.shape[1:], vocab_size, emb_layer)
+    F = feed_forward_mlp_model(batch_size, X.shape[1:], vocab_size, emb_layer)
     F.summary()
 
     # (convert y to one-hot in the case of categorical losses)
+    '''
     targets = []
     for i in range(template_size):
         if i == 0:
             targets.append( keras.utils.to_categorical(y_train[:,i], num_classes=230) )
+        elif i == 1 or i == 2:
+            targets.append( keras.utils.to_categorical(y_train[:,i], num_classes=vocab_size) )
         else:
             targets.append( keras.utils.to_categorical(y_train[:,i], num_classes=105) )
     test_targets = []
     for i in range(template_size):
         if i == 0:
             test_targets.append( keras.utils.to_categorical(y_test[:,i], num_classes=230) )
+        elif i == 1 or i == 2:
+            test_targets.append( keras.utils.to_categorical(y_test[:,i], num_classes=vocab_size) )
         else:
             test_targets.append( keras.utils.to_categorical(y_test[:,i], num_classes=105) )
     print(y_train.shape)
     print(y_test.shape)
-
+    '''
+    targets = []
+    for i in range(template_size):
+        targets.append(y_train[:,i])
+    test_targets = []
+    for i in range(template_size):
+        test_targets.append(y_test[:,i])
 
     F.fit(X_train, targets, batch_size=batch_size, epochs=100, validation_data=(X_test, test_targets))
     #F.fit(X_train, y_train, batch_size=batch_size, epochs=100, validation_data=(X_test, y_test))
