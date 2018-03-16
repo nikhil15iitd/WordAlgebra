@@ -16,6 +16,9 @@ from dataset import read_draw, numbers_to_words, derivation_to_equation
 from template_parser import debug
 import tensorflow as tf
 
+from dsbox_spen.dsbox.spen.core import spen, config, energy
+from dsbox_spen.dsbox.spen.utils.metrics import f1_score, hamming_loss
+
 class NBatchLogger(keras.callbacks.Callback):
     """
     A Logger that log average performance per `display` steps.
@@ -80,7 +83,7 @@ def load_glove(vocab):
                                 EMBEDDING_DIM,
                                 weights=[embedding_matrix],
                                 input_length=MAX_SEQUENCE_LENGTH,
-                                trainable=False)
+                                trainable=True) # NOTE: Set trainable=True if needed
     return embedding_layer
 
 
@@ -222,7 +225,7 @@ def feed_forward_mlp_model(batch_size, input_shape, vocab_size, emb_layer=None):
     return model
 
 
-def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size, emb_layer):
+def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size, emb_layer=None):
     '''
     Deep neural network model to get F(x) which is to be fed to SPENs
     '''
@@ -232,8 +235,10 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size, emb_layer
     num_output = 7 # since the template vector has 7 elems (without unknowns)
 
     inputs = Input(shape=input_shape)
-    #emb = Embedding(vocab_size, 16, input_length=globals.PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
-    emb = emb_layer(inputs)
+    if emb_layer:
+        emb = emb_layer(inputs)
+    else:
+        emb = Embedding(vocab_size, 16, input_length=globals.PROBLEM_LENGTH)(inputs) # => (?, 105, 16)
 
     #l0 = keras.layers.GRU(32, return_sequences=False)(emb) # => (?, 32)
     print('emb shape:') # (?, 105, 16)
@@ -260,8 +265,9 @@ def feed_forward_mlp_model_coeffs(batch_size, input_shape, vocab_size, emb_layer
 
 
     optimizer = keras.optimizers.Adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
+    model.compile(optimizer, 'sparse_categorical_crossentropy', metrics=['acc'])
     #model.compile(optimizer, 'categorical_crossentropy', metrics=['acc']) # tf.nn.softmax_cross_entropy_with_logits equivalent?
-    model.compile(optimizer, loss=custom_loss3, metrics=['acc'])
+    #model.compile(optimizer, loss=custom_loss3, metrics=['acc'])
 
     return model
 
@@ -310,7 +316,7 @@ def get_layers():
 
 
 def main():
-    template_size = 9
+    template_size = 7#9
     batch_size = 128
 
     derivations, vocab_dataset = debug()
@@ -323,7 +329,9 @@ def main():
 
     vocab_size = len(vocab_dataset.keys())
     emb_layer = load_glove(vocab_dataset)
-    F = feed_forward_mlp_model(batch_size, X.shape[1:], vocab_size, emb_layer)
+    #F = feed_forward_mlp_model(batch_size, X.shape[1:], vocab_size, emb_layer)
+    #F = feed_forward_mlp_model_coeffs(batch_size, X.shape[1:], vocab_size, emb_layer)
+    F = feed_forward_mlp_model_coeffs(batch_size, X.shape[1:], vocab_size)
     F.summary()
 
     # (convert y to one-hot in the case of categorical losses)
@@ -354,7 +362,7 @@ def main():
     for i in range(template_size):
         test_targets.append(y_test[:,i])
 
-    F.fit(X_train, targets, batch_size=batch_size, epochs=100, validation_data=(X_test, test_targets))
+    F.fit(X_train, targets, batch_size=batch_size, epochs=1, validation_data=(X_test, test_targets))
     #F.fit(X_train, y_train, batch_size=batch_size, epochs=100, validation_data=(X_test, y_test))
     #out_batch = NBatchLogger(display=10) # show every 10 batches
     #F.fit(X_train, y_train, batch_size=batch_size, epochs=100, validation_data=(X_test, y_test), callbacks=[out_batch], verbose=0)
@@ -380,6 +388,8 @@ def main():
     print(preds.shape)
     y_pred_test = preds'''
 
+
+
     for i in range(y_train[:10].shape[0]):
         print('='*100)
         #print(derivation_to_equation(y_pred[i].reshape((TEMPLATE_LENGTH,))))
@@ -387,8 +397,11 @@ def main():
         #print(derivation_to_equation(y_pred[i]))
         #print(derivation_to_equation(y_test[i]))
         print(y_train[i])
-        print(pred_train[i])
-
+        pred = []
+        for j in range(template_size):
+            pred.append(pred_train[j][i].argmax())
+        print(pred)
+    '''
     print('#'*100)
     print('#'*100)
 
@@ -400,8 +413,103 @@ def main():
         #print(derivation_to_equation(y_test[i]))
         print(y_pred_test[i])
         print(y_test[i])
+    '''
+
+
+
+
+    ###Configurable parameters START
+    EMBEDDING_DIM = 16#50  # 50
+    ln = 1e10
+    l2 = 0.0
+    lr = 0.001
+    inf_iter = 10
+    inf_rate = 0.1
+    mw = 100.0
+    dp = 0.0
+    bs = 100
+    output_num = Y.shape[1]
+    input_num = X.shape[1]
+    f_layers, en_layers = get_layers()
+
+    config.l2_penalty = l2
+    config.inf_iter = inf_iter
+    config.inf_rate = inf_rate
+    config.learning_rate = lr
+    config.dropout = dp
+    config.dimension = len(vocab_dataset.keys())
+    config.output_num = output_num
+    config.input_num = input_num
+    config.en_layer_info = en_layers
+    config.layer_info = f_layers
+    config.margin_weight = mw
+    config.lstm_hidden_size = 15
+    config.sequence_length = 105
+    ###Configurable parameters END
+
+
+    s = spen.SPEN(config)
+    e = energy.EnergyModel(config)
+    # s.eval = lambda xd, yd, yt : f1_score_c_ar(yd, yt)
+    s.get_energy = e.get_energy_rnn_mlp_emb
+    # s.prediction_net = e.softmax_prediction_network
+    s.train_batch = s.train_supervised_batch
+
+    #s.construct_embedding(EMBEDDING_DIM, len(vocab_dataset.keys()) + 1)
+    s.construct_embedding(EMBEDDING_DIM, len(vocab_dataset.keys()))
+    s.construct(training_type=spen.TrainingType.SSVM)
+    s.print_vars()
+
+    s.init()
+    s.init_embedding(F.get_layer('embedding_2').get_weights()[0])
+    labeled_num = min((ln, ntrain))
+    indices = np.arange(labeled_num)
+    xlabeled = X_train[indices][:]
+    ylabeled = y_train[indices][:]
+    print(xlabeled.shape)
+    print(ylabeled.shape)
+
+    total_num = xlabeled.shape[0]
+    for i in range(1, 100):
+        bs = min((bs, labeled_num))
+        perm = np.random.permutation(total_num)
+
+        for b in range(int(ntrain / bs)):
+            indices = perm[b * bs:(b + 1) * bs]
+
+            xbatch = xlabeled[indices][:]
+            xbatch = np.reshape(xbatch, (xbatch.shape[0], -1))
+            ybatch = ylabeled[indices][:]
+            #ybatch = pad_sequences(ybatch, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post', value=0.)
+            ybatch = np.reshape(ybatch, (ybatch.shape[0], -1))
+            s.set_train_iter(i)
+            s.train_batch(xbatch, ybatch)
+
+        if i % 2 == 0:
+            #ytest_out = pad_sequences(y_test, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post',
+            #                          value=0.)
+            #ts_f1 = f1_score(yval_out, np.reshape(ytest_out, (ytest_out.shape[0], -1)))
+
+            '''
+            yval_out = s.map_predict(xinput=np.reshape(X_train, (X_train.shape[0], -1)))
+            yt_ind = s.var_to_indicator(y_train)
+            yt_ind = np.reshape(yt_ind, (-1, s.config.output_num*s.config.dimension))
+            ts_f1 = f1_score(yval_out, yt_ind)
+            print('='*100)
+            print(yval_out)
+            print(y_train)
+            print(ts_f1)
+            '''
+            yval_out = s.map_predict(xinput=np.reshape(X_test, (X_test.shape[0], -1)))
+            yt_ind = s.var_to_indicator(y_test)
+            yt_ind = np.reshape(yt_ind, (-1, s.config.output_num*s.config.dimension))
+            ts_f1 = f1_score(yval_out, yt_ind)
+            print(yval_out)
+            print(y_test)
+            print(ts_f1)
 
 
 if __name__ == "__main__":
     globals.init()
+    config = config.Config()
     main()

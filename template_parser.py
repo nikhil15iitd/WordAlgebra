@@ -123,7 +123,7 @@ def get_gold_derivations_coeffs(dataset, vocab):
         derivation = tmp
         derivations.append(derivation)
     # print(derivations)
-    return X, derivations
+    return X, np.array(derivations)
 
 
 def get_gold_derivations(dataset, vocab):
@@ -214,8 +214,8 @@ def validate_derivation(derivation, dataset):
 
 
 def debug():
-    filepath = '0.7 - release/kushman_template_index_debug.json'
-    # filepath = '0.7 - release/kushman_template_index_org.json'
+    #filepath = '0.7 - release/kushman_template_index_debug.json'
+    filepath = '0.7 - release/kushman_template_index_org.json'
     # filepath = '0.7 - release/draw_template_index.json'
     with open(filepath, 'r') as f:
         dataset = json.load(f)
@@ -239,7 +239,8 @@ def debug():
     print(len(word_idx_map.keys()))
     print('#' * 100)
 
-    return get_gold_derivations(dataset, word_idx_map), word_idx_map
+    #return get_gold_derivations(dataset, word_idx_map), word_idx_map
+    return get_gold_derivations_coeffs(dataset, word_idx_map), word_idx_map
 
 
 if __name__ == "__main__":
