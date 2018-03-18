@@ -551,5 +551,257 @@
       }
     ],
     "Equiv": []
+  },
+  {
+    "sQuestion": "Mary can purchase roses and daisies from a flower shop . She can buy four roses and five daisies for 7.90 dollars or two roses and six daisies for 5.70 dollars . What is the individual cost for each rose and daisy ?",
+    "lSolutions": [
+      1.35,
+      0.5
+    ],
+    "Template": [
+      "a * m + b * n = c",
+      "d * m + e * n = f"
+    ],
+    "lEquations": [
+      "(4.0*rose_cost)+(5.0*daisy_cost)=7.9",
+      "(2.0*rose_cost)+(6.0*daisy_cost)=5.7"
+    ],
+    "iIndex": 5580,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 1,
+        "Value": 4.0,
+        "TokenId": 3
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 5.0,
+        "TokenId": 6
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 1,
+        "Value": 7.9,
+        "TokenId": 9
+      },
+      {
+        "coeff": "d",
+        "SentenceId": 1,
+        "Value": 2.0,
+        "TokenId": 12
+      },
+      {
+        "coeff": "e",
+        "SentenceId": 1,
+        "Value": 6.0,
+        "TokenId": 15
+      },
+      {
+        "coeff": "f",
+        "SentenceId": 1,
+        "Value": 5.7,
+        "TokenId": 18
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "roses",
+        "TokenId": 0
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "daisies",
+        "TokenId": 0
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "With a tail wind , a jet flew 2000 miles in 4 hours . The jet 's return trip against the same wind required 5 hours . Find the jet 's speed and the wind speed .",
+    "lSolutions": [
+      450.0,
+      50.0
+    ],
+    "Template": [
+      "a * m + a * n = b",
+      "c * m - c * n = b"
+    ],
+    "lEquations": [
+      "(jet+wind)*4.0=2000.0",
+      "(jet-wind)*5.0=2000.0"
+    ],
+    "iIndex": 6118,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 4.0,
+        "TokenId": 11
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 0,
+        "Value": 2000.0,
+        "TokenId": 8
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 1,
+        "Value": 5.0,
+        "TokenId": 10
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "jet",
+        "TokenId": 0
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "wind",
+        "TokenId": 0
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "A furniture dealer has 36 tables . Some tables have 4 legs and some have 3 legs , but she doesn't know how many of each kind there are . She has counted 124 legs in total . How many 4 legged tables are there ?",
+    "lSolutions": [
+      16.0,
+      20.0
+    ],
+    "Template": [
+      "a * m + b * n = c",
+      "m + n = d"
+    ],
+    "lEquations": [
+      "(4.0*four_leg)+(3.0*three_leg)=124.0",
+      "four_leg+three_leg=36.0"
+    ],
+    "iIndex": 5321,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 1,
+        "Value": 4.0,
+        "TokenId": 3
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 3.0,
+        "TokenId": 8
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 2,
+        "Value": 124.0,
+        "TokenId": 3
+      },
+      {
+        "coeff": "d",
+        "SentenceId": 0,
+        "Value": 36.0,
+        "TokenId": 4
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "4 legs",
+        "TokenId": 0
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "3 legs",
+        "TokenId": 0
+      }
+    ],
+    "Equiv": [
+      [
+        [
+          3,
+          2,
+          4
+        ],
+        [
+          1,
+          3,
+          4
+        ]
+      ]
+    ]
+  },
+  {
+    "sQuestion": "You are making 10 tons of concrete that is 62 % cement by mixing a 20 % cement mixture with a 80 % cement mixture . How much of the 80 % cement mixture must you use ? Answer in units of tons .",
+    "lSolutions": [
+      7.0,
+      3.0
+    ],
+    "Template": [
+      "a * m + b * n = c * d",
+      "m + n = c"
+    ],
+    "lEquations": [
+      "((20.0*0.01)*twenty_mix)+((80.0*0.01)*eighty_mix)=(10.0*62.0)*0.01",
+      "twenty_mix+eighty_mix=10.0"
+    ],
+    "iIndex": 5365,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 20.0,
+        "TokenId": 15
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 0,
+        "Value": 80.0,
+        "TokenId": 21
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 0,
+        "Value": 10.0,
+        "TokenId": 3
+      },
+      {
+        "coeff": "d",
+        "SentenceId": 0,
+        "Value": 62.0,
+        "TokenId": 9
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "twenty",
+        "TokenId": 0
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "eighty",
+        "TokenId": 0
+      }
+    ],
+    "Equiv": [
+      [
+        [
+          1,
+          4,
+          80
+        ],
+        [
+          0,
+          21,
+          80
+        ]
+      ]
+    ]
   }
 ]
