@@ -926,4 +926,241 @@
     ],
     "Equiv": []
   },
+  {
+    "sQuestion": "The larger of two numbers is 23 less than twice the smaller . The sum of the two numbers is 70 . Find the two numbers .",
+    "template_index": 8,
+    "lSolutions": [
+      31.0,
+      39.0
+    ],
+    "sample_index": 16,
+    "Template": [
+      "a * m - n = b",
+      "m + n = c"
+    ],
+    "lEquations": [
+      "(2.0*smaller)-23.0=larger", 
+      "smaller+larger=70.0"
+    ],
+    "iIndex": 6376,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 2.0,
+        "TokenId": 9
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 0,
+        "Value": 23.0,
+        "TokenId": 6
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 1,
+        "Value": 70.0,
+        "TokenId": 7
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "smaller",
+        "TokenId": 11
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "larger",
+        "TokenId": 1
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "0.4 of Joe 's income each month goes to taxes . If she pays 848 dollars in taxes each month , what is her monthly income in dollars ?",
+    "template_index": 9,
+    "lSolutions": [
+      2120.0      
+    ],
+    "sample_index": 17,
+    "Template": [
+      "a * m = b"
+    ],
+    "lEquations": [
+      "0.4*income=848.0"
+    ],
+    "iIndex": 6408,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 0.4,
+        "TokenId": 0
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 848.0,
+        "TokenId": 3
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "income",
+        "TokenId": 3
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "A plane flying with a tail wind flew at a speed of 460 miles per hour , relative to the ground . When flying against the tailwind , it flew at a speed of 310 miles per hour . Find the speed of the tailwind .",
+    "template_index": 10,
+    "lSolutions": [
+      75.0,
+      385.0
+    ],
+    "sample_index": 18,
+    "Template": [
+      "m + n = a",
+      "m - n = b"
+    ],
+    "lEquations": [
+      "plane+tail_wind=460.0",
+      "plane-tail_wind=310.0"
+    ],
+    "iIndex": 6409,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 460.0,
+        "TokenId": 12
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 310.0,
+        "TokenId": 12
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "plane",
+        "TokenId": 1
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "tail_wind",
+        "TokenId": 5
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "A student is pricing 2 different picture packages . John 's Photo World charges 2.75 dollars per sheet and a one time sitting fee of 125 dollars . Sam 's Picture Emporium charges 1.50 dollars per sheet and a one time sitting fee of 140 dollars . For how many sheets of pictures do the 2 companies charge the same amount ?",
+    "template_index": 11,
+    "lSolutions": [
+      12.0
+    ],
+    "sample_index": 19,
+    "Template": [
+      "a * m - b * m = c - d"
+    ],
+    "lEquations": [
+      "(2.75*sheets)+125.0=(1.5*sheets)+140.0"
+    ],
+    "iIndex": 2866,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 1,
+        "Value": 2.75,
+        "TokenId": 5
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 2,
+        "Value": 1.5,
+        "TokenId": 5
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 2,
+        "Value": 140.0,
+        "TokenId": 16
+      },
+      {
+        "coeff": "d",
+        "SentenceId": 1,
+        "Value": 125.0,
+        "TokenId": 16
+      },
+      {
+        "unk": "m",
+        "SentenceId": 1,
+        "String": "sheets",
+        "TokenId": 8
+      },
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "You have exactly 537 dollars to spend on party gifts for your rich uncle 's birthday party . You decide to get watches for the ladies at 27.98 dollars each , and beepers for the men at 23.46 dollars each . You know that the number of watches required will be 3 times as much as the number of beepers . How many watches do you buy ? How many beepers do you buy ?",
+    "template_index": 12,
+    "lSolutions": [
+      15.0,
+      5.0
+    ],
+    "sample_index": 20,
+    "Template": [
+      "a * m + b * n = c",
+      "d * m - n = 0"
+    ],
+    "lEquations": [
+      "(27.98*watches)+(23.46*beepers)=537.0",
+      "watches=3.0*beepers"
+    ],
+    "iIndex": 32,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 1,
+        "Value": 23.46,
+        "TokenId": 19
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 27.98,
+        "TokenId": 9
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 0,
+        "Value": 537.0,
+        "TokenId": 3
+      },
+      {
+        "coeff": "d",
+        "SentenceId": 2,
+        "Value": 3.0,
+        "TokenId": 10
+      },
+      {
+        "unk": "m",
+        "SentenceId": 1,
+        "String": "beepers",
+        "TokenId": 14
+      },
+      {
+        "unk": "n",
+        "SentenceId": 1,
+        "String": "watches",
+        "TokenId": 4
+      }
+    ],
+    "Equiv": []
+  },
 ]
