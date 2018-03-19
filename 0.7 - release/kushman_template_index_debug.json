@@ -1163,4 +1163,220 @@
     ],
     "Equiv": []
   },
+  {
+    "sQuestion": "You make candles and sell them for 15 dollars each . The material to make up to 20 candles costs 20 dollars . How many candles must you sell to have a profit of 85 dollars ?",
+    "template_index": 13,
+    "lSolutions": [
+      7.0,
+    ],
+    "sample_index": 21,
+    "Template": [
+      "a * m = b + c"
+    ],
+    "lEquations": [
+      "85.0=(15.0*number_of_candles)-20.0"
+    ],
+    "iIndex": 6106,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 15.0,
+        "TokenId": 7
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 20.0,
+        "TokenId": 6
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 2,
+        "Value": 85.0,
+        "TokenId": 11
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "number_of_candles",
+        "TokenId": 0
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "A car rented for 29 dollars per day plus 0.08 dollars per mile . Julia paid 46.12 dollars for a 1-day rental . How far did she drive , in miles ?",
+    "template_index": 14,
+    "lSolutions": [
+      214.0
+    ],
+    "sample_index": 22,
+    "Template": [
+      "a * m = b - c",
+    ],
+    "lEquations": [
+      "29.0+(0.08*miles_driven)=46.12"
+    ],
+    "iIndex": 2561,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 0.08,
+        "TokenId": 9
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 46.12,
+        "TokenId": 2
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 0,
+        "Value": 29.0,
+        "TokenId": 4
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "miles_driven",
+        "TokenId": 0
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "A physician 's assistant measures a child and finds that his height is 41.5 inches . At his last visit to the doctor 's office , the child was 38.5 inches tall . How much did the child grow , in inches ?",
+    "template_index": 15,
+    "lSolutions": [
+      3.0
+    ],
+    "sample_index": 23 ,
+    "Template": [
+      "m = a - b"
+    ],
+    "lEquations": [
+      "growth=41.5-38.5"
+    ],
+    "iIndex": 262,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 41.5,
+        "TokenId": 13
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 38.5,
+        "TokenId": 13
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "growth",
+        "TokenId": 0
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "Two planes start from Chicago at the same time and fly in opposite directions , one averaging a speed of 40 miles per hour greater than the other . If they are 2000 miles apart after 5 hours , find their average speeds .",
+    "template_index": 16,
+    "lSolutions": [
+      180.0,
+      220.0
+    ],
+    "sample_index": 24,
+    "Template": [
+      "a * m + a * n = b",
+      "n - m = c"
+    ],
+    "lEquations": [
+      "(5.0*plane_one)+(5.0*plane_two)=2000.0",
+      "plane_one=40.0+plane_two"
+    ],
+    "iIndex": 7056,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 1,
+        "Value": 5.0,
+        "TokenId": 7
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 2000.0,
+        "TokenId": 3
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 0,
+        "Value": 40.0,
+        "TokenId": 20
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "plane_two",
+        "TokenId": 0
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "plane_one",
+        "TokenId": 0
+      }
+    ],
+    "Equiv": []
+  },
+{
+    "sQuestion": "There are 30 legs and 13 heads of goats and chicken , so how may goats and chicken are there ?",
+    "template_index": 17,
+    "lSolutions": [
+      30.0,
+      300.0
+    ],
+    "sample_index": 25,
+    "Template": [
+      "m + n = a",
+      "2 * m + 4 * n = b"
+    ],
+    "lEquations": [
+      "(4.0*goats)+(2.0*chicken)=30.0",
+      "goats+chicken=13.0"
+    ],
+    "iIndex": 6933,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 13.0,
+        "TokenId": 5
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 0,
+        "Value": 30.0,
+        "TokenId": 2
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "chicken",
+        "TokenId": 10
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "goats",
+        "TokenId": 8
+      }
+    ],
+    "Equiv": []
+  },  
 ]
