@@ -113,13 +113,13 @@
       {
         "unk": "m",
         "SentenceId": 0,
-        "String": "audio_cassettes",
+        "String": "six_percent",
         "TokenId": 0
       },
       {
         "unk": "n",
         "SentenceId": 0,
-        "String": "video_cassettes",
+        "String": "nine_percent",
         "TokenId": 0
       }
     ],
@@ -554,10 +554,12 @@
   },
   {
     "sQuestion": "Mary can purchase roses and daisies from a flower shop . She can buy four roses and five daisies for 7.90 dollars or two roses and six daisies for 5.70 dollars . What is the individual cost for each rose and daisy ?",
+    "template_index": 0,
     "lSolutions": [
       1.35,
       0.5
     ],
+    "sample_index": 10,
     "Template": [
       "a * m + b * n = c",
       "d * m + e * n = f"
@@ -621,10 +623,12 @@
   },
   {
     "sQuestion": "With a tail wind , a jet flew 2000 miles in 4 hours . The jet 's return trip against the same wind required 5 hours . Find the jet 's speed and the wind speed .",
+    "template_index": 3,
     "lSolutions": [
       450.0,
       50.0
     ],
+    "sample_index": 11,
     "Template": [
       "a * m + a * n = b",
       "c * m - c * n = b"
@@ -670,10 +674,12 @@
   },
   {
     "sQuestion": "A furniture dealer has 36 tables . Some tables have 4 legs and some have 3 legs , but she doesn't know how many of each kind there are . She has counted 124 legs in total . How many 4 legged tables are there ?",
+    "template_index": 2,
     "lSolutions": [
       16.0,
       20.0
     ],
+    "sample_index": 12,
     "Template": [
       "a * m + b * n = c",
       "m + n = d"
@@ -738,10 +744,12 @@
   },
   {
     "sQuestion": "You are making 10 tons of concrete that is 62 % cement by mixing a 20 % cement mixture with a 80 % cement mixture . How much of the 80 % cement mixture must you use ? Answer in units of tons .",
+    "template_index": 6,
     "lSolutions": [
       7.0,
       3.0
     ],
+    "sample_index": 13,
     "Template": [
       "a * m + b * n = c * d",
       "m + n = c"
@@ -803,5 +811,119 @@
         ]
       ]
     ]
-  }
+  },
+  {
+    "sQuestion": "A self-employed contractor nearing retirement made two investments totaling 15,000 dollars . In one year , these investments yielded 1023 dollars in simple interest . Part of the money was invested at 6 % and the rest at 7.5 % . How much was invested at each rate ?",
+    "template_index": 1,
+    "lSolutions": [
+      8200.0,
+      6800.0
+    ],
+    "sample_index": 14,
+    "Template": [
+      "0.01 * a * m + 0.01 * b * n = c",
+      "n + m = d"
+    ],
+    "lEquations": [
+      "7.5*0.01*high_interest_investment+6.0*0.01*low_interest_investment=1023.0",
+      "high_interest_investment+low_interest_investment=15000.0"
+    ],
+    "iIndex": 5197,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 2,
+        "Value": 6.0,
+        "TokenId": 7
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 2,
+        "Value": 7.5,
+        "TokenId": 13
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 1,
+        "Value": 1023.0,
+        "TokenId": 7
+      },
+      {
+        "coeff": "d",
+        "SentenceId": 0,
+        "Value": 15000.0,
+        "TokenId": 9
+      },
+      {
+        "coeff": "m",
+        "SentenceId": 2,
+        "Value": "low_interest_investment",
+        "TokenId": 16
+      },
+      {
+        "coeff": "n",
+        "SentenceId": 2,
+        "Value": "high_interest_investment",
+        "TokenId": 21
+      },
+    ],
+    "Equiv": []
+  },
+{
+    "sQuestion": "At Al 's Rent-a-Center , it costs 30 dollars more per month to rent a leather couch than it does to rent a microfiber couch . Pauline rented a leather couch for 8 months and then exchanged it for a microfiber couch , which she rented for 12 months . She paid a total of 1620 dollars to rent these couches . Solve this system of equations to find the monthly rental charge for the leather couch , in dollars . Find the monthly rental charge for the microfiber couch .",
+    "template_index": 7,
+    "lSolutions": [
+      99.0,
+      69.0
+    ],
+    "sample_index": 15,
+    "Template": [
+      "a * m + b * n = c",
+      "m - n = d"
+    ],
+    "lEquations": [
+      "(8.0*leather)+(12.0*microfiber)=1620.0", 
+      "leather=30.0+microfiber"
+    ],
+    "iIndex": 6227,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 1,
+        "Value": 8.0,
+        "TokenId": 6
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 12.0,
+        "TokenId": 21
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 2,
+        "Value": 1620.0,
+        "TokenId": 5
+      },
+      {
+        "coeff": "d",
+        "SentenceId": 0,
+        "Value": 30.0,
+        "TokenId": 7
+      },
+      {
+        "coeff": "m",
+        "SentenceId": 0,
+        "Value": "leather",
+        "TokenId": 14
+      },
+      {
+        "coeff": "n",
+        "SentenceId": 0,
+        "Value": "microfiber",
+        "TokenId": 22
+      },
+    ],
+    "Equiv": []
+  },
 ]
