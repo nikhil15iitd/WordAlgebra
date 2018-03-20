@@ -869,7 +869,7 @@
     ],
     "Equiv": []
   },
-{
+  {
     "sQuestion": "At Al 's Rent-a-Center , it costs 30 dollars more per month to rent a leather couch than it does to rent a microfiber couch . Pauline rented a leather couch for 8 months and then exchanged it for a microfiber couch , which she rented for 12 months . She paid a total of 1620 dollars to rent these couches . Solve this system of equations to find the monthly rental charge for the leather couch , in dollars . Find the monthly rental charge for the microfiber couch .",
     "template_index": 7,
     "lSolutions": [
@@ -1600,5 +1600,248 @@
       }
     ],
     "Equiv": []
-  },            
+  },
+  {
+    "sQuestion": "Michael rented a truck for one day . There was a rental fee of 20.99 dollars , and there also was a charge of 25 cents for each mile . Michael paid 95.74 dollars when he returned the truck . For how many miles did he drive the truck ?",
+    "template_index": 20,
+    "lSolutions": [
+      299.0
+    ],
+    "sample_index": 31,
+    "Template": [
+      "0.01 * a * m = b - c"
+    ],
+    "lEquations": [
+      "20.99+((25.0*0.01)*miles)=95.74"
+    ],
+    "iIndex": 576,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 1,
+        "Value": 25.0,
+        "TokenId": 16
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 2,
+        "Value": 95.74,
+        "TokenId": 2
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 1,
+        "Value": 20.99,
+        "TokenId": 6
+      },
+      {
+        "unk": "m",
+        "SentenceId": 1,
+        "String": "miles",
+        "TokenId": 20
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "A garden table and a bench cost 750 combined . The price of the garden table is two times the price of the bench . What is the cost of the bench ?",
+    "template_index": 6,
+    "lSolutions": [
+      250.0,
+      500.0
+    ],
+    "sample_index": 32,
+    "Template": [
+      "m + n = a",
+      "n - b * m = 0"
+    ],
+    "lEquations": [
+      "garden_table+bench=750.0",
+      "garden_table=2.0*bench"
+    ],
+    "iIndex": 2423,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 750.0,
+        "TokenId": 7
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 2.0,
+        "TokenId": 7
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "bench",
+        "TokenId": 5
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "garden_table",
+        "TokenId": 1
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "Hockey teams receive 2 points for a win and 1 point for a tie . The wild cats once won a championship with 60 points . They won 9 more games than they tied . How many wins and how many ties did the Wildcats have ?",
+    "template_index": 7,
+    "lSolutions": [
+      23.0,
+      14.0
+    ],
+    "sample_index": 33,
+    "Template": [
+      "a * m + b * n = c",
+      "m - n = d"
+    ],
+    "lEquations": [
+      "(2.0*wins)+(1.0*tie)=60.0", 
+      "wins=9.0+tie"
+    ],
+    "iIndex": 1962,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 2.0,
+        "TokenId": 3
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 0,
+        "Value": 1.0,
+        "TokenId": 9
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 1,
+        "Value": 60.0,
+        "TokenId": 8
+      },
+      {
+        "coeff": "d",
+        "SentenceId": 2,
+        "Value": 9.0,
+        "TokenId": 2
+      },
+      {
+        "coeff": "m",
+        "SentenceId": 0,
+        "Value": "wins",
+        "TokenId": 7
+      },
+      {
+        "coeff": "n",
+        "SentenceId": 0,
+        "Value": "tie",
+        "TokenId": 13
+      },
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "0.20 of a number decreased by 4 is equal to 6 . Find the number .",
+    "template_index": 13,
+    "lSolutions": [
+      50.0,
+    ],
+    "sample_index": 34,
+    "Template": [
+      "a * m = b + c"
+    ],
+    "lEquations": [
+      "(0.2*number)-4.0=6.0"
+    ],
+    "iIndex": 5464,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 0.2,
+        "TokenId": 0
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 0,
+        "Value": 4.0,
+        "TokenId": 6
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 0,
+        "Value": 6.0,
+        "TokenId": 10
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "number",
+        "TokenId": 3
+      }
+    ],
+    "Equiv": []
+  }, 
+  {
+    "sQuestion": "Snookers Lumber can convert logs into either lumber or plywood . In a given day , the mill turns out three times as many units of plywood as lumber . It makes a profit of 30 dollars on a unit of lumber and 50 dollars on a unit of plywood . Snookers lumber must produce and sell ___ units of lumber and ___ units of plywood to make a profit of 18360 dollars ?",
+    "template_index": 12,
+    "lSolutions": [
+      102.0,
+      306.0
+    ],
+    "sample_index": 35,
+    "Template": [
+      "a * m + b * n = c",
+      "d * m - n = 0"
+    ],
+    "lEquations": [
+      "(30.0*lumber)+(50.0*plywood)=18360.0",
+      "plywood=3.0*lumber"
+    ],
+    "iIndex": 2189,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 2,
+        "Value": 30.0,
+        "TokenId": 5
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 2,
+        "Value": 50.0,
+        "TokenId": 13
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 3,
+        "Value": 18360.0,
+        "TokenId": 20
+      },
+      {
+        "coeff": "d",
+        "SentenceId": 1,
+        "Value": 3.0,
+        "TokenId": 9
+      },
+      {
+        "unk": "m",
+        "SentenceId": 1,
+        "String": "lumber",
+        "TokenId": 7
+      },
+      {
+        "unk": "n",
+        "SentenceId": 1,
+        "String": "plywood",
+        "TokenId": 9
+      }
+    ],
+    "Equiv": []
+  },                 
 ]
