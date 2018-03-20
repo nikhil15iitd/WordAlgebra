@@ -1378,5 +1378,227 @@
       }
     ],
     "Equiv": []
-  },  
+  },
+  {
+    "sQuestion": "If 6 is subtracted from three times a number , the difference is twice the number . What is the number ?",
+    "template_index": 18,
+    "lSolutions": [
+      6.0
+    ],
+    "sample_index": 26,
+    "Template": [
+      "a * m - b * m = c"
+    ],
+    "lEquations": [
+      "(3.0*number)-6.0=2.0*number"
+    ],
+    "iIndex": 5145,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 3.0,
+        "TokenId": 5
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 0,
+        "Value": 2.0,
+        "TokenId": 13
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 0,
+        "Value": 6.0,
+        "TokenId": 1
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "number",
+        "TokenId": 8
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "A painting is 10 inches tall and 15 inches wide . A print of the painting is 25 inches tall , how wide is the print in inches ?",
+    "template_index": 19,
+    "lSolutions": [
+      37.5,
+      1.5
+    ],
+    "sample_index": 27,
+    "Template": [
+      "a * m = b",
+      "c * m - n = 0"
+    ],
+    "lEquations": [
+      "10.0*ratio=15.0",
+      "25.0*ratio=width"
+    ],
+    "iIndex": 1558,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 10.0,
+        "TokenId": 3
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 0,
+        "Value": 15.0,
+        "TokenId": 7
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 1,
+        "Value": 25.0,
+        "TokenId": 6
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "ratio",
+        "TokenId": 0
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "width",
+        "TokenId": 9
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "A car rents for 50 dollars a day plus 20 cents a mile . You are on a daily budget of 88 dollars . What maximum mileage will allow you to stay within your budget ?",
+    "template_index": 20,
+    "lSolutions": [
+      190.0
+    ],
+    "sample_index": 28,
+    "Template": [
+      "0.01 * a * m = b - c"
+    ],
+    "lEquations": [
+      "50.0+((20.0*0.01)*miles)=88.0"
+    ],
+    "iIndex": 6348,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 20.0,
+        "TokenId": 9
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 88.0,
+        "TokenId": 7
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 0,
+        "Value": 50.0,
+        "TokenId": 4
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "miles",
+        "TokenId": 12
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "There are 3 more girls than boys in Tom 's class , and the sum of girls and boys is 41 . How many boys are in the class ? How many girls are in the class ?",
+    "template_index": 10,
+    "lSolutions": [
+      19.0,
+      22.0
+    ],
+    "sample_index": 29,
+    "Template": [
+      "m + n = a",
+      "m - n = b"
+    ],
+    "lEquations": [
+      "girls+boys=41.0",
+      "girls=3.0+boys"
+    ],
+    "iIndex": 6881,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 41.0,
+        "TokenId": 20
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 0,
+        "Value": 3.0,
+        "TokenId": 2
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "girls",
+        "TokenId": 4
+      },
+      {
+        "unk": "n",
+        "SentenceId": 0,
+        "String": "boys",
+        "TokenId": 6
+      }
+    ],
+    "Equiv": []
+  },
+  {
+    "sQuestion": "You have 160 dollars and save 7 dollars per week . Your friend has 210 dollars and saves 5 dollars per week . After how many weeks will each of you have saved the same amount of money ?",
+    "template_index": 11,
+    "lSolutions": [
+      25.0
+    ],
+    "sample_index": 30,
+    "Template": [
+      "a * m - b * m = c - d"
+    ],
+    "lEquations": [
+      "160.0+(7.0*week)=210.0+(5.0*week)"
+    ],
+    "iIndex": 2089,
+    "Alignment": [
+      {
+        "coeff": "a",
+        "SentenceId": 0,
+        "Value": 7.0,
+        "TokenId": 6
+      },
+      {
+        "coeff": "b",
+        "SentenceId": 1,
+        "Value": 5.0,
+        "TokenId": 7
+      },
+      {
+        "coeff": "c",
+        "SentenceId": 1,
+        "Value": 210.0,
+        "TokenId": 3
+      },
+      {
+        "unk": "m",
+        "SentenceId": 0,
+        "String": "week",
+        "TokenId": 9
+      }
+    ],
+    "Equiv": []
+  },            
 ]
