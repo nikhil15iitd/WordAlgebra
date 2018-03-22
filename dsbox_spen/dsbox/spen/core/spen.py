@@ -108,15 +108,26 @@ class SPEN:
 
     self.train_step = tf.train.AdamOptimizer(self.learning_rate_ph).minimize(self.objective, var_list=self.spen_variables())
 
-    ## Definition of a Custom Training Function That uses a  score function in the objective 
+    # ## Definition of a Custom Training Function That uses a  score function in the objective 
     # def custom_training(self)
     #   self.margin_weight_ph = tf.placeholder(tf.float32, shape=[], name="Margin")
-    #   self.yh = tf.placeholder(tf.float32, shape=[None, self.config.output_num * self.config.dimension], name="OutputYP")
-    #   self.yl = tf.placeholder(tf.float32, shape=[None, self.config.output_num * self.config.dimension], name="OutputYT")
+    #   self.y1 = tf.placeholder(tf.float32, shape=[None, self.config.output_num * self.config.dimension], name="OutputYP")
+    #   self.y2 = tf.placeholder(tf.float32, shape=[None, self.config.output_num * self.config.dimension], name="OutputYT")
     #   self.label = tf.placeholder(tf.float32, shape=[[None, self.config.output_num * self.config.dimension]], )
+
+    #   self.score_y1 = self.get_score(xinput = self.x, yinput=self.y1,label=self.label, embedding=self.embedding)
+    #   self.score_y2 = self.get_score(xinput = self.x, yinput=self.y2,label=self.label, embedding=self.embedding)
+      
+    #   if self.score_y1 > self.score_y2:
+    #     self.yh = self.y1
+    #     self.yl = self.y2
+    #   else:
+    #     self.yh = self.y2
+    #     self.yl = self.y1
+
+      
     #   self.energy_yh = self.get_energy(xinput=self.x, yinput=self.yh, embedding=self.embedding)
     #   self.energy_yl = self.get_energy(xinput=self.x, yinput=self.yl, embedding=self.embedding)
-      
     #   self.score_yh = self.get_score(xinput = self.x, yinput=self.yh,label=self.label, embedding=self.embedding)
     #   self.score_yh = self.get_score(xinput = self.x, yinput=self.yh,label=self.label, embedding=self.embedding)
       
