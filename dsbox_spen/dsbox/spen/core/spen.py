@@ -108,6 +108,24 @@ class SPEN:
 
     self.train_step = tf.train.AdamOptimizer(self.learning_rate_ph).minimize(self.objective, var_list=self.spen_variables())
 
+    ## Definition of a Custom Training Function That uses a  score function in the objective 
+    # def custom_training(self)
+    #   self.margin_weight_ph = tf.placeholder(tf.float32, shape=[], name="Margin")
+    #   self.yh = tf.placeholder(tf.float32, shape=[None, self.config.output_num * self.config.dimension], name="OutputYP")
+    #   self.yl = tf.placeholder(tf.float32, shape=[None, self.config.output_num * self.config.dimension], name="OutputYT")
+    #   self.label = tf.placeholder(tf.float32, shape=[[None, self.config.output_num * self.config.dimension]], )
+    #   self.energy_yh = self.get_energy(xinput=self.x, yinput=self.yh, embedding=self.embedding)
+    #   self.energy_yl = self.get_energy(xinput=self.x, yinput=self.yl, embedding=self.embedding)
+      
+    #   self.score_yh = self.get_score(xinput = self.x, yinput=self.yh,label=self.label, embedding=self.embedding)
+    #   self.score_yh = self.get_score(xinput = self.x, yinput=self.yh,label=self.label, embedding=self.embedding)
+      
+    #   self.enery_term = self.energy_yh + self.energy_yl
+    #   self.score_term = self.alpha * (self.score_yh - self.score_yl)
+      
+    #   self.objective = tf.redece_sum( tf.maximum(self.score_term - self.enery_term,0.0))
+
+    #   self.train_step = tf.train.AdamOptimizer(self.learning_rate_ph).minimize(self.objective, var_list=self.spen_variables())
 
   def construct_embedding(self, embedding_size, vocabulary_size):
     self.vocabulary_size = vocabulary_size
