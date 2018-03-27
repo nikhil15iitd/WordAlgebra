@@ -8,7 +8,7 @@ TEMPLATE_LENGTH = 30
 SEED = 23
 COEFFS = ['a', 'b', 'c', 'd', 'e', 'f']
 UNKOWNS = ['m', 'n']
-SLOTS = ['m', 'n', 'a', 'b', 'c', 'd', 'e', 'f']  # unknowns + coeffs
+SLOTS = ['a', 'b', 'c', 'd', 'e', 'f']  # unknowns + coeffs
 
 # the index where the vector starts listing coeff values
 # 3 because we are using a representation like this: [ template_index, m,n, a,b,c,d,e,f ]
@@ -134,15 +134,18 @@ def get_gold_derivations(dataset, vocab):
     """
     X = []
     derivations = []
+    unique_templates = []
     for index, data_sample in enumerate(dataset):
         print('=' * 50)
         print(index)
-        words = data_sample['sQuestion'].split()
+        words = data_sample['sQuestion'].split(" ")
         x_temp = []
         for w in words:
             x_temp.append(vocab[w])
         X.append(x_temp)
-        template_index = data_sample['template_index']
+        if data_sample["Template"] not in unique_templates:
+            unique_templates.append(data_sample["Template"])
+        template_index = unique_templates.index(data_sample["Template"])
         templates = data_sample['Template']
         equations = data_sample['lEquations']
         alignments = data_sample['Alignment']
@@ -151,57 +154,35 @@ def get_gold_derivations(dataset, vocab):
         tmp = []
         tmp.append(template_index)
 
-        # An attempt to extract unknown string from lEquations:
-        '''for i, eq in enumerate(equations):
-            # https://stackoverflow.com/questions/1059559/split-strings-with-multiple-delimiters
-            # Will be splitting on: , <space> - ! ? :
-            instantiated_template = filter(None, re.split("[,\+\-\*\/\=\(\)]+", eq))
-            template = list(filter(lambda x: x not in ['+', '-', '*','/', '='], templates[i].split()))
-            print(instantiated_template)
-            print(template)
-            for j, symbol in enumerate(template):
-                if symbol == 'm':
-                    m = instantiated_template[j]
-                elif symbol == 'n':
-                    n = instantiated_template[j]
-        '''
-
         # 2. fill the slots
         existing_slots = [a['coeff'] if 'coeff' in a else a['unk'] for a in alignments]
         # print(existing_slots)
 
         slot_to_index = {
-            'm': 1,
-            'n': 2,
-            'a': 3,
-            'b': 4,
-            'c': 5,
-            'd': 6,
-            'e': 7,
-            'f': 8,
+            'a': 1,
+            'b': 2,
+            'c': 3,
+            'd': 4,
+            'e': 5,
+            'f': 6
         }
         # init with zero
         for slot in SLOTS:
             tmp.append(0)
         for a in alignments:
             if 'coeff' in a:
-                tmp[slot_to_index[a['coeff']]] = a['TokenId']
-            elif 'unk' in a:
-                tmp[slot_to_index[a['unk']]] = a['String']
-            else:
-                raise
+                tmp[slot_to_index[a['coeff']]] = a['TokenId'] + 1
         # print(tmp)
 
         # 3. Use the vocab to convert string to word index
         derivation = tmp[:]
-        print(derivation)
-        if not is_number(derivation[1]):
-            derivation[1] = vocab[derivation[1].split('_')[0]]
-        if not is_number(derivation[2]):
-            derivation[2] = vocab[derivation[2].split('_')[0]]
-        print(derivation)
+        # print(derivation)
+        # if not is_number(derivation[1]):
+        #     derivation[1] = vocab[derivation[1].split('_')[0]]
+        # if not is_number(derivation[2]):
+        #     derivation[2] = vocab[derivation[2].split('_')[0]]
+        # print(derivation)
         derivations.append(np.array(derivation))
-
     return X, np.array(derivations)
 
 
@@ -214,9 +195,9 @@ def validate_derivation(derivation, dataset):
 
 
 def debug():
-    filepath = '0.7 - release/kushman_template_index_debug.json'
+    # filepath = '0.7 - release/kushman_template_index_debug.json'
     # filepath = '0.7 - release/kushman_template_index_org.json'
-    # filepath = '0.7 - release/draw_template_index.json'
+    filepath = '0.7 - release/kushman.json'
     with open(filepath, 'r') as f:
         dataset = json.load(f)
     # print(len(list(dataset.keys()) ))
@@ -225,8 +206,9 @@ def debug():
     # Build vocab for question texts
     from collections import defaultdict
     word_count = defaultdict(float)
+
     for index, data_sample in enumerate(dataset):
-        words = data_sample['sQuestion'].split()
+        words = data_sample['sQuestion'].split(" ")
         for w in words:
             word_count[w] += 1
     print(word_count)
