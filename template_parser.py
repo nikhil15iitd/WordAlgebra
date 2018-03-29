@@ -135,13 +135,17 @@ def get_gold_derivations(dataset, vocab):
     X = []
     derivations = []
     unique_templates = []
+    solutions = []
     for index, data_sample in enumerate(dataset):
         print('=' * 50)
         print(index)
         words = data_sample['sQuestion'].split(" ")
         x_temp = []
         for w in words:
-            x_temp.append(vocab[w])
+            # if is_number(w):
+            #     x_temp.append(vocab['zn'])
+            # else:
+            x_temp.append(vocab[w.lower()])
         X.append(x_temp)
         if data_sample["Template"] not in unique_templates:
             unique_templates.append(data_sample["Template"])
@@ -171,7 +175,7 @@ def get_gold_derivations(dataset, vocab):
             tmp.append(0)
         for a in alignments:
             if 'coeff' in a:
-                tmp[slot_to_index[a['coeff']]] = a['TokenId'] + 1
+                tmp[slot_to_index[a['coeff']]] = (a['TokenId']) + 1
         # print(tmp)
 
         # 3. Use the vocab to convert string to word index
@@ -183,7 +187,9 @@ def get_gold_derivations(dataset, vocab):
         #     derivation[2] = vocab[derivation[2].split('_')[0]]
         # print(derivation)
         derivations.append(np.array(derivation))
-    return X, np.array(derivations)
+        solutions.append(np.array(data_sample['lSolutions']))
+    print(unique_templates)
+    return X, np.array(derivations), np.array(solutions)
 
 
 def validate_derivation(derivation, dataset):
@@ -210,13 +216,17 @@ def debug():
     for index, data_sample in enumerate(dataset):
         words = data_sample['sQuestion'].split(" ")
         for w in words:
-            word_count[w] += 1
+            # if is_number(w):
+            #     word_count['zn'] += 1
+            # else:
+            word_count[w.lower()] += 1
     print(word_count)
 
     word_idx_map = dict()
     idx_word_map = dict()
     for i, word in enumerate(word_count):
-        word_idx_map[word] = i
+        word_idx_map[word] = i + 1
+    word_idx_map[' '] = 0
     print(word_idx_map)
     print(len(word_idx_map.keys()))
     print('#' * 100)

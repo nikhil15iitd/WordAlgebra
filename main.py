@@ -3,12 +3,13 @@ from dataset import read_draw, numbers_to_words, derivation_to_equation
 from template_parser import debug
 import os
 import numpy as np
+import scoring_function as sf
 from keras.layers import Bidirectional, LSTM, Conv1D, Dense, PReLU, MaxPool1D, Input, Embedding, TimeDistributed, \
     BatchNormalization
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
-from dsbox_spen.dsbox.spen.core import ispen as sp, config, energy
+from dsbox_spen.dsbox.spen.core import spen as sp, config, energy
 from dsbox_spen.dsbox.spen.utils.metrics import token_level_loss_ar, token_level_loss
 
 GLOVE_DIR = 'glove.6B'
@@ -16,6 +17,7 @@ EMBEDDING_DIM = 50  # 50
 MAX_SEQUENCE_LENGTH = 105
 
 worddict = {}
+text2sols = {}
 
 
 def feed_forward_mlp_model(input_shape, vocab_size, emb_layer):
@@ -90,24 +92,34 @@ def evaluate_citation(xinput=None, yinput=None, yt=None):
     yd = yinput
     debug = False
     size = np.shape(xd)[0]
-    return np.random.randint(0, 100, size=size)
+    scorer = sf.Scorer()
+    penalty = np.zeros(size)
+    for i in range(size):
+        x = xd[i, :]
+        text = ''
+        for j in range(x.shape[0]):
+            text += ' ' + worddict[x[j]]
+        penalty[i] = scorer.score_output(text, yd[i],text2sols[str(x)])
+    return penalty
 
 
 def main():
     derivations, vocab_dataset = debug()
-    X, Y = derivations
-    worddict = vocab_dataset
+    X, Y, Z = derivations
+    for key in vocab_dataset:
+        worddict[vocab_dataset[key]] = key
     X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
+    for i in range(X.shape[0]):
+        text2sols[str(X[i])] = Z[i]
     emb_layer = load_glove(vocab_dataset)
     F = feed_forward_mlp_model(X.shape[1:], len(vocab_dataset.keys()), emb_layer)
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=globals.SEED)
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=23)
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(y_train.shape)
-    print(y_train[0])
     # F.fit(X_train,
     #       [y_train[:, 0], y_train[:, 1], y_train[:, 2], y_train[:, 3], y_train[:, 4], y_train[:, 5], y_train[:, 6]],
-    #       batch_size=128, epochs=5, validation_data=(
+    #       batch_size=128, epochs=30, validation_data=(
     #         X_test, [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6]]))
 
     # y_pred = np.argmax(F.predict(X_test), axis=2)
@@ -119,7 +131,7 @@ def main():
     ln = 1e10
     l2 = 0.0
     lr = 0.001
-    inf_iter = 10
+    inf_iter = 50
     inf_rate = 0.1
     mw = 100.0
     dp = 0.0
@@ -140,12 +152,10 @@ def main():
     config.en_layer_info = en_layers
     config.layer_info = f_layers
     config.margin_weight = mw
-    # config.lstm_hidden_size = 15
-    # config.sequence_length = 105
+    config.lstm_hidden_size = 15
+    config.sequence_length = 105
     config.inf_penalty = ip
     ###Configurable parameters END
-
-
     s = sp.SPEN(config)
     e = energy.EnergyModel(config)
     s.get_energy = e.get_energy_mlp_emb
@@ -167,7 +177,7 @@ def main():
     print(ylabeled.shape)
 
     total_num = xlabeled.shape[0]
-    for i in range(1, 100):
+    for i in range(1, 1000):
         bs = min((bs, labeled_num))
         perm = np.random.permutation(total_num)
 
@@ -179,19 +189,13 @@ def main():
             ybatch = ylabeled[indices][:]
             ybatch = np.reshape(ybatch, (ybatch.shape[0], -1))
             s.set_train_iter(i)
-            s.train_batch(xbatch, ybatch)
+            s.train_batch(xbatch, verbose=1)
 
         if i % 2 == 0:
             yval_out = s.map_predict(xinput=np.reshape(X_test, (X_test.shape[0], -1)))
-            # ytest_out = pad_sequences(y_test, maxlen=globals.PROBLEM_LENGTH, padding='post', truncating='post',
-            #                          value=0.)
-            # ts_f1 = f1_score(yval_out, np.reshape(ytest_out, (ytest_out.shape[0], -1)))
-            yt_ind = s.var_to_indicator(y_test)
-            yt_ind = np.reshape(yt_ind, (-1, s.config.output_num * s.config.dimension))
-            print(yval_out)
-            print(y_test)
-            hm_ts, ex_ts = token_level_loss(yval_out, yt_ind)
-            print(yval_out.shape)
+            # print(yval_out)
+            # print(y_test)
+            hm_ts, ex_ts = token_level_loss(yval_out, y_test)
             print(hm_ts)
             print(ex_ts)
 
