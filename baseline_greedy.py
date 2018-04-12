@@ -7,6 +7,7 @@ import numpy as np
 import scoring_function as sf
 
 from keras.preprocessing.sequence import pad_sequences
+from dsbox_spen.dsbox.spen.utils.metrics import token_level_loss_ar, token_level_loss
 '''
 from keras.layers import Bidirectional, LSTM, Conv1D, Dense, PReLU, MaxPool1D, Input, Embedding, TimeDistributed, \
     BatchNormalization
@@ -95,48 +96,65 @@ def main():
     vocab_size = len(vocab_dataset.keys())
     SLOT_DIMS = [230]+[MAX_SEQUENCE_LENGTH]*6
     SEARCH_NUM = 50
+    DERIVATION_SIZE = 7
 
     # test with ypred for 1 example
-    ypred = [np.random.randint(globals.PROBLEM_LENGTH) for _ in range(7)]
+    #ypred = [np.random.randint(globals.PROBLEM_LENGTH) for _ in range(7)]
+    ypred = np.random.randint(0, MAX_SEQUENCE_LENGTH, (X.shape[0], DERIVATION_SIZE))
     print(ypred)
 
 
-    for slot in range(7): # determine the value slot by slot
+    # #(data_sample) * #(slots) * #(possible values for that slot) = 514 * 7 * 105 = 377790 iterations
+    start = datetime.datetime.now()
+    for slot in range(DERIVATION_SIZE): # determine the value slot by slot
         print('#'*100)
         cur_max = 0
         cur_max_score = -np.inf
 
-        for n in range(SLOT_DIMS[slot]):
-            #candid = np.random.randint(SLOT_DIMS[slot])
-            candid = n
-            ypred[slot] = n
+        for i in range(X.shape[0]): # for every data sample
 
-            start = datetime.datetime.now()
-            score = evaluate_citation(X[:1], np.array([ypred]*1), Y[:1]) # 5-15ms for 1 example
-            end = datetime.datetime.now()
-            #print(score)
-            #print((end-start).total_seconds()*1000)
-            #print(cur_max)
-            #print(score)
-            #print(cur_max < score)
+            for n in range(SLOT_DIMS[slot]): # try every possible value for that slot
+                #candid = np.random.randint(SLOT_DIMS[slot])
+                ypred[slot] = n
 
-            if cur_max_score < score:
-                cur_max = candid
-                cur_max_score = score
+                #start = datetime.datetime.now()
+                #score = evaluate_citation(X[:1], np.array([ypred]*1), Y[:1]) # 5-15ms for 1 example
+                score = evaluate_citation(np.array([X[i]]), np.array([ ypred[i] ]), np.array([Y[i]])) # 5-15ms for 1 example
+                #end = datetime.datetime.now()
+                #print(score)
+                #print((end-start).total_seconds()*1000)
+                #print(cur_max)
+                #print(score)
+                #print(cur_max < score)
+
+                # take the maximum
+                if cur_max_score < score:
+                    cur_max = n
+                    cur_max_score = score
 
         print(cur_max)
         print(cur_max_score)
-        ypred[slot] = cur_max
+        #ypred[slot] = cur_max
+        ypred[i][slot] = cur_max
+    end = datetime.datetime.now()
+    print('time took:')
+    print((end-start).total_seconds())
+
     print('#'*100)
     print(len(ypred))
     print(ypred)
     print(Y[0])
+    hm_ts, ex_ts = token_level_loss(ypred, Y)
+    print(hm_ts)
+    print(ex_ts)
+
+    for pred in ypred[:20]:
+        print(pred)
 
 
 
 
 
-
-globals.init()  # Fetch global variables such as PROBLEM_LENGTH
-#config = config.Config()
-main()
+if __name__ == "__main__":
+    globals.init()  # Fetch global variables such as PROBLEM_LENGTH
+    main()
