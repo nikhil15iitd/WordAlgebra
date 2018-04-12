@@ -8,56 +8,7 @@ import scoring_function as sf
 
 from keras.preprocessing.sequence import pad_sequences
 from dsbox_spen.dsbox.spen.utils.metrics import token_level_loss_ar, token_level_loss
-'''
-from keras.layers import Bidirectional, LSTM, Conv1D, Dense, PReLU, MaxPool1D, Input, Embedding, TimeDistributed, \
-    BatchNormalization
-from keras.models import Model
-from keras.preprocessing.sequence import pad_sequences
-from sklearn.model_selection import train_test_split
-from dsbox_spen.dsbox.spen.core import spen as sp, config, energy
-from dsbox_spen.dsbox.spen.utils.metrics import token_level_loss_ar, token_level_loss
-'''
-GLOVE_DIR = 'glove.6B'
-EMBEDDING_DIM = 50  # 50
-MAX_SEQUENCE_LENGTH = 105
 
-worddict = {}
-text2sols = {}
-
-def load_glove(vocab):
-    # ref: https://blog.keras.io/using-pre-trained-word-embeddings-in-a-keras-model.html
-    vocab_size = len(vocab.keys())
-    word_index = vocab_size
-
-    embeddings_index = {}
-    f = open(os.path.join(GLOVE_DIR, 'glove.6B.%dd.txt' % EMBEDDING_DIM), encoding="utf8")
-    for line in f:
-        values = line.split()
-        word = values[0]
-        coefs = np.asarray(values[1:], dtype='float32')
-        embeddings_index[word] = coefs
-    f.close()
-    print('Found %s word vectors.' % len(embeddings_index))
-
-    # embedding_matrix = np.zeros((len(word_index) + 1, EMBEDDING_DIM))
-    embedding_matrix = np.zeros((vocab_size + 1, EMBEDDING_DIM))
-
-    # for word, i in word_index.items():
-    for word, i in vocab.items():
-        embedding_vector = embeddings_index.get(word)
-        if embedding_vector is not None:
-            # words not found in embedding index will be all-zeros.
-            embedding_matrix[i] = embedding_vector
-
-    from keras.layers import Embedding
-
-    # embedding_layer = Embedding(len(word_index) + 1,
-    embedding_layer = Embedding(vocab_size + 1,
-                                EMBEDDING_DIM,
-                                weights=[embedding_matrix],
-                                input_length=MAX_SEQUENCE_LENGTH,
-                                trainable=False)
-    return embedding_layer
 
 def evaluate_citation(xinput=None, yinput=None, yt=None):
     xd = xinput
@@ -80,15 +31,10 @@ def main():
     for key in vocab_dataset:
         worddict[vocab_dataset[key]] = key
 
-    print(X[0])
-    print(Y[0])
-    print(Z[0])
-
     X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
     for i in range(X.shape[0]):
         text2sols[str(X[i])] = Z[i]
     print('='*50)
-    #print(text2sols)
 
     ##################################
     #  Determine components greedily
@@ -118,38 +64,57 @@ def main():
                 ypred[slot] = n
 
                 #start = datetime.datetime.now()
-                #score = evaluate_citation(X[:1], np.array([ypred]*1), Y[:1]) # 5-15ms for 1 example
-                score = evaluate_citation(np.array([X[i]]), np.array([ ypred[i] ]), np.array([Y[i]])) # 5-15ms for 1 example
+                score = evaluate_citation(np.array([X[i]]), np.array([ ypred[i] ]), np.array([Y[i]])) # 5-15ms for 1 example?
                 #end = datetime.datetime.now()
                 #print(score)
                 #print((end-start).total_seconds()*1000)
-                #print(cur_max)
-                #print(score)
-                #print(cur_max < score)
 
-                # take the maximum
+                # take the maximum value for prediction
                 if cur_max_score < score:
                     cur_max = n
                     cur_max_score = score
-
         print(cur_max)
         print(cur_max_score)
-        #ypred[slot] = cur_max
         ypred[i][slot] = cur_max
     end = datetime.datetime.now()
     print('time took:')
-    print((end-start).total_seconds())
+    print((end-start).total_seconds()) # => 3732.995384 = about an hour
 
     print('#'*100)
     print(len(ypred))
     print(ypred)
     print(Y[0])
     hm_ts, ex_ts = token_level_loss(ypred, Y)
-    print(hm_ts)
-    print(ex_ts)
+    print(hm_ts) # => 0.9929312581063555
+    print(ex_ts) # => 0.007068741893644619
+
+    # Outputs the first 20 predictions for debugging
 
     for pred in ypred[:20]:
         print(pred)
+    '''
+    =>
+    [229 229 229 229 229 229 229]
+    [104 104 104 104 104 104 104]
+    [104 104 104 104 104 104 104]
+    [104 104 104 104 104 104 104]
+    [104 104 104 104 104 104 104]
+    [104 104 104 104 104 104 104]
+    [104 104 104 104 104 104 104]
+    [68 86 16  5  1 10 17]
+    [102  65   1  84   5  52  93]
+    [92 79 95 64 14 95 30]
+    [35 17 71 41 97 82 40]
+    [ 1  2 39 70 33 41 97]
+    [ 22  52  65 102  57  87  68]
+    [44 35 69  8 37 94 20]
+    [82 53 15 99 80 59 41]
+    [ 9  6 44 10 75 12 33]
+    [ 85  52 101  70  12 103  54]
+    [71 53 16 49 88 44 18]
+    [95  8 84  8 46 91 58]
+    [ 70  77  50   2  23  15 103]
+    '''
 
 
 
