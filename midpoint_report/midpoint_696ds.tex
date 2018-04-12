@@ -77,14 +77,15 @@
 \maketitle
 
 
+% previous version
 \if0
-\begin{abstract}
-Solving word albegra problems automatically is a long-standing task in natural language processing (NLP). We propose a new approach for this task with structured prediction energy networks (SPENs). Our model reasons hierarchical structures of the output equations with energy functions that are parameterized by neural networks. The learning algorithm uses varied supervision, including either full equations or just the final answers. We evaluate performance
-\end{abstract}
+\section{Overview}
+Solving word algebra problems automatically is a long-standing task in natural language processing (NLP). We plan to propose a new approach for solving algebra word problems automatically. In this task, the system needs to find a transformation from the given word problem into a set of equations which correctly represents the input word problem. To tackle this task, we apply structured prediction energy networks (SPENs), which is an energy based model where we can inject the structure knowledge of the task. We plan to start off from a simple feed-forward baseline model, and then evaluate and explore the possibilities of the SPEN model.
 \fi
 
-\section{Overview}
-Solving word albegra problems automatically is a long-standing task in natural language processing (NLP). We plan to propose a new approach for solving algebra word problems automatically. In this task, the system needs to find a transformation from the given word problem into a set of equations which correctly represents the input word problem. To tackle this task, we apply structured prediction energy networks (SPENs), which is an energy based model where we can inject the structure knowledge of the task. We plan to start off from a simple feed-forward baseline model, and then evaluate and explore the possibilities of the SPEN model.
+\begin{abstract}
+To solve algebra word problems automatically, typical approaches find a transformation from the given word problem into a set of equations which correctly represents the input word problem. To approach this task, we apply structured prediction energy networks (SPENs), which is an energy based model where we can inject the structure knowledge of the task. We compare SPENs to a baseline of a simple feed-forward neural network model to determine the effectiveness of modeling structural dependencies in this problem.
+\end{abstract}
 %%%
 %%%
 \section{Introduction}
@@ -94,6 +95,7 @@ Algebra word problems in general describe some particular world situation and po
 	Maria is now four times as old as Kate.\\
 Four years ago, Maria was six times as\\
 old as Kate. Find their ages now.\\
+	\caption{An example of word algebra problem.}
     \label{algebra-example}
 \end{figure}
 \subsection{Structured Prediction}
@@ -139,7 +141,7 @@ We plan to use two baseline models. One is a regular feed-forward neural network
 %Unlike feed-forward approaches, 
 %As with other EBMs, SPEN tries to predict $y$
 Structured Prediction Energy Networks (SPENs) \cite{DBLP:journals/corr/BelangerM15}\cite{DBLP:conf/icml/BelangerYM17} are one of the energy-based models (EBMs) that performs structured prediction, such as conditional random fields (CRFs), structured perceptrons, and structured SVMs (SSVMs).
-There are two main differences betwen SPEN and other enegy-based models. First, SPENs can learn non-linear energy functions, as it is parameterized by a deep neural network. Similar to other EBMs, SPEN also tries to predict $y$ that minimizes the energy function. The different point is that while EBMs listed above usually assume a restricted graphical structure such as a chain or a tree and consider a linear energy function, SPEN instead considers a general energy function and assumes the non-convexity. Then, it approximates the optimal $\mathbf{y}$ with gradient descent:
+There are two main differences betwen SPEN and other enegy-based models. First, SPENs can learn non-linear energy functions, as it is parameterized by a deep neural network. Similar to other EBMs, SPEN also tries to predict $y$ that minimizes the energy function. While EBMs listed above usually assume a restricted graphical structure such as a chain or a tree and consider a linear energy function, SPEN instead considers a general energy function and assumes the non-convexity. Then, it approximates the optimal $\mathbf{y}$ with gradient descent:
 \begin{equation}
 \mathbf{\bar{y}} = argmin_{\mathbf{\bar{y}}} E( \mathbf{\bar{y}}, \mathbf{x} )
 %Ex(y) subject to y \in \{0, 1\}
