@@ -39,7 +39,7 @@ X[added the caption] * Introduction: Figure 2 missing a caption / label
 
 / * Structured Prediction: Good technical explanation!
 
-* Problem Definition: I would define a "template"  in the first section.
+@* Problem Definition: I would define a "template"  in the first section.
 
 X * SPEN: Delete the phrase "The different point is that"
 
