@@ -18,7 +18,7 @@ MAX_SEQUENCE_LENGTH = 105
 
 worddict = {}
 text2sols = {}
-
+text2align = {}
 
 def feed_forward_mlp_model(input_shape, vocab_size, emb_layer):
     '''
@@ -26,11 +26,9 @@ def feed_forward_mlp_model(input_shape, vocab_size, emb_layer):
     '''
     inputs = Input(shape=input_shape)
     emb = emb_layer(inputs)
-    l0 = Bidirectional(LSTM(32, return_sequences=True))(emb)
+    l0 = Bidirectional(LSTM(16, return_sequences=True))(emb)
     l0 = Bidirectional(LSTM(32))(l0)
-    # l0 = keras.layers.Flatten()(emb)
-    # l0 = keras.layers.Dense(128, activation='relu')(l0)
-    l1 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='t_id')(l0)
+    l1 = Dense(25, activation='softmax', name='t_id')(l0)
     l2 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='a')(l0)
     l3 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='b')(l0)
     l4 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='c')(l0)
@@ -83,14 +81,13 @@ def load_glove(vocab):
                                 EMBEDDING_DIM,
                                 weights=[embedding_matrix],
                                 input_length=MAX_SEQUENCE_LENGTH,
-                                trainable=False)
+                                trainable=True)
     return embedding_layer
 
 
-def evaluate_citation(xinput=None, yinput=None, yt=None):
+def evaluation_function(xinput=None, yinput=None, yt=None):
     xd = xinput
     yd = yinput
-    debug = False
     size = np.shape(xd)[0]
     scorer = sf.Scorer()
     penalty = np.zeros(size)
@@ -99,27 +96,30 @@ def evaluate_citation(xinput=None, yinput=None, yt=None):
         text = ''
         for j in range(x.shape[0]):
             text += ' ' + worddict[x[j]]
-        penalty[i] = scorer.score_output(text, yd[i],text2sols[str(x)])
+        penalty[i] = scorer.score_output(text, yd[i], text2sols[str(x)], text2align[str(x)])
     return penalty
 
 
 def main():
     derivations, vocab_dataset = debug()
     X, Y, Z = derivations
+    a = 10
+
     for key in vocab_dataset:
         worddict[vocab_dataset[key]] = key
     X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
     for i in range(X.shape[0]):
-        text2sols[str(X[i])] = Z[i]
+         text2sols[str(X[i])] = Z[i]
+         text2align[str(X[i])] = Y[i]
     emb_layer = load_glove(vocab_dataset)
     F = feed_forward_mlp_model(X.shape[1:], len(vocab_dataset.keys()), emb_layer)
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=23)
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(y_train.shape)
-    # F.fit(X_train,
-    #       [y_train[:, 0], y_train[:, 1], y_train[:, 2], y_train[:, 3], y_train[:, 4], y_train[:, 5], y_train[:, 6]],
-    #       batch_size=128, epochs=30, validation_data=(
+    # F.fit(X,
+    #       [Y[:, 0], Y[:, 1], Y[:, 2], Y[:, 3], Y[:, 4], Y[:, 5], Y[:, 6]],
+    #       batch_size=128, epochs=15, validation_data=(
     #         X_test, [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6]]))
 
     # y_pred = np.argmax(F.predict(X_test), axis=2)
@@ -131,9 +131,9 @@ def main():
     ln = 1e10
     l2 = 0.0
     lr = 0.001
-    inf_iter = 50
+    inf_iter = 20
     inf_rate = 0.1
-    mw = 100.0
+    mw = 1000
     dp = 0.0
     bs = 100
     ip = 0.0
@@ -152,14 +152,14 @@ def main():
     config.en_layer_info = en_layers
     config.layer_info = f_layers
     config.margin_weight = mw
-    config.lstm_hidden_size = 15
+    config.lstm_hidden_size = 16
     config.sequence_length = 105
     config.inf_penalty = ip
     ###Configurable parameters END
     s = sp.SPEN(config)
     e = energy.EnergyModel(config)
-    s.get_energy = e.get_energy_mlp_emb
-    s.evaluate = evaluate_citation
+    s.get_energy = e.get_energy_rnn_mlp_emb
+    s.evaluate = evaluation_function
     s.train_batch = s.train_unsupervised_batch
 
     s.createOptimizer()
@@ -177,7 +177,7 @@ def main():
     print(ylabeled.shape)
 
     total_num = xlabeled.shape[0]
-    for i in range(1, 1000):
+    for i in range(1, 100):
         bs = min((bs, labeled_num))
         perm = np.random.permutation(total_num)
 
@@ -186,15 +186,15 @@ def main():
 
             xbatch = xlabeled[indices][:]
             xbatch = np.reshape(xbatch, (xbatch.shape[0], -1))
-            ybatch = ylabeled[indices][:]
+            ybatch = ylabeled[indices][0]
             ybatch = np.reshape(ybatch, (ybatch.shape[0], -1))
             s.set_train_iter(i)
-            s.train_batch(xbatch, verbose=1)
+            s.train_batch(xbatch, verbose=4)
 
         if i % 2 == 0:
             yval_out = s.map_predict(xinput=np.reshape(X_test, (X_test.shape[0], -1)))
-            # print(yval_out)
-            # print(y_test)
+            print(yval_out)
+            print(y_test)
             hm_ts, ex_ts = token_level_loss(yval_out, y_test)
             print(hm_ts)
             print(ex_ts)

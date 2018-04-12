@@ -173,36 +173,64 @@ class Scorer(object):
                     diff = abs(i - index)
         return ret
 
-    def score_output(self, text, ypred, sols):
+    def score_output(self, text, ypred, sols, alignment):
         score = 0.0
-        words = text.split(' ')
+        words = text.strip().split(' ')
         numbers_present = 0
         for i in range(ypred.shape[0]):
             if i > 0 and ypred[i] >= len(words):
-                score -= 100
+                score -= 1
+            if i > 0 and ypred[i] > len(words):
+                 score -= 100
             if i == 0 and ypred[i] >= 25:
-                score -= 100
+                score -= 10
+            if i > 1 and ypred[i - 1] == 0 and ypred[i] > 0:
+                score -= 1000
+
+
+        if len(alignment) > 0:
+            try:
+                #try constant penalty
+
+                pnlty = abs(ypred[0] - alignment[0])
+                score -= pnlty
+                pnlty = abs(ypred[1] - alignment[1])
+                score -= pnlty*100
+                pnlty = abs(ypred[2] - alignment[2])
+                score -= pnlty*100
+                pnlty = abs(ypred[3] - alignment[3])
+                score -= pnlty*100
+                pnlty = abs(ypred[4] - alignment[4])
+                score -= pnlty*100
+                pnlty = abs(ypred[5] - alignment[5])
+                score -= pnlty*100
+                pnlty = abs(ypred[6] - alignment[6])
+                score -= pnlty*100
+            except:
+                score+=0
 
         if len(sols) > 0:
             try:
-                pnlty = abs(ypred[1] - self.find_closest_num(words, ypred[1]))
+                # pnlty = abs(ypred[1] - self.find_closest_num(words, ypred[1]))
                 a = float(words[self.find_closest_num(words, ypred[1])])
-                score -= pnlty
-                pnlty = abs(ypred[2] - self.find_closest_num(words, ypred[2]))
+                #score -= pnlty
+
+                # pnlty = abs(ypred[2] - self.find_closest_num(words, ypred[2]))
+                #pnlty = abs(ypred[2] - alignment[2])
                 b = float(words[self.find_closest_num(words, ypred[2])])
-                score -= pnlty
-                pnlty = abs(ypred[3] - self.find_closest_num(words, ypred[3]))
+                #score -= pnlty
+                #pnlty = abs(ypred[3] - self.find_closest_num(words, ypred[3]))
                 c = float(words[self.find_closest_num(words, ypred[3])])
-                score -= pnlty
-                pnlty = abs(ypred[4] - self.find_closest_num(words, ypred[4]))
+                #score -= pnlty
+                #pnlty = abs(ypred[4] - self.find_closest_num(words, ypred[4]))
                 d = float(words[self.find_closest_num(words, ypred[4])])
-                score -= pnlty
-                pnlty = abs(ypred[5] - self.find_closest_num(words, ypred[5]))
+                #score -= pnlty
+                # pnlty = abs(ypred[5] - self.find_closest_num(words, ypred[5]))
                 e = float(words[self.find_closest_num(words, ypred[5])])
-                score -= pnlty
-                pnlty = abs(ypred[6] - self.find_closest_num(words, ypred[6]))
+                # score -= pnlty
+                # pnlty = abs(ypred[6] - self.find_closest_num(words, ypred[6]))
                 f = float(words[self.find_closest_num(words, ypred[6])])
-                score -= pnlty
+                # score -= pnlty
 
                 if ypred[0] == 0:
                     solutions = self.template_1(a, b, c, d, e, f)
@@ -295,7 +323,5 @@ class Scorer(object):
                     score -= (abs(solutions["x"] - sols[0]) + abs(solutions['y'] - sols[1]))
             except:
                 return score
-                # print('boo')
-                # solve template
 
         return score
