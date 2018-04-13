@@ -125,7 +125,7 @@ def main():
     print(y_train.shape)
     F.fit([X, Xtags],
           [Y[:, 0], Y[:, 1], Y[:, 2], Y[:, 3], Y[:, 4], Y[:, 5], Y[:, 6]],
-          batch_size=128, epochs=30, validation_data=(
+          batch_size=128, epochs=15, validation_data=(
             [X_test, Xtags_test],
             [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6]]))
 
@@ -202,7 +202,7 @@ def main():
             s.train_batch(xtags_batch, ybatch, verbose=4)
 
         if i % 2 == 0:
-            yval_out = s.map_predict(xinput=np.reshape(X_test, (X_test.shape[0], -1)))
+            yval_out = s.map_predict(xinput=np.reshape(Xtags_test, (Xtags_test.shape[0], -1)))
             print(yval_out)
             print(y_test)
             hm_ts, ex_ts = token_level_loss(yval_out, y_test)
