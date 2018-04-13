@@ -17,7 +17,7 @@ Technical Comments:
 
 / * I think you've done a great job presenting the problem and coming up with experiments that test and interesting hypothesis. Great work!
 
-@ * Would it be helpful to consider a baseline method that greedily predicts alignments/templates conditioned on the aligned templates predicted so far?
+X * Would it be helpful to consider a baseline method that greedily predicts alignments/templates conditioned on the aligned templates predicted so far?
 
 Writing Comments:
 
@@ -39,7 +39,7 @@ X[added the caption] * Introduction: Figure 2 missing a caption / label
 
 / * Structured Prediction: Good technical explanation!
 
-@* Problem Definition: I would define a "template"  in the first section.
+X * Problem Definition: I would define a "template"  in the first section.
 
 X * SPEN: Delete the phrase "The different point is that"
 

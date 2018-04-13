@@ -134,7 +134,7 @@ that although the template based methods are able to solve a wider range of prob
 %%%
 \section{Problem Definition}
 \subsection{Template}
-Following \cite{Kushman2014LearningTA}, we define the space of possible equations by a set of "templates". A template represents a structure for a set of equations for an algebra problem, consisting of slots for unknown variables and coefficients. As we express equations as a sequence of symbol indices, there can be many possible correct equations. Therefore, we assume that each text problem has only one correct set of equations, and express the structure with a template. Figure \ref{template} shows an example of template selection and instantiation. In this case the template has $u_i$ slots that represent unknown variables, and $n_j$ slots for coefficients values. In this scheme, transformation of word problems to equations as a two step process. First, a template is selected to define the structure of the target equation system. Second, the selected template is instantiated with actual texts for unknowns and values for coefficients. 
+Following \cite{Kushman2014LearningTA}, we define the space of possible equations by a set of "templates". A template represents a structure for a set of equations for an algebra problem, consisting of slots for unknown variables and coefficients. As we express equations as a sequence of symbol indices, there can be many possible correct equations. Therefore, we assume that each text problem has only one correct set of equations, and express the structure with a template. Figure \ref{template} shows an example of template selection and instantiation. In this case the template has $u_i$ slots that represent unknown variables, and $n_j$ slots for coefficients values. In this scheme, transformation of word problems to equations as a two step process. First, a template is selected to define the structure of the target equation system. Second, the selected template is instantiated with actual texts for unknowns and values for coefficients. 
 \begin{figure*}[ht]
 	\centering
 	%\includegraphics[bb=0 0 912 419, natheight=5cm]{figs/fig_encdec.pdf}%scale=0.8, 
@@ -148,7 +148,7 @@ In this section, we review the formulation described in \cite{Kushman2014Learnin
 %%%
 \section{Methods}
 \subsection{Scoring function}
-We first describe our manually constructed scoring function, which is used for both the baseline model and SPEN. This function takes in as input a derivation, and returns the score of how good that derivation is, compared to the true derivation. It first compares the predicted template index with the true template index, and punishes significantly if the predicted index differs from the true index. This is because if the derivation uses a different template, two derivations would be completely different. If the template index matches, then the function examines how the coefficients are matching; for each coefficient slot, it computes the distance between the predicted token index and the true token index, and add a negative value to the score proportional to the distance.
+We first describe our manually constructed scoring function, which is used for both the baseline model and SPEN. This function takes in as a predicted derivation and the true derivation, and returns the score of how good the prediction is. We also pass the problem text and the solution (e.g. $x=2, y=3$) of the true equation to this function so that it can utilize the full information. It first compares the predicted template index with the true template index, and punishes significantly if the predicted index differs from the true index. This is because if the derivation uses a different template, two derivations would be completely different. If the template index matches, then the function examines how the coefficients are matching; for each coefficient slot, it computes the distance between the predicted token index and the true token index, and add a negative value to the score proportional to the distance. Finally, the function solves the predicted equations and checks if the solutions are matching the actual solutions of the true equations. If the solution does not match, it penalizes the final score. Often times, the alignments in the predicted derivation do not point to actual number words such as "two" or "1,000". In those cases we search for the nearest number word in the problem text, and build the predicted equation with the filled out coefficients.
 % TODO: Add more details here
 \subsection{Baseline model}
 % [NOTE] The mlp model is more of a preliminary experiment so here we need to talk about the greedy baseline, which we actually compare the result of SPEN with.
@@ -184,29 +184,74 @@ We give the same representation of $y$ as described in the baseline section to t
 \subsection{Rank-based loss}
 The traditional SPEN framework uses the SSVM loss:
 \begin{equation}
+\sum_{ \{x_i,y_i\} } \max_y \big[ \Delta(y_i, y) - E_{x_i}(y) + E_{x_i}(y_i) \big]_+
 \end{equation}
-However, this loss requires the full annotation for derivations. As our dataset only contains partial annotations for alignments, we use a rank-based loss which is defined as below:
+Here, $+[ \cdot ]$ denotes the max function. However, this loss requires the full annotation for derivations. As our dataset only contains partial annotations for alignments, we use a rank-based loss which is defined as below:
+{ \small
 \begin{equation}
+\min_\mathbf{w} \sum_{ \mathbf{x} \in \mathcal{D} } \big[ \alpha(V(\mathbf{y}_h, \mathbf{x}) - V(\mathbf{y}_l, \mathbf{x})) - E_{\mathbf{w}}(\mathbf{y}_h, \mathbf{x}) + E_{\mathbf{w}}(\mathbf{y}_l, \mathbf{x})  \big]_+
 \end{equation}
-Where $V$ is the value from the scoring function. The intuition of this loss is that we would like to approximate the scoring function with the energy networks. Unlike the raw scoring function, energy networks are differentiable and have less local optima, we can obtain 
+}
+Where $V$ is the value from the scoring function. The intuition of this loss is that we would like to approximate the scoring function with the energy networks. One big advantage of this approach is that, unlike the raw scoring function energy networks are differentiable and have less local optima. Therefore, we do not need to enumerate all the possible configurations for $y$ and we can obtain the minimum $y$ that minimizes the energy function automatically, as described in Section 4.3.
+%
+\begin{figure}[ht]
+	\centering
+	\includegraphics[bb=0 0 338 154, scale=0.5]{rank-based_loss}
+    \caption{The illustration of the rank-based loss.}
+    \label{spen-architecture}
+\end{figure}
 %%%
 %%%
 \section{Experiments}
-\subsection{Validity of our derivation structure}
-To check if our structure of the output $\mathbf{y}$ is actually learnable by a neural network, we first trained a small MLP model with a subset of the ALG-514 dataset.
+\subsection{Datasets}
+We plan to use two datasets; the ALG-514 dataset proposed by \cite{Kushman2014LearningTA} which contains 514 word problems, and the DRAW dataset provided by Microsoft that contains about 1000 independent examples. One issue we are currently aware of these datasets is that ,while they include template structure of output equations for each problem, they do not provide the mapping of unknowns to text values. We plan to manually annotate such alignment information on these datasets so that we can fully make use of the template structure and its alignments.
+\subsection{Preliminary experiment}
+To check if our structure of the output $\mathbf{y}$ is actually learnable by a neural network, we first trained a small MLP model with a subset of the ALG-514 dataset. The network consists of one embedding layer, one dense layer and 7 softmax layers. We trained the network with a joint loss which is the sum of all the losses from each softmax layer. The embedding layer is initialized with the 50 dimensional Glove vector. We confirmed that the network successfully overfit to the first 10 examples of the dataset and achieved 1.0 accuracy and 0.0 loss value for the train set after 50 epochs.
+%
+\subsection{Experimental settings for SPEN}
+Next, we evaluated the performance of the baseline model and the SPEN with the full dataset of ALG-514. We show the architecture of the energy networks in Figure \ref{spen-architecture}. We implemented our scoring function using sympy, and we trained the SPEN with both the SSVM loss and the rank-based loss. On training SPEN, we first trained a neural network with a supervised sequence-to-sequnce task with the dataset and fine-tuned the glove initialized embedding layer. Then, we initialized the embedding layer of SPEN with the pretrained deep neural network and trained the model with a rank-based loss. Hyperparameters used during the training are shown in Table \ref{params}.
+\begin{figure}[ht]
+	\centering
+	%\includegraphics[bb=0 0 912 419, natheight=5cm]{figs/fig_encdec.pdf}%scale=0.8, 
+	\hspace*{-10mm}
+	\includegraphics[bb=0 0 960 720, scale=0.28]{spen_architecture.png}%scale=0.8, 
+    \caption{The architecture of the SPEN model used in the experiment.}
+    \label{spen-architecture}
+\end{figure}
+%
+\begin{table}[]
+\centering
+\caption{Hyperparameters of the model}
+\label{params}
+\begin{tabular}{ll}
+\textbf{Parameter name} & \textbf{Value} \\
+Learning rate           & 0.001          \\
+Embedding dim           & 50             \\
+Batch size              & 100            \\
+Inference iterations    & 50             \\
+Inference rate          & 0.1            \\
+Margin weight           & 100           
+\end{tabular}
+\end{table}
 % TODO: write more details
 %%%
 %%%
-\section{Results}
-% TODO: Add results here
-%%%
-%%%
-\section{Discussion}
+\section{Results and Discusstion}
+Table \ref{result} shows the accuracies for the second experiment. Both approaches of the SPEN outperformed the greedy baseline model, and the model trained with the rank-based loss achieved about a 4\% higher accuracy. However, this result is very lower than the accuracy reported by \cite{Kushman2014LearningTA},
+\begin{table*}[]
+\centering
+\caption{Experimental results with the ALG-514 dataset. Each cell represents the accuracy of a method.}
+\label{result}
+\begin{tabular}{lll}
+\textbf{Baseline (greedy)} & \textbf{SPEN (SSVM loss)} & \textbf{SPEN (Rank-based loss)} \\
+0.0127                     & 0.0898                    & 0.1323                         
+\end{tabular}
+\end{table*}
 % TODO: Write our analysis on the results or problems of the current scoring function, etc.
 %%%
 %%%
 \section{Planned works}
-As the greedy baseline performed very pooly, we plan to implement a better baseline using beam search, to evaluate the our method in more detail. ...
+As the greedy baseline performed very pooly, we plan to implement a better baseline using beam search, to see if the SPEN's performance is actually higher than much simpler methods. We are also suspecting that our scoring function is not sophisticated enough, as we achieved lower accuracies than we expected, and plan to improve our scoring function. Lastly, we are planning to explore better architectures for energy networks and tune the optimization and inference parameters of SPEN to obtain a higher accuracy.
 % Write our plan of improving the scoring function??
 %%%
 %%%
