@@ -262,7 +262,7 @@ class SPEN:
             random_proposal = yprev[iter]
             score_first = self.evaluate(np.expand_dims(xtest[iter], 0), np.expand_dims(random_proposal, 0))
 
-            labelset = set(np.arange(1, 14))
+            labelset = set(np.arange(7))
             for l in range(np.shape(xtest)[1]):
                 # pdb.set_trace()
                 changed = False
@@ -273,7 +273,7 @@ class SPEN:
                         random_proposal_new = random_proposal[:]
                         random_proposal_new[l] = label
                         score = self.evaluate(np.expand_dims(xtest[iter], 0),
-                                                  np.expand_dims(random_proposal_new, 0))
+                                              np.expand_dims(random_proposal_new, 0))
                         if score > score_first:
                             score_first = score
                             random_proposal[l] = random_proposal_new[l]
@@ -281,9 +281,8 @@ class SPEN:
                             break
                     if changed == True:
                         break
-            #print (random_proposal.shape, final_best.shape)
-            final_best[iter,:] = random_proposal[:]
-
+            # print (random_proposal.shape, final_best.shape)
+            final_best[iter, :] = random_proposal[:]
 
         return final_best
 
@@ -367,7 +366,7 @@ class SPEN:
         en_a = np.array([self.sess.run(self.inf_objective,
                                        feed_dict={self.x: xinput,
                                                   self.yp: np.reshape(y_i, (
-                                                  -1, self.config.output_num * self.config.dimension)),
+                                                      -1, self.config.output_num * self.config.dimension)),
                                                   self.dropout_ph: self.config.dropout})
                          for y_i in y_a])
         f_a = np.array([self.evaluate(xinput=xinput, yinput=np.argmax(y_i, 2)) for y_i in y_a])

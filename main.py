@@ -2,10 +2,11 @@ import globals
 from dataset import read_draw, numbers_to_words, derivation_to_equation
 from template_parser import debug
 import os
+import nltk
 import numpy as np
 import scoring_function as sf
 from keras.layers import Bidirectional, LSTM, Conv1D, Dense, PReLU, MaxPool1D, Input, Embedding, TimeDistributed, \
-    BatchNormalization
+    BatchNormalization, concatenate
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
@@ -13,21 +14,26 @@ from dsbox_spen.dsbox.spen.core import spen as sp, config, energy
 from dsbox_spen.dsbox.spen.utils.metrics import token_level_loss_ar, token_level_loss
 
 GLOVE_DIR = 'glove.6B'
-EMBEDDING_DIM = 50  # 50
+EMBEDDING_DIM = 100  # 50
 MAX_SEQUENCE_LENGTH = 105
 
 worddict = {}
 text2sols = {}
 text2align = {}
 
-def feed_forward_mlp_model(input_shape, vocab_size, emb_layer):
+
+def feed_forward_mlp_model(input_shape, b_vocab, emb_layer):
     '''
     Deep neural network model to get F(x) which is to be fed to SPENs
     '''
-    inputs = Input(shape=input_shape)
-    emb = emb_layer(inputs)
-    l0 = Bidirectional(LSTM(16, return_sequences=True))(emb)
-    l0 = Bidirectional(LSTM(32))(l0)
+    a = Input(shape=input_shape)
+    b = Input(shape=input_shape)
+    emb_a = emb_layer(a)
+    emb_b = Embedding(b_vocab + 1, 5, input_length=input_shape)(b)
+    tensor_a = Bidirectional(LSTM(32, return_sequences=True))(emb_a)
+    tensor_b = Bidirectional(LSTM(32, return_sequences=True))(emb_b)
+    l0 = concatenate([tensor_a, tensor_b], axis=2)
+    l0 = Bidirectional(LSTM(64))(l0)
     l1 = Dense(25, activation='softmax', name='t_id')(l0)
     l2 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='a')(l0)
     l3 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='b')(l0)
@@ -35,7 +41,7 @@ def feed_forward_mlp_model(input_shape, vocab_size, emb_layer):
     l5 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='d')(l0)
     l6 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='e')(l0)
     l7 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='f')(l0)
-    model = Model(inputs=inputs, outputs=[l1, l2, l3, l4, l5, l6, l7])
+    model = Model(inputs=[a, b], outputs=[l1, l2, l3, l4, l5, l6, l7])
     model.compile('adam', {'t_id': 'sparse_categorical_crossentropy', 'a': 'sparse_categorical_crossentropy',
                            'b': 'sparse_categorical_crossentropy', 'c': 'sparse_categorical_crossentropy',
                            'd': 'sparse_categorical_crossentropy', 'e': 'sparse_categorical_crossentropy',
@@ -81,7 +87,7 @@ def load_glove(vocab):
                                 EMBEDDING_DIM,
                                 weights=[embedding_matrix],
                                 input_length=MAX_SEQUENCE_LENGTH,
-                                trainable=True)
+                                trainable=False)
     return embedding_layer
 
 
@@ -102,25 +108,26 @@ def evaluation_function(xinput=None, yinput=None, yt=None):
 
 def main():
     derivations, vocab_dataset = debug()
-    X, Y, Z = derivations
-    a = 10
-
+    X, Xtags, Y, Z = derivations
     for key in vocab_dataset:
         worddict[vocab_dataset[key]] = key
     X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
+    Xtags = pad_sequences(Xtags, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
     for i in range(X.shape[0]):
-         text2sols[str(X[i])] = Z[i]
-         text2align[str(X[i])] = Y[i]
+        text2sols[str(X[i])] = Z[i]
+        text2align[str(X[i])] = Y[i]
     emb_layer = load_glove(vocab_dataset)
-    F = feed_forward_mlp_model(X.shape[1:], len(vocab_dataset.keys()), emb_layer)
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=23)
+    F = feed_forward_mlp_model(X.shape[1:], 36, emb_layer)
+    X_train, X_test, y_train, y_test, Xtags_train, Xtags_test = train_test_split(X, Y, Xtags, test_size=0.2,
+                                                                                 random_state=23)
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(y_train.shape)
-    # F.fit(X,
-    #       [Y[:, 0], Y[:, 1], Y[:, 2], Y[:, 3], Y[:, 4], Y[:, 5], Y[:, 6]],
-    #       batch_size=128, epochs=15, validation_data=(
-    #         X_test, [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6]]))
+    F.fit([X, Xtags],
+          [Y[:, 0], Y[:, 1], Y[:, 2], Y[:, 3], Y[:, 4], Y[:, 5], Y[:, 6]],
+          batch_size=128, epochs=30, validation_data=(
+            [X_test, Xtags_test],
+            [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6]]))
 
     # y_pred = np.argmax(F.predict(X_test), axis=2)
     # for i in range(y_pred.shape[0]):
@@ -159,20 +166,21 @@ def main():
     s = sp.SPEN(config)
     e = energy.EnergyModel(config)
     s.get_energy = e.get_energy_rnn_mlp_emb
-    s.evaluate = evaluation_function
-    s.train_batch = s.train_unsupervised_batch
+    # s.evaluate = evaluation_function
+    s.train_batch = s.train_supervised_batch
 
     s.createOptimizer()
-    s.construct_embedding(EMBEDDING_DIM, len(vocab_dataset.keys()) + 1)
-    s.construct(training_type=sp.TrainingType.Rank_Based)
+    s.construct_embedding(5, 37)
+    s.construct(training_type=sp.TrainingType.SSVM)
     s.print_vars()
 
     s.init()
-    s.init_embedding(F.get_layer('embedding_1').get_weights()[0])
+    s.init_embedding(F.get_layer('embedding_2').get_weights()[0])
     labeled_num = min((ln, ntrain))
     indices = np.arange(labeled_num)
     xlabeled = X_train[indices][:]
     ylabeled = y_train[indices][:]
+    xtags_labeled = Xtags_train[indices][:]
     print(xlabeled.shape)
     print(ylabeled.shape)
 
@@ -186,10 +194,12 @@ def main():
 
             xbatch = xlabeled[indices][:]
             xbatch = np.reshape(xbatch, (xbatch.shape[0], -1))
-            ybatch = ylabeled[indices][0]
+            ybatch = ylabeled[indices][:]
             ybatch = np.reshape(ybatch, (ybatch.shape[0], -1))
+            xtags_batch = xtags_labeled[indices][:]
+            xtags_batch = np.reshape(xtags_batch, (xtags_batch.shape[0], -1))
             s.set_train_iter(i)
-            s.train_batch(xbatch, verbose=4)
+            s.train_batch(xtags_batch, ybatch, verbose=4)
 
         if i % 2 == 0:
             yval_out = s.map_predict(xinput=np.reshape(X_test, (X_test.shape[0], -1)))

@@ -1,6 +1,7 @@
 import numpy as np
-import json, os, re
-from predict_template import read_draw_template, read_unique_templates
+import json
+import nltk
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 # Global variables for length of inputs & outputs
 PROBLEM_LENGTH = 105
@@ -77,55 +78,6 @@ def derivation_to_y(derivation, templates, vocab):
     return equations
 
 
-def get_gold_derivations_coeffs(dataset, vocab):
-    """
-    @param: dataset: A dictionary loaded from json file
-    @param: vocab: A vocabulary dictionary of the entire corpus for mapping string to index. e.g. '2' => 193
-    @return: A list of derivation: [ template_index, m,n, a,b,c,d,e,f ]
-    """
-    X = []
-    derivations = []
-    for index, data_sample in enumerate(dataset):
-        # print('=' * 50)
-        # print(index)
-        words = data_sample['sQuestion'].split()
-        x_temp = []
-        for w in words:
-            x_temp.append(vocab[w])
-        X.append(x_temp)
-        template_index = data_sample['template_index']
-        templates = data_sample['Template']
-        equations = data_sample['lEquations']
-        alignments = data_sample['Alignment']
-
-        # 1. Add the template index
-        tmp = []
-        tmp.append(template_index)
-
-        # 2. fill the slots
-        existing_slots = [a['coeff'] if 'coeff' in a else a['unk'] for a in alignments]
-        # print(existing_slots)
-
-        slot_to_index = {
-            'a': 1,
-            'b': 2,
-            'c': 3,
-            'd': 4,
-            'e': 5,
-            'f': 6,
-        }
-        # init with zero
-        for slot in COEFFS:
-            tmp.append(0)
-        for a in alignments:
-            if 'coeff' in a:
-                tmp[slot_to_index[a['coeff']]] = a['TokenId']
-        derivation = tmp
-        derivations.append(derivation)
-    # print(derivations)
-    return X, derivations
-
-
 def get_gold_derivations(dataset, vocab):
     """
     @param: dataset: A dictionary loaded from json file
@@ -133,18 +85,27 @@ def get_gold_derivations(dataset, vocab):
     @return: A list of derivation: [ template_index, m,n, a,b,c,d,e,f ]
     """
     X = []
+    Xtags = []
     derivations = []
     unique_templates = []
     solutions = []
+    tags_to_int = dict()
+    tag_count = 1
     for index, data_sample in enumerate(dataset):
         print('=' * 50)
         print(index)
-        words = data_sample['sQuestion'].split(" ")
+        words = nltk.word_tokenize(data_sample['sQuestion'])
+        tags = nltk.pos_tag(words)
+        tags = [x[1] for x in tags]
+        x_temp = []
+        for tag in tags:
+            if tag not in tags_to_int:
+                tags_to_int[tag] = tag_count
+                tag_count += 1
+            x_temp.append(tags_to_int[tag])
+        Xtags.append(x_temp)
         x_temp = []
         for w in words:
-            # if is_number(w):
-            #     x_temp.append(vocab['zn'])
-            # else:
             x_temp.append(vocab[w.lower()])
         X.append(x_temp)
         if data_sample["Template"] not in unique_templates:
@@ -176,20 +137,14 @@ def get_gold_derivations(dataset, vocab):
         for a in alignments:
             if 'coeff' in a:
                 tmp[slot_to_index[a['coeff']]] = (a['TokenId']) + 1
-        # print(tmp)
 
-        # 3. Use the vocab to convert string to word index
         derivation = tmp[:]
-        # print(derivation)
-        # if not is_number(derivation[1]):
-        #     derivation[1] = vocab[derivation[1].split('_')[0]]
-        # if not is_number(derivation[2]):
-        #     derivation[2] = vocab[derivation[2].split('_')[0]]
-        # print(derivation)
         derivations.append(np.array(derivation))
         solutions.append(np.array(data_sample['lSolutions']))
     print(unique_templates)
-    return X, np.array(derivations), np.array(solutions)
+    print(tags_to_int)
+    print('Number of unique tags: ' + str(len(tags_to_int.keys())))
+    return X, Xtags, np.array(derivations), np.array(solutions)
 
 
 def validate_derivation(derivation, dataset):
@@ -214,11 +169,8 @@ def debug():
     word_count = defaultdict(float)
 
     for index, data_sample in enumerate(dataset):
-        words = data_sample['sQuestion'].split(" ")
+        words = nltk.word_tokenize(data_sample['sQuestion'])
         for w in words:
-            # if is_number(w):
-            #     word_count['zn'] += 1
-            # else:
             word_count[w.lower()] += 1
     print(word_count)
 
