@@ -27,6 +27,8 @@
 \usepackage{tabularx}
 \usepackage{tabulary}
 \usepackage{xcolor}
+\usepackage{float}
+\floatplacement{table}{!htbp}
 
 \definecolor{_green}{rgb}{0.2745, 0.6235, 0.6157}
 %\definecolor{_red}{rgb}{170,55,66}
@@ -70,7 +72,7 @@
 \author{Arpit Jain\\ {\tt jain@umass.edu }  \And Gota Gando\\ {\tt ggando@umass.edu } \AND Krishna Prasad Sankaranarayanan\\ {\tt ksankaranara@umass.edu }  \And Nikhil Yadav\\
   {\tt nikhilyadav@umass.edu }}
 
-\date{02/23/2018}
+\date{04/13/2018}
 
 \begin{document}
 
@@ -84,12 +86,12 @@ Solving algebra word problems automatically is a long-standing task in natural l
 \fi
 
 \begin{abstract}
-To solve algebra word problems automatically, typical approaches find a transformation from the given word problem into a set of equations which correctly represents the input word problem. To approach this task, we apply structured prediction energy networks (SPENs), which is an energy based model where we can inject the structure knowledge of the task. We compare SPENs to a baseline of a simple feed-forward neural network model to determine the effectiveness of modeling structural dependencies in this problem.
+To solve algebra word problems automatically, typical approaches find a transformation from the given word problem into a set of equations which correctly represents the input word problem. To approach this task, we apply structured prediction energy networks (SPENs), which is an energy based model where we can inject the structural knowledge of the task. We compare our SPEN to a simple greedy baseline approach to determine the effectiveness of modeling structural dependencies in this problem.
 \end{abstract}
 %%%
 %%%
 \section{Introduction}
-Algebra word problems in general describe some particular world situation and pose a question about it. In this project, we only consider the problems where we can use a system of equations to solve the questions. Figure \ref{algebra-example} shows one example of such problems. In this case, we can express the problem as a set of algebraic equations that descrbe the mathematical relationship of entities in the problem: for example $m = 4 \times n$ and $m-4 = 6 \times (n-4)$ where $m$ and $n$ represent the age of Maria and Kate, respectively. To answer the question, we need to solve these equations and get the solution. However, we focus on finding a mapping from the word problem into an equation system in this project, as there are many automated solvers for this process.
+Algebra word problems in general describe some particular world situation and pose a question about it. In this project, we only consider the problems where we can use a system of equations to solve the questions. Figure \ref{algebra-example} shows one example of such problems. In this case, we can express the problem as a set of algebraic equations that describe the mathematical relationship of entities in the problem: for example $m = 4 \times n$ and $m-4 = 6 \times (n-4)$ where $m$ and $n$ represent the age of Maria and Kate, respectively. To answer the question, we need to solve these equations and get the solution. However, we focus on finding a mapping from the word problem into an equation system in this project, as there are many automated solvers for this process.
 \begin{figure}[ht]
 	\centering
 	Maria is now four times as old as Kate.\\
@@ -99,7 +101,7 @@ old as Kate. Find their ages now.\\
     \label{algebra-example}
 \end{figure}
 \subsection{Structured Prediction}
-If we consider each character of the output equations as a random variable, then this task can be considered as a structured prediction task, as every output random variable would be dependent on some other variables. Furthermore, as both the input and output are sequences, we can also interpret this task as a sequence-to-sequnce task.
+If we consider each character of the output equations as a random variable, then this task can be considered as a structured prediction task, as every output random variable would be dependent on some other variables. Furthermore, as both the input and output are sequences, we can also interpret this task as a sequence-to-sequence task.
 
 In many machine learning tasks, we try to predict $\textbf{y}$ given an input $\textbf{x}$. In some cases it is sufficient to use a discriminative function $F$ to predict the output such as $\textbf{y} = F( \textbf{x} )$. However, this model fails to model the structure of the output and the interactions among output components and may perform poor on more complex tasks. We can instead use \textit{an energy function} $E$ that both depends on $\textbf{x}$ and $\textbf{y}$ to model such structure and seek the optimal $\textbf{y}$ that minimizes the energy:
 \begin{equation}
@@ -121,7 +123,7 @@ Solving word algebra problems automatically is a long-standing task in natural l
 
 \citep{Kushman2014LearningTA} presented a baseline approach to solving algebra word problems using varied supervision, including either full equations or just the final answers . In this two step algorithm,  a template is first selected to match the overall structure of the equation system followed by which it is instantiated with numbers and nouns from the test. In this probabilistic inference mode, the probability of the answer is marginalized over the template selection and alignment.Following template induction wherein labeled equations are generalized to templates, inference is performed y beam search. Beam search provides a mapping to each template based on a canonical ordering. The results on primarily answer annotations ( weakly supervised data) were 70\%of the accuracies over the complete set of equations which clearly justified the benefits of supervision. 
 
-\cite{roy2016solving} proposed a novel method for solving multi-step arithmetic word problems without the assistance of predefined annotations and templates. The algorithm is based on multiple classification problems on the target arithmetic equation and then combining these results to obtain the solutions. Grounding is the task ig taking an input word problem in the natural language and representing it as a formal language such as a set of equations, expression trees or states. This paper achieves grounding as a single step process. On the other hand,\citep{mitra2016learning}, splits this up into two parts. In the first step, the system learns to connect the assertions in a word problems to formula and in the second step, maps the formula into an algebraic equation.
+\cite{roy2016solving} proposed a novel method for solving multi-step arithmetic word problems without the assistance of predefined annotations and templates. The algorithm is based on multiple classification problems on the target arithmetic equation and then combining these results to obtain the solutions. Grounding is the task taking an input word problem in the natural language and representing it as a formal language such as a set of equations, expression trees or states. This paper achieves grounding as a single step process. On the other hand,\citep{mitra2016learning}, split this up into two parts. In the first step, the system learns to connect the assertions in a word problems to formula and in the second step, maps the formula into an algebraic equation.
 
 \cite{KoncelKedziorski2015ParsingAW} formalizes solving algebraic word problems as that of generating and evaluating equation trees.Unlike in \cite{roy2017reasoning}, wherein a system for reasoning about quantities is introduced for arithmetic word problems involving only two values from the text and an arithmetic operator, this method (ALGES) learns to solve complex problems with multiple operands where the space of possible solutions is larger. Quantified sets (Qsets) are used a building block for equation trees to model natural language text quantities. These Qsets are combined with operator to yield a semantically augmented equation tree. With respect to grounding, the Qset properties are extracted and then ordered based on semantic and textual constraints followed by which Qsets are combined with arithmetic operators in an equation tree representation. The inference is to find the most likely equation tree with minimum violation of hard and soft constraints. This is facilitated by calculating a likelihood score for each operand t and the Qsets over which it is operated. Comparison results between template based methods and ALGES show
 that although the template based methods are able to solve a wider range of problems than ALGES, ALGES fairs well fairs well even in systems with fewer repeated templates or less spurious lexical overlap between problems. In conclusion ALGES is a hybrid of template based and verb categorization methods.
@@ -147,9 +149,11 @@ In this section, we review the problem formulation described in \cite{Kushman201
 \begin{figure}[ht]
 	\centering
 	\includegraphics[bb=0 0 426 112, scale=0.5]{derivation.pdf}
-    \caption{The structure of $y$ we use in our method. Rather than using the entire sequence to express equations, we use a template index and its slots to specify a set of equations.}
+    \caption{The structure of $\mathbf{y}$ we use in our experiments. Rather than using the entire sequence to express equations, we use a template index and its slots to specify a set of equations.}
     \label{derivation}
 \end{figure}
+\subsection{Datasets}
+We use two datasets; the ALG-514 dataset proposed by \cite{Kushman2014LearningTA} which contains 514 word problems, and the DRAW dataset provided by Microsoft that contains about 1000 independent examples. One issue we are currently aware of these datasets is that, while they include template structure of output equations for each problem, they do not provide the mapping of unknowns to text values. We plan to manually annotate such alignment information on these datasets so that we can fully make use of the template structure and its alignments.
 %%%
 %%%
 \section{Methods}
@@ -164,7 +168,7 @@ To evaluate the performance of SPEN, We build a greedy baseline which determines
 %Unlike feed-forward approaches, 
 %As with other EBMs, SPEN tries to predict $y$
 Structured Prediction Energy Networks (SPENs) \cite{DBLP:journals/corr/BelangerM15}\cite{belanger2017end} are one of the energy-based models (EBMs) that performs structured prediction, such as conditional random fields (CRFs), structured perceptrons, and structured SVMs (SSVMs).
-There are two main differences betwen SPEN and other energy-based models. First, SPENs can learn non-linear energy functions, as it is parameterized by a deep neural network. Similar to other EBMs, SPEN also tries to predict $y$ that minimizes the energy function. While EBMs listed above usually assume a restricted graphical structure such as a chain or a tree and consider a linear energy function, SPEN instead considers a general energy function and assumes the non-convexity. Then, it approximates the optimal $\mathbf{y}$ with gradient descent:
+There are two main differences between SPEN and other energy-based models. First, SPENs can learn non-linear energy functions, as it is parameterized by a deep neural network. Similar to other EBMs, SPEN also tries to predict $y$ that minimizes the energy function. While EBMs listed above usually assume a restricted graphical structure such as a chain or a tree and consider a linear energy function, SPEN instead considers a general energy function and assumes the non-convexity. Then, it approximates the optimal $\mathbf{y}$ with gradient descent:
 \begin{equation}
 \mathbf{\bar{y}} = argmin_{\mathbf{\bar{y}}} E( \mathbf{\bar{y}}, \mathbf{x} )
 %Ex(y) subject to y \in \{0, 1\}
@@ -172,7 +176,7 @@ There are two main differences betwen SPEN and other energy-based models. First,
 \begin{equation}
 \mathbf{y}^{t+1} = \mathbf{y}^t - \eta \frac{ \partial E }{ \partial \mathbf{y^t}}
 \end{equation}
-Additionally, SPENs are much more efficient at the inferene stage where the model predicts a candidate output $\bar{\mathbf{y}}$, as SPENs use gradient descent to approximate an optimal $\bar{\mathbf{y}}$ instead of using computationally expensive searching methods such as viterbi algorithm or beam search.
+Additionally, SPENs are much more efficient at the inference stage where the model predicts a candidate output $\bar{\mathbf{y}}$, as SPENs use gradient descent to approximate an optimal $\bar{\mathbf{y}}$ instead of using computationally expensive searching methods such as viterbi algorithm or beam search.
 %%
 \subsection{Architecture of SPEN}
 Although SPEN can take general energy functions, in this work we consider the energy function consists of the global energy and the sum of local energies as follows:
@@ -198,19 +202,18 @@ Here, $+[ \cdot ]$ denotes the max function. However, this loss requires the ful
 \min_\mathbf{w} \sum_{ \mathbf{x} \in \mathcal{D} } \big[ \alpha(V(\mathbf{y}_h, \mathbf{x}) - V(\mathbf{y}_l, \mathbf{x})) - E_{\mathbf{w}}(\mathbf{y}_h, \mathbf{x}) + E_{\mathbf{w}}(\mathbf{y}_l, \mathbf{x})  \big]_+
 \end{equation}
 }
-Where $V$ is the value from the scoring function. The intuition of this loss is that we would like to approximate the scoring function with the energy networks. One big advantage of this approach is that, unlike the raw scoring function energy networks are differentiable and have less local optima. Therefore, we do not need to enumerate all the possible configurations for $y$ and we can obtain the minimum $y$ that minimizes the energy function automatically, as described in Section 4.3.
+Where $\mathbf{y}_h$ is the predicted output and $\mathbf{y}_l$ is the true configuration. $V$ is the value of the scoring function, which returns the goodness of $\mathbf{y}$ given a word problem $\mathbf{x}$. The intuition of this loss is that we would like the difference between energy values of the prediction and true $\mathbf{y}$ to be roughly the same as the difference between the scores, as depicted in Figure \ref{rank-loss}. In other words, we would like to approximate the scoring function with the energy networks. One big advantage of this approach is that, unlike the raw scoring function energy networks are differentiable and have less local optima. Therefore, we do not need to enumerate all the possible configurations for $y$ and we can obtain the minimum $y$ that minimizes the energy function automatically, as described in Section 4.3.
+Additionally, as the scoring function can be arbitrary, we can inject the domain knowledge for this task. For example, as each data sample contains the true solution pairs from equations, intuitively if the solutions from the predicted equations match with them, we can imagine that the prediction is more likely to be correct. We can implement a scoring function that gives higher score to such predictions, as described in Section 4.1.
 %
 \begin{figure}[ht]
 	\centering
 	\includegraphics[bb=0 0 338 154, scale=0.5]{rank-based_loss}
     \caption{The illustration of the rank-based loss.}
-    \label{spen-architecture}
+    \label{rank-loss}
 \end{figure}
 %%%
 %%%
 \section{Experiments}
-\subsection{Datasets}
-We plan to use two datasets; the ALG-514 dataset proposed by \cite{Kushman2014LearningTA} which contains 514 word problems, and the DRAW dataset provided by Microsoft that contains about 1000 independent examples. One issue we are currently aware of these datasets is that ,while they include template structure of output equations for each problem, they do not provide the mapping of unknowns to text values. We plan to manually annotate such alignment information on these datasets so that we can fully make use of the template structure and its alignments.
 \subsection{Preliminary experiment}
 To check if our structure of the output $\mathbf{y}$ is actually learnable by a neural network, we first trained a small MLP model with a subset of the ALG-514 dataset. The network consists of one embedding layer, one dense layer and 7 softmax layers. We trained the network with a joint loss which is the sum of all the losses from each softmax layer. The embedding layer is initialized with the 50 dimensional Glove vector. We confirmed that the network successfully overfit to the first 10 examples of the dataset and achieved 1.0 accuracy and 0.0 loss value for the train set after 50 epochs. The illustration of the architecture of the network is shown in Figure \ref{mlp}.
 \begin{figure}[ht]
@@ -222,11 +225,11 @@ To check if our structure of the output $\mathbf{y}$ is actually learnable by a 
 \end{figure}
 %
 \subsection{Experimental settings for SPEN}
-Next, we evaluated the performance of the baseline model and the SPEN with the full dataset of ALG-514. We show the architecture of the energy networks in Figure \ref{spen-architecture}. We implemented our scoring function using sympy, and we trained the SPEN with both the SSVM loss and the rank-based loss. On training SPEN, we first trained a neural network with a supervised sequence-to-sequnce task with the dataset and fine-tuned the glove initialized embedding layer. Then, we initialized the embedding layer of SPEN with the pretrained deep neural network and trained the model with a rank-based loss. Hyperparameters used during the training are shown in Table \ref{params}.
+Next, we evaluated the performance of the baseline model and the SPEN with the full dataset of ALG-514. We split the data into the train set containing 412 examples and the validation set containing 102 examples. We show the architecture of the energy networks in Figure \ref{spen-architecture}. The whole network is end-to-end; We first pass the input to the pretrained bi-LSTM layer to extract useful features from the input. This is the equivalent to $F(\mathbf{x})$ in SPEN. The output of this layer will be passed into the global energy network and local energy network, and then we take the sum of the output values from those networks and compute the scalar energy value in the end. We implemented our scoring function using sympy, and we trained the SPEN with both the SSVM loss and the rank-based loss. On training SPEN, we first trained a neural network with a supervised sequence-to-sequence task with the dataset and fine-tuned the glove initialized embedding layer. Then, we initialized the embedding layer of SPEN with the pretrained deep neural network and trained the model with a rank-based loss. Hyperparameters used during the training are shown in Table \ref{params}.
 \begin{figure}[ht]
 	\centering
 	%\hspace*{-10mm}
-	\includegraphics[bb=0 0 609 324, scale=0.4]{spen_architecture.pdf}
+	\includegraphics[bb=0 0 609 324, scale=0.35]{spen_architecture.pdf}
     \caption{The architecture of the SPEN model used in the experiment.}
     \label{spen-architecture}
 \end{figure}
@@ -248,9 +251,10 @@ Margin weight           & 100
 % TODO: write more details
 %%%
 %%%
-\section{Results and Discusstion}
+\section{Results and Discussion}
 Table \ref{result} shows the accuracies for the second experiment. Both approaches of the SPEN outperformed the greedy baseline model, and the model trained with the rank-based loss achieved about a 4\% higher accuracy. However, this result is very lower than the accuracy reported by \cite{Kushman2014LearningTA},
-\begin{table*}[]
+%\begin{table*}[!htbp]
+\begin{table*}[htbp]
 \centering
 \caption{Experimental results with the ALG-514 dataset. Each cell represents the accuracy of a method.}
 \label{result}
@@ -263,10 +267,11 @@ Table \ref{result} shows the accuracies for the second experiment. Both approach
 %%%
 %%%
 \section{Planned works}
-As the greedy baseline performed very pooly, we plan to implement a better baseline using beam search, to see if the SPEN's performance is actually higher than much simpler methods. We are also suspecting that our scoring function is not sophisticated enough, as we achieved lower accuracies than we expected, and plan to improve our scoring function. Lastly, we are planning to explore better architectures for energy networks and tune the optimization and inference parameters of SPEN to obtain a higher accuracy.
+As the greedy baseline performed very poorly, we plan to implement a better baseline using beam search, to see if the SPEN's performance is actually higher than much simpler methods. We are suspecting that our scoring function is not sophisticated enough, as we achieved lower accuracies than we expected, and plan to improve our scoring function. Also, in the second experiment we used a derivation which does not contain unknowns variables. As our initial motivation was the lack of the annotations for unknown alignments, we plan to perform another experiment with a derivation that contains all the alignment information. Lastly, we are planning to explore better architectures for energy networks and tune the optimization and inference parameters of SPEN to obtain a higher accuracy.
 % Write our plan of improving the scoring function??
 %%%
 %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % previous sections in the proposal
 \if0
 \section{Evaluation}
@@ -274,7 +279,7 @@ Following the existing works, we evaluate the model's performance with the overa
 %%%
 %%%
 \section{Datasets}
-We plan to use two datasets; the ALG-514 dataset proposed by \cite{Kushman2014LearningTA} which contains 514 word problems, and the DRAW dataset provided by Microsoft that contains about 1000 independent examples. One issue we are currently aware of these datasets is that ,while they include template structure of output equations for each problem, they do not provide the mapping of unknowns to text values. We plan to manually annotate such alignment information on these datasets so that we can fully make use of the template structure and its alignments.
+We plan to use two datasets; the ALG-514 dataset proposed by \cite{Kushman2014LearningTA} which contains 514 word problems, and the DRAW dataset provided by Microsoft that contains about 1000 independent examples. Each data sample contains the problem text, template structure, alignments annotation for coefficients, and the solution for the answer equations. One issue we are currently aware of these datasets is that, while they include template structure of output equations for each problem, they do not provide the mapping of unknowns to text values. Instead of manually annotating such alignment information, we use the scoring function with the solutions to address this problem, which we describe in Section 4.1. %We plan to manually annotate such alignment information on these datasets so that we can fully make use of the template structure and its alignments.
 %%%
 %%%
 \section{Scope}
