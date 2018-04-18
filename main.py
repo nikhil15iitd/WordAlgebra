@@ -14,7 +14,7 @@ from dsbox_spen.dsbox.spen.core import spen as sp, config, energy
 from dsbox_spen.dsbox.spen.utils.metrics import token_level_loss_ar, token_level_loss
 
 GLOVE_DIR = 'glove.6B'
-EMBEDDING_DIM = 100  # 50
+EMBEDDING_DIM = 50  # 50
 MAX_SEQUENCE_LENGTH = 105
 
 worddict = {}
@@ -123,11 +123,11 @@ def main():
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(y_train.shape)
-    F.fit([X, Xtags],
-          [Y[:, 0], Y[:, 1], Y[:, 2], Y[:, 3], Y[:, 4], Y[:, 5], Y[:, 6]],
-          batch_size=128, epochs=15, validation_data=(
-            [X_test, Xtags_test],
-            [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6]]))
+    # F.fit([X, Xtags],
+    #       [Y[:, 0], Y[:, 1], Y[:, 2], Y[:, 3], Y[:, 4], Y[:, 5], Y[:, 6]],
+    #       batch_size=128, epochs=15, validation_data=(
+    #         [X_test, Xtags_test],
+    #         [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6]]))
 
     # y_pred = np.argmax(F.predict(X_test), axis=2)
     # for i in range(y_pred.shape[0]):
@@ -166,12 +166,12 @@ def main():
     s = sp.SPEN(config)
     e = energy.EnergyModel(config)
     s.get_energy = e.get_energy_rnn_mlp_emb
-    # s.evaluate = evaluation_function
-    s.train_batch = s.train_supervised_batch
+    s.evaluate = evaluation_function
+    s.train_batch = s.train_unsupervised_batch
 
     s.createOptimizer()
     s.construct_embedding(5, 37)
-    s.construct(training_type=sp.TrainingType.SSVM)
+    s.construct(training_type=sp.TrainingType.Rank_Based)
     s.print_vars()
 
     s.init()
@@ -199,7 +199,7 @@ def main():
             xtags_batch = xtags_labeled[indices][:]
             xtags_batch = np.reshape(xtags_batch, (xtags_batch.shape[0], -1))
             s.set_train_iter(i)
-            s.train_batch(xtags_batch, ybatch, verbose=4)
+            s.train_batch(xbatch, verbose=4)
 
         if i % 2 == 0:
             yval_out = s.map_predict(xinput=np.reshape(Xtags_test, (Xtags_test.shape[0], -1)))

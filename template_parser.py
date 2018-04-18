@@ -91,9 +91,16 @@ def get_gold_derivations(dataset, vocab):
     solutions = []
     tags_to_int = dict()
     tag_count = 1
+    tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+
     for index, data_sample in enumerate(dataset):
         print('=' * 50)
         print(index)
+        sentence_list = tokenizer.tokenize(data_sample['sQuestion'])
+        cum_len = np.zeros(len(sentence_list))
+        for i in range(1,len(sentence_list)):
+            cum_len[i] = cum_len[i-1] + len(sentence_list[i-1].split())
+
         words = nltk.word_tokenize(data_sample['sQuestion'])
         tags = nltk.pos_tag(words)
         tags = [x[1] for x in tags]
@@ -136,7 +143,7 @@ def get_gold_derivations(dataset, vocab):
             tmp.append(0)
         for a in alignments:
             if 'coeff' in a:
-                tmp[slot_to_index[a['coeff']]] = (a['TokenId']) + 1
+                tmp[slot_to_index[a['coeff']]] = cum_len[a['SentenceId']] + a['TokenId'] + 1
 
         derivation = tmp[:]
         derivations.append(np.array(derivation))
