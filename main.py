@@ -5,7 +5,7 @@ import os
 import nltk
 import numpy as np
 import scoring_function as sf
-from keras.layers import Bidirectional, LSTM, Conv1D, Dense, PReLU, MaxPool1D, Input, Embedding, TimeDistributed, \
+from keras.layers import Bidirectional, LSTM, Flatten, Dense, PReLU, MaxPool1D, Input, Embedding, TimeDistributed, \
     BatchNormalization, concatenate
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
@@ -33,7 +33,11 @@ def feed_forward_mlp_model(input_shape, b_vocab, emb_layer):
     tensor_a = Bidirectional(LSTM(32, return_sequences=True))(emb_a)
     tensor_b = Bidirectional(LSTM(32, return_sequences=True))(emb_b)
     l0 = concatenate([tensor_a, tensor_b], axis=2)
-    l0 = Bidirectional(LSTM(64))(l0)
+    l0 = Bidirectional(LSTM(64, return_sequences=True))(l0)
+    l0 = Flatten()(l0)
+    l0 = Dense(256)(l0)
+    l0 = BatchNormalization()(l0)
+    l0 = PReLU()(l0)
     l1 = Dense(25, activation='softmax', name='t_id')(l0)
     l2 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='a')(l0)
     l3 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='b')(l0)
@@ -87,7 +91,7 @@ def load_glove(vocab):
                                 EMBEDDING_DIM,
                                 weights=[embedding_matrix],
                                 input_length=MAX_SEQUENCE_LENGTH,
-                                trainable=False)
+                                trainable=True)
     return embedding_layer
 
 
@@ -123,11 +127,11 @@ def main():
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(y_train.shape)
-    # F.fit([X, Xtags],
-    #       [Y[:, 0], Y[:, 1], Y[:, 2], Y[:, 3], Y[:, 4], Y[:, 5], Y[:, 6]],
-    #       batch_size=128, epochs=15, validation_data=(
-    #         [X_test, Xtags_test],
-    #         [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6]]))
+    F.fit([X_train, Xtags_train],
+          [y_train[:, 0], y_train[:, 1], y_train[:, 2], y_train[:, 3], y_train[:, 4], y_train[:, 5], y_train[:, 6]],
+          batch_size=128, epochs=10, validation_data=(
+            [X_test, Xtags_test],
+            [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6]]))
 
     # y_pred = np.argmax(F.predict(X_test), axis=2)
     # for i in range(y_pred.shape[0]):

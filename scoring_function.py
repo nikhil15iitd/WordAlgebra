@@ -197,17 +197,17 @@ class Scorer(object):
                 pnlty = abs(ypred[0] - alignment[0])
                 score -= pnlty
                 pnlty = abs(ypred[1] - alignment[1])
-                score -= pnlty * 100
+                score -= pnlty
                 pnlty = abs(ypred[2] - alignment[2])
-                score -= pnlty * 100
+                score -= pnlty
                 pnlty = abs(ypred[3] - alignment[3])
-                score -= pnlty * 100
+                score -= pnlty
                 pnlty = abs(ypred[4] - alignment[4])
-                score -= pnlty * 100
+                score -= pnlty
                 pnlty = abs(ypred[5] - alignment[5])
-                score -= pnlty * 100
+                score -= pnlty
                 pnlty = abs(ypred[6] - alignment[6])
-                score -= pnlty * 100
+                score -= pnlty
             except:
                 score += 0
 
@@ -237,109 +237,176 @@ class Scorer(object):
                 if ypred[0] == 0:
                     solutions = self.template_1(a, b, c, d, e, f)
                     x, y = sympy.symbols('x,y')
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 1:
                     x, y = sympy.symbols('x,y')
                     solutions = self.template_2(a, b, c, d)
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 2:
                     x, y = sympy.symbols('x,y')
                     solutions = self.template_3(a, b, c, d)
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 3:
                     x, y = sympy.symbols('x,y')
                     solutions = self.template_4(a, b, c)
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 4:
                     x, y = sympy.symbols('x,y')
                     solutions = self.template_5(a, b, c)
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 5:
                     solutions = self.template_6(a, b, c)
-                    score -= (abs(solutions['x'] - sols[0]))
+                    diff = (abs(solutions['x'] - sols[0]))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 6:
                     x, y = sympy.symbols('x,y')
                     solutions = self.template_7(a, b)
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 7:
                     x, y = sympy.symbols('x,y')
                     solutions = self.template_8(a, b, c, d)
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 8:
                     x, y = sympy.symbols('x,y')
                     solutions = self.template_9(a, b, c, d)
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 9:
                     solutions = self.template_10(a, b, c)
                     # print(solutions)
                     x, y = sympy.symbols('x,y')
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 10:
                     solutions = self.template_11(a, b)
                     # print(solutions)
-                    score -= (abs(solutions['x'] - sols[0]))
+                    diff = (abs(solutions['x'] - sols[0]))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 11:
                     x, y = sympy.symbols('x,y')
                     solutions = self.template_12(a, b)
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 12:
                     solutions = self.template_13(a, b, c, d)
                     # print(solutions)
-                    score -= (abs(solutions['x'] - sols[0]))
+                    diff = (abs(solutions['x'] - sols[0]))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 13:
                     solutions = self.template_14(a, b, c)
                     # print(solutions)
-                    score -= (abs(solutions['x'] - sols[0]))
+                    diff = (abs(solutions['x'] - sols[0]))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 14:
                     solutions = self.template_15(a, b, c, d)
                     # print(solutions)
                     x, y = sympy.symbols('x,y')
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 15:
                     solutions = self.template_16(a, b, c)
                     # print(solutions)
                     x, y = sympy.symbols('x,y')
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 16:
                     solutions = self.template_17(a, b, c)
                     # print(solutions)
-                    score -= (abs(solutions['x'] - sols[0]))
+                    diff = (abs(solutions['x'] - sols[0]))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 17:
                     solutions = self.template_18(a, b, c)
                     # print(solutions)
-                    score -= (abs(solutions['x'] - sols[0]))
+                    diff = (abs(solutions['x'] - sols[0]))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 18:
                     solutions = self.template_19(a, b, c, d)
                     # print(solutions)
                     x, y = sympy.symbols('x,y')
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 19:
                     x, y = sympy.symbols('x,y')
                     solutions = self.template_20(a, b)
                     # print(solutions)
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 20:
                     solutions = self.template_21(a, b, c)
                     # print(solutions)
-                    score -= (abs(solutions['x'] - sols[0]))
+                    diff = (abs(solutions['x'] - sols[0]))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 21:
                     solutions = self.template_22(a, b, c)
                     # print(solutions)
                     x, y = sympy.symbols('x,y')
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 22:
                     solutions = self.template_23(a, b, c)
                     # print(solutions)
                     x, y = sympy.symbols('x,y')
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 23:
                     solutions = self.template_24(a, b)
-                    score -= (abs(solutions["x"] - sols[0]))
+                    diff = (abs(solutions["x"] - sols[0]))
+                    if diff > 1e-3:
+                        score -= 1
                 elif ypred[0] == 24:
                     solutions = self.template_25(a, b, c)
                     # print(solutions)
                     x, y = sympy.symbols('x,y')
-                    score -= min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),(abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    diff = min((abs(solutions[x] - sols[0]) + abs(solutions[y] - sols[1])),
+                               (abs(solutions[x] - sols[1]) + abs(solutions[y] - sols[0])))
+                    if diff > 1e-3:
+                        score -= 1
             except:
                 return score
 
