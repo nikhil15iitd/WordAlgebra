@@ -181,12 +181,10 @@ class Scorer(object):
         words = nltk.word_tokenize(text)
         numbers_present = 0
         for i in range(ypred.shape[0]):
-            # if i > 0 and ypred[i] >= len(words):
-            #     score -= 1
             if i > 0 and ypred[i] > len(words):
-                score -= 100
+                score -= 1
             if i == 0 and ypred[i] >= 25:
-                score -= 10
+                score -= 1000
             if i > 1 and ypred[i - 1] == 0 and ypred[i] > 0:
                 score -= 1000
 

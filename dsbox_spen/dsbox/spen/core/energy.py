@@ -157,7 +157,7 @@ class EnergyModel:
         with tf.variable_scope(self.config.spen_variable_scope):
             with tf.variable_scope(self.config.fx_variable_scope) as scope:
                 logits2 = self.get_feature_net_custom(xinput, output_size, reuse=reuse)
-                logits3 = self.get_feature_net_mlp(xinput, output_size, reuse=reuse)  # + logits2
+                logits3 = self.get_feature_net_mlp(xinput, output_size, reuse=reuse)
 
                 # mult_ = tf.multiply(logits, yinput)
                 mult2 = tf.multiply(logits2, yinput)
@@ -207,7 +207,7 @@ class EnergyModel:
                 if reuse:
                     scope.reuse_variables()
 
-                net = global_e + local_e3 + local_e2  # + local_e + local_e3
+                net = global_e + local_e2 + local_e3  # + local_e + local_e3
 
             return tf.squeeze(net)
 

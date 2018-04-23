@@ -6,7 +6,7 @@ import nltk
 import numpy as np
 import scoring_function as sf
 from keras.layers import Bidirectional, LSTM, Flatten, Dense, PReLU, MaxPool1D, Input, Embedding, TimeDistributed, \
-    BatchNormalization, concatenate
+    BatchNormalization, concatenate, Conv1D
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
@@ -34,6 +34,9 @@ def feed_forward_mlp_model(input_shape, b_vocab, emb_layer):
     tensor_b = Bidirectional(LSTM(32, return_sequences=True))(emb_b)
     l0 = concatenate([tensor_a, tensor_b], axis=2)
     l0 = Bidirectional(LSTM(64, return_sequences=True))(l0)
+    l8 = TimeDistributed(Dense(21, activation='softmax'), name='seq')(l0)
+    l0 = Conv1D(256, 3)(l0)
+    l0 = Conv1D(256, 3)(l0)
     l0 = Flatten()(l0)
     l0 = Dense(256)(l0)
     l0 = BatchNormalization()(l0)
@@ -45,11 +48,11 @@ def feed_forward_mlp_model(input_shape, b_vocab, emb_layer):
     l5 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='d')(l0)
     l6 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='e')(l0)
     l7 = Dense(globals.PROBLEM_LENGTH, activation='softmax', name='f')(l0)
-    model = Model(inputs=[a, b], outputs=[l1, l2, l3, l4, l5, l6, l7])
+    model = Model(inputs=[a, b], outputs=[l1, l2, l3, l4, l5, l6, l7, l8])
     model.compile('adam', {'t_id': 'sparse_categorical_crossentropy', 'a': 'sparse_categorical_crossentropy',
                            'b': 'sparse_categorical_crossentropy', 'c': 'sparse_categorical_crossentropy',
                            'd': 'sparse_categorical_crossentropy', 'e': 'sparse_categorical_crossentropy',
-                           'f': 'sparse_categorical_crossentropy'})
+                           'f': 'sparse_categorical_crossentropy', 'seq': 'sparse_categorical_crossentropy'})
     return model
 
 
@@ -91,7 +94,7 @@ def load_glove(vocab):
                                 EMBEDDING_DIM,
                                 weights=[embedding_matrix],
                                 input_length=MAX_SEQUENCE_LENGTH,
-                                trainable=True)
+                                trainable=False)
     return embedding_layer
 
 
@@ -112,31 +115,42 @@ def evaluation_function(xinput=None, yinput=None, yt=None):
 
 def main():
     derivations, vocab_dataset = debug()
-    X, Xtags, Y, Z = derivations
+    X, Xtags, YSeq, Y, Z = derivations
     for key in vocab_dataset:
         worddict[vocab_dataset[key]] = key
     X = pad_sequences(X, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
     Xtags = pad_sequences(Xtags, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
+    YSeq = pad_sequences(YSeq, padding='post', truncating='post', value=0., maxlen=globals.PROBLEM_LENGTH)
+    YSeq = np.reshape(YSeq, (YSeq.shape[0], YSeq.shape[1], 1))
     for i in range(X.shape[0]):
         text2sols[str(X[i])] = Z[i]
         text2align[str(X[i])] = Y[i]
     emb_layer = load_glove(vocab_dataset)
     F = feed_forward_mlp_model(X.shape[1:], 36, emb_layer)
-    X_train, X_test, y_train, y_test, Xtags_train, Xtags_test = train_test_split(X, Y, Xtags, test_size=0.2,
-                                                                                 random_state=23)
+    X_train, X_test, Y_train, Y_test, Xtags_train, Xtags_test, YSeq_train, YSeq_test = train_test_split(X, Y, Xtags,
+                                                                                                        YSeq,
+                                                                                                        test_size=0.2,
+                                                                                                        random_state=23)
     ntrain = X_train.shape[0]
     print(X_train.shape)
-    print(y_train.shape)
+    print(YSeq.shape)
     F.fit([X_train, Xtags_train],
-          [y_train[:, 0], y_train[:, 1], y_train[:, 2], y_train[:, 3], y_train[:, 4], y_train[:, 5], y_train[:, 6]],
-          batch_size=128, epochs=10, validation_data=(
+          [Y_train[:, 0], Y_train[:, 1], Y_train[:, 2], Y_train[:, 3], Y_train[:, 4], Y_train[:, 5], Y_train[:, 6],
+           YSeq_train],
+          batch_size=128, epochs=20, validation_data=(
             [X_test, Xtags_test],
-            [y_test[:, 0], y_test[:, 1], y_test[:, 2], y_test[:, 3], y_test[:, 4], y_test[:, 5], y_test[:, 6]]))
+            [Y_test[:, 0], Y_test[:, 1], Y_test[:, 2], Y_test[:, 3], Y_test[:, 4], Y_test[:, 5], Y_test[:, 6],
+             YSeq_test]))
 
-    # y_pred = np.argmax(F.predict(X_test), axis=2)
-    # for i in range(y_pred.shape[0]):
-    #     print(derivation_to_equation(y_pred[i].reshape((globals.TEMPLATE_LENGTH,))))
-    #     print(derivation_to_equation(y_test[i].reshape((globals.TEMPLATE_LENGTH,))))
+    y_pred = np.argmax(F.predict([X_test, Xtags_test])[7], axis=2)
+    global_acc = 0.0
+    for i in range(y_pred.shape[0]):
+        acc = 0.0
+        for j in range(y_pred.shape[1]):
+            if y_pred[i][j] == YSeq_test[i][j] and j < 20:
+                acc += 1
+        global_acc += (acc / y_pred.shape[1])
+    print(global_acc)
 
     ###Configurable parameters START
     ln = 1e10
@@ -157,13 +171,13 @@ def main():
     config.inf_rate = inf_rate
     config.learning_rate = lr
     config.dropout = dp
-    config.dimension = globals.PROBLEM_LENGTH
+    config.dimension = globals.PROBLEM_LENGTH + 1
     config.output_num = output_num
     config.input_num = input_num
     config.en_layer_info = en_layers
     config.layer_info = f_layers
     config.margin_weight = mw
-    config.lstm_hidden_size = 16
+    config.lstm_hidden_size = 32
     config.sequence_length = 105
     config.inf_penalty = ip
     ###Configurable parameters END
@@ -183,7 +197,7 @@ def main():
     labeled_num = min((ln, ntrain))
     indices = np.arange(labeled_num)
     xlabeled = X_train[indices][:]
-    ylabeled = y_train[indices][:]
+    ylabeled = Y_train[indices][:]
     xtags_labeled = Xtags_train[indices][:]
     print(xlabeled.shape)
     print(ylabeled.shape)

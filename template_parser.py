@@ -10,6 +10,8 @@ SEED = 23
 COEFFS = ['a', 'b', 'c', 'd', 'e', 'f']
 UNKOWNS = ['m', 'n']
 SLOTS = ['a', 'b', 'c', 'd', 'e', 'f']  # unknowns + coeffs
+vocab_template = {' ': 0, 'm': 1, 'n': 2, 'a': 3, 'b': 4, 'c': 5, 'd': 6, 'e': 7, 'f': 8, '0.01': 9, '*': 10, '+': 11,
+                  '-': 12, '=': 13, ',': 14, '0': 15, '1': 16, '2': 17, '3': 18, '4': 19, '5': 20}
 
 # the index where the vector starts listing coeff values
 # 3 because we are using a representation like this: [ template_index, m,n, a,b,c,d,e,f ]
@@ -86,6 +88,7 @@ def get_gold_derivations(dataset, vocab):
     """
     X = []
     Xtags = []
+    YSeq = []
     derivations = []
     unique_templates = []
     solutions = []
@@ -122,6 +125,15 @@ def get_gold_derivations(dataset, vocab):
         equations = data_sample['lEquations']
         alignments = data_sample['Alignment']
 
+        # create template sequences
+        x_temp = []
+        for template in data_sample['Template']:
+            template_tokens = template.split()
+            for token in template_tokens:
+                x_temp.append(vocab_template[token])
+            x_temp.append(vocab_template[' '])
+        YSeq.append(np.array(x_temp))
+
         # 1. Add the template index
         tmp = []
         tmp.append(template_index)
@@ -150,7 +162,7 @@ def get_gold_derivations(dataset, vocab):
     print(unique_templates)
     print(tags_to_int)
     print('Number of unique tags: ' + str(len(tags_to_int.keys())))
-    return X, Xtags, np.array(derivations), np.array(solutions)
+    return X, Xtags, np.array(YSeq), np.array(derivations), np.array(solutions)
 
 
 def validate_derivation(derivation, dataset):
