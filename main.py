@@ -94,7 +94,7 @@ def load_glove(vocab):
                                 EMBEDDING_DIM,
                                 weights=[embedding_matrix],
                                 input_length=MAX_SEQUENCE_LENGTH,
-                                trainable=False)
+                                trainable=True)
     return embedding_layer
 
 
@@ -193,7 +193,7 @@ def main():
     s.print_vars()
 
     s.init()
-    s.init_embedding(F.get_layer('embedding_2').get_weights()[0])
+    s.init_embedding(F.get_layer('embedding_1').get_weights()[0])
     labeled_num = min((ln, ntrain))
     indices = np.arange(labeled_num)
     xlabeled = X_train[indices][:]
