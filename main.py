@@ -134,13 +134,13 @@ def main():
     ntrain = X_train.shape[0]
     print(X_train.shape)
     print(YSeq.shape)
-    F.fit([X_train, Xtags_train],
-          [Y_train[:, 0], Y_train[:, 1], Y_train[:, 2], Y_train[:, 3], Y_train[:, 4], Y_train[:, 5], Y_train[:, 6],
-           YSeq_train],
-          batch_size=128, epochs=20, validation_data=(
-            [X_test, Xtags_test],
-            [Y_test[:, 0], Y_test[:, 1], Y_test[:, 2], Y_test[:, 3], Y_test[:, 4], Y_test[:, 5], Y_test[:, 6],
-             YSeq_test]))
+    # F.fit([X_train, Xtags_train],
+    #       [Y_train[:, 0], Y_train[:, 1], Y_train[:, 2], Y_train[:, 3], Y_train[:, 4], Y_train[:, 5], Y_train[:, 6],
+    #        YSeq_train],
+    #       batch_size=128, epochs=20, validation_data=(
+    #         [X_test, Xtags_test],
+    #         [Y_test[:, 0], Y_test[:, 1], Y_test[:, 2], Y_test[:, 3], Y_test[:, 4], Y_test[:, 5], Y_test[:, 6],
+    #          YSeq_test]))
 
     y_pred = np.argmax(F.predict([X_test, Xtags_test])[7], axis=2)
     global_acc = 0.0
@@ -177,7 +177,7 @@ def main():
     config.en_layer_info = en_layers
     config.layer_info = f_layers
     config.margin_weight = mw
-    config.lstm_hidden_size = 32
+    config.lstm_hidden_size = 16
     config.sequence_length = 105
     config.inf_penalty = ip
     ###Configurable parameters END
@@ -188,7 +188,7 @@ def main():
     s.train_batch = s.train_unsupervised_batch
 
     s.createOptimizer()
-    s.construct_embedding(len(vocab_dataset.keys()), EMBEDDING_DIM)
+    s.construct_embedding(EMBEDDING_DIM, len(vocab_dataset.keys()) + 1)
     s.construct(training_type=sp.TrainingType.Rank_Based)
     s.print_vars()
 
