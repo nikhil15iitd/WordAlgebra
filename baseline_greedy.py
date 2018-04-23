@@ -43,7 +43,7 @@ def is_number(s):
 
 def main():
     derivations, vocab_dataset = debug()
-    X, Xtags, Y, Z = derivations
+    X, Xtags, YSeq, Y, Z = derivations
     for key in vocab_dataset:
         worddict[vocab_dataset[key]] = key
 

@@ -188,7 +188,7 @@ def main():
     s.train_batch = s.train_unsupervised_batch
 
     s.createOptimizer()
-    s.construct_embedding(5, 37)
+    s.construct_embedding(len(vocab_dataset.keys()), EMBEDDING_DIM)
     s.construct(training_type=sp.TrainingType.Rank_Based)
     s.print_vars()
 
@@ -222,8 +222,8 @@ def main():
         if i % 2 == 0:
             yval_out = s.map_predict(xinput=np.reshape(Xtags_test, (Xtags_test.shape[0], -1)))
             print(yval_out)
-            print(y_test)
-            hm_ts, ex_ts = token_level_loss(yval_out, y_test)
+            print(Y_test)
+            hm_ts, ex_ts = token_level_loss(yval_out, Y_test)
             print(hm_ts)
             print(ex_ts)
 
