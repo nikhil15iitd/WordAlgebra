@@ -258,29 +258,25 @@ class SPEN:
     def search_better_y_fast(self, xtest, yprev):
         final_best = np.zeros((xtest.shape[0], self.config.output_num))
         for iter in range(np.shape(xtest)[0]):
-            best_score = float("-inf")
             random_proposal = yprev[iter]
             score_first = self.evaluate(np.expand_dims(xtest[iter], 0), np.expand_dims(random_proposal, 0))
 
             labelset = set(np.arange(7))
-            for l in range(np.shape(xtest)[1]):
+            for l in range(yprev.shape[1]):
                 # pdb.set_trace()
                 changed = False
-                if xtest[iter][l] == 0:
-                    continue
-                else:
-                    for label in labelset - set([random_proposal[l]]):
-                        random_proposal_new = random_proposal[:]
-                        random_proposal_new[l] = label
-                        score = self.evaluate(np.expand_dims(xtest[iter], 0),
-                                              np.expand_dims(random_proposal_new, 0))
-                        if score > score_first:
-                            score_first = score
-                            random_proposal[l] = random_proposal_new[l]
-                            changed = True
-                            break
-                    if changed == True:
+                for label in labelset - set([random_proposal[l]]):
+                    random_proposal_new = random_proposal[:]
+                    random_proposal_new[l] = label
+                    score = self.evaluate(np.expand_dims(xtest[iter], 0),
+                                          np.expand_dims(random_proposal_new, 0))
+                    if score > score_first:
+                        score_first = score
+                        random_proposal[l] = random_proposal_new[l]
+                        changed = True
                         break
+                if changed:
+                    break
             # print (random_proposal.shape, final_best.shape)
             final_best[iter, :] = random_proposal[:]
 
@@ -295,7 +291,7 @@ class SPEN:
 
         y_a = y_a[-10:]
 
-        if np.random.random() > 0.8:
+        if np.random.random() > 0.5:
             yp = y_a[-1]
             print("search")
             y_better = self.search_better_y_fast(xinput, np.argmax(yp, 2))

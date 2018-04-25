@@ -10,6 +10,8 @@ SEED = 23
 COEFFS = ['a', 'b', 'c', 'd', 'e', 'f']
 UNKOWNS = ['m', 'n']
 SLOTS = ['a', 'b', 'c', 'd', 'e', 'f']  # unknowns + coeffs
+vocab_template = {' ': 0, 'm': 1, 'n': 2, 'a': 3, 'b': 4, 'c': 5, 'd': 6, 'e': 7, 'f': 8, '0.01': 9, '*': 10, '+': 11,
+                  '-': 12, '=': 13, ',': 14, '0': 15, '1': 16, '2': 17, '3': 18, '4': 19, '5': 20}
 
 # the index where the vector starts listing coeff values
 # 3 because we are using a representation like this: [ template_index, m,n, a,b,c,d,e,f ]
@@ -86,6 +88,7 @@ def get_gold_derivations(dataset, vocab):
     """
     X = []
     Xtags = []
+    YSeq = []
     derivations = []
     unique_templates = []
     solutions = []
@@ -98,8 +101,8 @@ def get_gold_derivations(dataset, vocab):
         print(index)
         sentence_list = tokenizer.tokenize(data_sample['sQuestion'])
         cum_len = np.zeros(len(sentence_list))
-        for i in range(1,len(sentence_list)):
-            cum_len[i] = cum_len[i-1] + len(sentence_list[i-1].split())
+        for i in range(1, len(sentence_list)):
+            cum_len[i] = cum_len[i - 1] + len(sentence_list[i - 1].split())
 
         words = nltk.word_tokenize(data_sample['sQuestion'])
         tags = nltk.pos_tag(words)
@@ -121,6 +124,15 @@ def get_gold_derivations(dataset, vocab):
         templates = data_sample['Template']
         equations = data_sample['lEquations']
         alignments = data_sample['Alignment']
+
+        # create template sequences
+        x_temp = []
+        for template in data_sample['Template']:
+            template_tokens = template.split()
+            for token in template_tokens:
+                x_temp.append(vocab_template[token])
+            x_temp.append(vocab_template[' '])
+        YSeq.append(np.array(x_temp))
 
         # 1. Add the template index
         tmp = []
@@ -145,13 +157,12 @@ def get_gold_derivations(dataset, vocab):
             if 'coeff' in a:
                 tmp[slot_to_index[a['coeff']]] = cum_len[a['SentenceId']] + a['TokenId'] + 1
 
-        derivation = tmp[:]
-        derivations.append(np.array(derivation))
+        derivations.append(np.array(tmp))
         solutions.append(np.array(data_sample['lSolutions']))
     print(unique_templates)
     print(tags_to_int)
     print('Number of unique tags: ' + str(len(tags_to_int.keys())))
-    return X, Xtags, np.array(derivations), np.array(solutions)
+    return X, Xtags, np.array(YSeq), np.array(derivations), np.array(solutions)
 
 
 def validate_derivation(derivation, dataset):
