@@ -19,10 +19,14 @@ operators = ['+', '-', '*', '/', '=']
 coeffs = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 unknowns = ['m', 'n', 'l', 'o', 'p', 'q']
 numbers = ['0.01', '0', '1', '2', '3', '4', '5']
-seperators = [',', ' ']
+SEPERATOR = ',' # equation separator symbol
+PAD = ' '       # padding symbol
 
-opsep = ['+', '-', '*', '/', '=', ',', ' ']
+opsep = ['+', '-', '*', '/', '=', ',']
+opseppad = ['+', '-', '*', '/', '=', ',', ' ']
+
 all_symbols = list(vocab_template.keys())
+all_valid_symbols = operators+coeffs+unknowns+numbers+[SEPERATOR]
 #nonrepeatable = operators+coeffs+
 
 class Scorer(object):
@@ -37,27 +41,26 @@ class Scorer(object):
         # words = text.strip().split(' ')
         words = nltk.word_tokenize(text)
         numbers_present = 0
-        print(ypred.shape)
-        print(ypred)
-        ypred_symbol = [ inv_map[int(i)] for i in ypred ]
-
+        #print(ypred.shape)
+        #print(ypred)
         #print(ytrue)
-        print(ypred_symbol)
+        ypred_symbol = [ inv_map[int(i)] for i in ypred ]
+        ytrue_symbol = [ inv_map[int(i)] for i in ytrue ]
+        #print(ypred_symbol)
 
         # counting items: https://stackoverflow.com/questions/28663856/how-to-count-the-occurrence-of-certain-item-in-an-ndarray-in-python?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
         unique, counts = np.unique(ypred_symbol, return_counts=True)
         cnt_dict = dict(zip(unique, counts))
 
-        pnlty = 100
+        pnlty = 1
         L = ypred.shape[0]
-        print(L)
 
 
         ###########################################################
         # some hand-crafted rules for valid templates (equations) #
         ###########################################################
         # operators shouldn't be at the start or end
-        if ypred_symbol[0] in opsep or ypred_symbol[L-1] in opsep: score -= pnlty
+        if ypred_symbol[0] in opseppad or ypred_symbol[L-1] in opsep: score -= 1000 # higher penalty because it'd be extremely invalid
         # there should be at least one '=' symbol
         if not '=' in ypred_symbol: score -= pnlty
         # there shouldn't be more than two '=' symbols or equation seperators
@@ -74,32 +77,41 @@ class Scorer(object):
                 #####################################################
                 # no operators/coeffs/unknowns, etc should be repeated in a row
                 # 9C2 combinations?
-                if ypred[i-1] in operators and ypred[i] in operators: score -= pnlty
-                if ypred[i-1] in coeffs:
-                    if ypred[i] in coeffs: score -= pnlty
-                    if ypred[i] in unknowns: score -= pnlty
-                    if ypred[i] in numbers: score -= pnlty
-                if ypred[i-1] in unknowns:
-                    if ypred[i] in coeffs: score -= pnlty
-                    if ypred[i] in unknowns: score -= pnlty
-                    if ypred[i] in numbers: score -= pnlty
-                if ypred[i-1] in numbers:
-                    if ypred[i] in coeffs: score -= pnlty
-                    if ypred[i] in unknowns: score -= pnlty
-                    if ypred[i] in numbers: score -= pnlty
+                if ypred_symbol[i-1] in operators:
+                    if ypred_symbol[i] in opseppad: score -= pnlty
+                if ypred_symbol[i-1] in coeffs:
+                    if ypred_symbol[i] in coeffs: score -= pnlty
+                    if ypred_symbol[i] in unknowns: score -= pnlty
+                    if ypred_symbol[i] in numbers: score -= pnlty
+                if ypred_symbol[i-1] in unknowns:
+                    if ypred_symbol[i] in coeffs: score -= pnlty
+                    if ypred_symbol[i] in unknowns: score -= pnlty
+                    if ypred_symbol[i] in numbers: score -= pnlty
+                if ypred_symbol[i-1] in numbers:
+                    if ypred_symbol[i] in coeffs: score -= pnlty
+                    if ypred_symbol[i] in unknowns: score -= pnlty
+                    if ypred_symbol[i] in numbers: score -= pnlty
+
+                # more specific rules
+                # there shouldn't be any '0 + ...' or '0 * ...'
+                if ypred_symbol[i-1] == '0' and ypred_symbol[i] in operators: score -= pnlty
+
+                # reward consecutive pad symbols a bit so that the model wants to put a series of pad in the end?
+                if ypred_symbol[i-1] == PAD and ypred_symbol[i] == PAD: score += 1
+                if ypred_symbol[i-1] == PAD and ypred_symbol[i] in all_valid_symbols: score -= 1000
 
                 # no operators immediately after an equation separator
-                if ypred[i-1] == ',' and ypred[i] in operators: score -= pnlty
+                if ypred_symbol[i-1] == ',' and ypred_symbol[i] in operators: score -= pnlty
 
 
             #####################################################
             # Scores from supervised signal (true YSeq or ytrue)
             #####################################################
-            if i >= 0 and i <= MAX_TEMPLATE_LENGTH:
+            if i >= 0 and i <= MAX_TEMPLATE_LENGTH: # need to compute diff in integers for this one so use ypred and ytrue
                 diff = abs(ypred[i] - ytrue[i])
                 score -= diff
 
-            if i > MAX_TEMPLATE_LENGTH and ypred[i] != ' ': # trying to make the predictions after max len become pad symbols
+            if i > MAX_TEMPLATE_LENGTH and ypred_symbol[i] != ' ': # trying to make the predictions after max len become pad symbols
                 score -= 1000
 
 
