@@ -52,7 +52,10 @@ class Scorer(object):
         unique, counts = np.unique(ypred_symbol, return_counts=True)
         cnt_dict = dict(zip(unique, counts))
 
-        pnlty = 1
+        pnlty = 10 # 1
+        strong_pnlty = 20 # 1000
+        reward = 1
+        strong_reward = 2
         L = ypred.shape[0]
 
 
@@ -60,7 +63,7 @@ class Scorer(object):
         # some hand-crafted rules for valid templates (equations) #
         ###########################################################
         # operators shouldn't be at the start or end
-        if ypred_symbol[0] in opseppad or ypred_symbol[L-1] in opsep: score -= 1000 # higher penalty because it'd be extremely invalid
+        if ypred_symbol[0] in opseppad or ypred_symbol[L-1] in opsep: score -= strong_pnlty # higher penalty because it'd be extremely invalid
         # there should be at least one '=' symbol
         if not '=' in ypred_symbol: score -= pnlty
         # there shouldn't be more than two '=' symbols or equation seperators
@@ -97,8 +100,8 @@ class Scorer(object):
                 if ypred_symbol[i-1] == '0' and ypred_symbol[i] in operators: score -= pnlty
 
                 # reward consecutive pad symbols a bit so that the model wants to put a series of pad in the end?
-                if ypred_symbol[i-1] == PAD and ypred_symbol[i] == PAD: score += 1
-                if ypred_symbol[i-1] == PAD and ypred_symbol[i] in all_valid_symbols: score -= 1000
+                if ypred_symbol[i-1] == PAD and ypred_symbol[i] == PAD: score += reward
+                if ypred_symbol[i-1] == PAD and ypred_symbol[i] in all_valid_symbols: score -= strong_pnlty
 
                 # no operators immediately after an equation separator
                 if ypred_symbol[i-1] == ',' and ypred_symbol[i] in operators: score -= pnlty
@@ -112,7 +115,7 @@ class Scorer(object):
                 score -= diff
 
             if i > MAX_TEMPLATE_LENGTH and ypred_symbol[i] != ' ': # trying to make the predictions after max len become pad symbols
-                score -= 1000
+                score -= strong_pnlty
 
 
         return score

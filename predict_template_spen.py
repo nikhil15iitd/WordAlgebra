@@ -116,6 +116,7 @@ def main():
     derivations, vocab_dataset = debug()
     X, Xtags, YSeq, Y, Z = derivations
     print(YSeq[0])
+    print(Xtags[0])
 
     for key in vocab_dataset:
         worddict[vocab_dataset[key]] = key
@@ -219,6 +220,7 @@ def main():
     s.init_embedding(F.get_layer('embedding_1').get_weights()[0])
     labeled_num = min((ln, ntrain))
     indices = np.arange(labeled_num)
+
     xlabeled = X_train[indices][:]
     ylabeled = YSeq_train[indices][:, :30]#YSeq_train[indices][:]
     xtags_labeled = Xtags_train[indices][:]
@@ -244,14 +246,21 @@ def main():
             xtags_batch = xtags_labeled[indices][:]
             xtags_batch = np.reshape(xtags_batch, (xtags_batch.shape[0], -1))
             s.set_train_iter(i)
+
             s.train_batch(xbatch, verbose=4)
 
         if i % 2 == 0:
             print('='*100)
             print('%dTH EPOCH'%i)
 
+            print('DISPLAYING PREDS FOR TRAIN:')
+            y_pred = s.map_predict(xinput=np.reshape(X_train, (X_train.shape[0], -1)))
+            ypred_symbols = np.array([ [ inv_map[int(j)] for j in row ] for row in y_pred ])
+            print(ypred_symbols[:5])
+
+            print('DISPLAYING PREDS FOR TEST:')
             # make prediction
-            y_pred = s.map_predict(xinput=np.reshape(Xtags_test, (Xtags_test.shape[0], -1)))
+            y_pred = s.map_predict(xinput=np.reshape(X_test, (X_test.shape[0], -1)))
 
             # display predictions and ground truths in string
             np.set_printoptions(threshold=np.nan) # ref: https://stackoverflow.com/questions/1987694/how-to-print-the-full-numpy-array
@@ -266,7 +275,7 @@ def main():
             print(hm_ts)
             print(ex_ts)
 
-        print('Trained spen for %d epochs.'%NUM_EPOCHS)
+    print('Trained spen for %d epochs.'%NUM_EPOCHS)
 
 if __name__ == "__main__":
     globals.init()  # Fetch global variables such as PROBLEM_LENGTH
