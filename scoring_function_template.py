@@ -116,8 +116,9 @@ class Scorer(object):
             # Scores from supervised signal (true YSeq or ytrue)
             #####################################################
             if i >= 0 and i <= MAX_TEMPLATE_LENGTH: # need to compute diff in integers for this one so use ypred and ytrue
-                if ytrue_symbol[i] == PAD and ypred_symbol[i] in all_valid_symbols: score -= pnlty # if it's putting some symbol to a PAD position, penalize
-                elif:
+                if ytrue_symbol[i] == PAD and ypred_symbol[i] in all_valid_symbols:
+                    score -= pnlty # if it's putting some symbol to a PAD position, penalize
+                else:
                     diff = abs(ypred[i] - ytrue[i]) # can have max 20 penalty?
                     score -= diff
 
