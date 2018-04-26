@@ -241,8 +241,8 @@ def main():
             xbatch = np.reshape(xbatch, (xbatch.shape[0], -1))
             ybatch = ylabeled[indices][:]
             ybatch = np.reshape(ybatch, (ybatch.shape[0], -1))
-            print('ybatch')
-            print(ybatch.shape)
+            #print('ybatch')
+            #print(ybatch.shape)
             xtags_batch = xtags_labeled[indices][:]
             xtags_batch = np.reshape(xtags_batch, (xtags_batch.shape[0], -1))
             s.set_train_iter(i)

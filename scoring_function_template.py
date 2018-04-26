@@ -52,10 +52,11 @@ class Scorer(object):
         unique, counts = np.unique(ypred_symbol, return_counts=True)
         cnt_dict = dict(zip(unique, counts))
 
-        pnlty = 10 # 1
-        strong_pnlty = 20 # 1000
-        reward = 1
-        strong_reward = 2
+        # constants
+        pnlty = 100 #30 #100 # 1
+        strong_pnlty = 1000 #40 #200 #1000
+        reward = 10
+        strong_reward = 20
         L = ypred.shape[0]
 
 
@@ -73,11 +74,10 @@ class Scorer(object):
 
         # sequential rules
         for i in range(ypred.shape[0]):
-
+            #####################################################
+            # Scores from ypred and x only
+            #####################################################
             if i > 0 and i <= MAX_TEMPLATE_LENGTH:
-                #####################################################
-                # Scores ypred and x only
-                #####################################################
                 # no operators/coeffs/unknowns, etc should be repeated in a row
                 # 9C2 combinations?
                 if ypred_symbol[i-1] in operators:
@@ -106,16 +106,22 @@ class Scorer(object):
                 # no operators immediately after an equation separator
                 if ypred_symbol[i-1] == ',' and ypred_symbol[i] in operators: score -= pnlty
 
+            # trying to make the predictions after max len become pad symbols
+            # right now the size of ypred == MAX_TEMPLATE_LENGTH so we don't have to use this rule
+            elif i > MAX_TEMPLATE_LENGTH and ypred_symbol[i] != ' ':
+                score -= strong_pnlty
+
 
             #####################################################
             # Scores from supervised signal (true YSeq or ytrue)
             #####################################################
             if i >= 0 and i <= MAX_TEMPLATE_LENGTH: # need to compute diff in integers for this one so use ypred and ytrue
-                diff = abs(ypred[i] - ytrue[i])
-                score -= diff
+                if ytrue_symbol[i] == PAD and ypred_symbol[i] in all_valid_symbols: score -= pnlty # if it's putting some symbol to a PAD position, penalize
+                elif:
+                    diff = abs(ypred[i] - ytrue[i]) # can have max 20 penalty?
+                    score -= diff
 
-            if i > MAX_TEMPLATE_LENGTH and ypred_symbol[i] != ' ': # trying to make the predictions after max len become pad symbols
-                score -= strong_pnlty
+
 
 
         return score
