@@ -1,5 +1,6 @@
 import os, datetime
 import globals
+from word2number import w2n
 from dataset import read_draw, numbers_to_words, derivation_to_equation
 from template_parser import debug
 
@@ -65,6 +66,7 @@ def main():
     # ypred = [np.random.randint(globals.PROBLEM_LENGTH) for _ in range(7)]
     ypred = np.random.randint(0, MAX_SEQUENCE_LENGTH, (X.shape[0], DERIVATION_SIZE))
     print(ypred)
+    print ("SLOTDIM" + str(SLOT_DIMS))
 
     # #(data_sample) * #(slots) * #(possible values for that slot) = 514 * 7 * 105 = 377790 iterations
     start = datetime.datetime.now()
@@ -74,10 +76,27 @@ def main():
         cur_max_score = -np.inf
 
         for i in range(X.shape[0]):  # for every data sample
-            for n in range(SLOT_DIMS[slot]):  # try every possible value for that slot
+            possible=[]
+            if slot==0:
+                for k in range(1,SLOT_DIMS[slot]+1):
+                    possible.append(k)
+            else:
+                for index in range(0,len(X[i])):
+                    if str.isnumeric(worddict[X[i][index]])==True:
+                        possible.append(index)
+                    else:
+                        try:
+                            if(worddict[X[i][index]].find('-'))==-1 and worddict[X[i][index]]!="point" :
+                                t = w2n.word_to_num(worddict[X[i][index]])
+                                #print(worddict[X[i][index]])
+                                possible.append(t)
+                        except:
+                            flag=1
+            for n in possible:  # try every possible value for that slot
                 # candid = np.random.randint(SLOT_DIMS[slot])
-                ypred[slot] = n
 
+                ypred[slot] = n
+                #print(np.array(X[i][0]))
                 # start = datetime.datetime.now()
                 score = evaluate_citation(np.array([X[i]]), np.array([ypred[i]]),
                                           np.array([Y[i]]))  # 5-15ms for 1 example?
