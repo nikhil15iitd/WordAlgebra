@@ -2,6 +2,7 @@ import numpy as np
 import json
 import nltk
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from collections import defaultdict
 
 # Global variables for length of inputs & outputs
 PROBLEM_LENGTH = 105
@@ -13,6 +14,13 @@ SLOTS = ['a', 'b', 'c', 'd', 'e', 'f']  # unknowns + coeffs
 vocab_template = {' ': 0, 'm': 1, 'n': 2, 'a': 3, 'b': 4, 'c': 5, 'd': 6, 'e': 7, 'f': 8, '0.01': 9, '*': 10, '+': 11,
                   '-': 12, '=': 13, ',': 14, '0': 15, '1': 16, '2': 17, '3': 18, '4': 19, '5': 20}
 template_vocab_size = len(list(vocab_template.keys()))
+
+operators = {'+': 1, '-': 2, '*': 3, '/': 4, '=': 5}
+knowns = {'a': 6, 'b': 7, 'c': 8, 'd': 9, 'e': 10, 'f': 11, 'g': 12}
+unknowns = {'m': 13, 'n': 14, 'l': 15, 'o': 16, 'p': 17, 'q': 18}
+symbols = {'%': 19}
+separators = {',': 20}
+all_template_vars = {0: ' ', 20: ','}
 
 # the index where the vector starts listing coeff values
 # 3 because we are using a representation like this: [ template_index, m,n, a,b,c,d,e,f ]
@@ -174,33 +182,35 @@ def validate_derivation(derivation, dataset):
     pass
 
 
-def debug():
+def debug(verbose=False):
     # filepath = '0.7 - release/kushman_template_index_debug.json'
     # filepath = '0.7 - release/kushman_template_index_org.json'
     filepath = '0.7 - release/kushman.json'
     with open(filepath, 'r') as f:
         dataset = json.load(f)
-    # print(len(list(dataset.keys()) ))
-    print(len(dataset))
+
 
     # Build vocab for question texts
-    from collections import defaultdict
     word_count = defaultdict(float)
 
     for index, data_sample in enumerate(dataset):
         words = nltk.word_tokenize(data_sample['sQuestion'])
         for w in words:
             word_count[w.lower()] += 1
-    print(word_count)
 
     word_idx_map = dict()
     idx_word_map = dict()
     for i, word in enumerate(word_count):
         word_idx_map[word] = i + 1
     word_idx_map[' '] = 0
-    print(word_idx_map)
-    print(len(word_idx_map.keys()))
-    print('#' * 100)
+
+    if verbose:
+        # print(len(list(dataset.keys()) ))
+        print(len(dataset))
+        print(word_count)
+        print(word_idx_map)
+        print(len(word_idx_map.keys()))
+        print('#' * 100)
 
     return get_gold_derivations(dataset, word_idx_map), word_idx_map
 

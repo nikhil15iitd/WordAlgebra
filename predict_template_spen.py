@@ -138,7 +138,7 @@ def main():
     print(X_train.shape)
     print(YSeq.shape)
     #F.fit([Xtrain], [YSeq_train], batch_size=128, epochs=20, validation_data=([X_test], [YSeq_test]))
-    F.fit(X_train, YSeq_train, batch_size=128, epochs=1, validation_data=(X_test, YSeq_test))
+    F.fit(X_train, YSeq_train, batch_size=128, epochs=10, validation_data=(X_test, YSeq_test))
 
 
     y_pred = np.argmax(F.predict(X_test), axis=2)
@@ -154,6 +154,15 @@ def main():
 
     YSeq_train = np.squeeze(YSeq_train, axis=2)
     YSeq_test = np.squeeze(YSeq_test, axis=2)
+
+    # display the actual predictions of the model:
+    # ref: https://stackoverflow.com/questions/25345770/list-comprehension-replace-for-loop-in-2d-matrix?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+    ypred_symbols = np.array([ [ inv_map[int(j)] for j in row ] for row in y_pred ])
+    ytrue_symbols = np.array([ [ inv_map[int(j)] for j in row ] for row in YSeq_test[:, :30] ])
+    print(ypred_symbols.shape)
+    print(ytrue_symbols.shape)
+    print(ypred_symbols)
+    print(ytrue_symbols)
 
 
     # TODO: fix this part
@@ -218,7 +227,8 @@ def main():
     print(ylabeled.shape)
 
     total_num = xlabeled.shape[0]
-    for i in range(1, 100):
+    NUM_EPOCHS = 100
+    for i in range(1, NUM_EPOCHS):
         bs = min((bs, labeled_num))
         perm = np.random.permutation(total_num)
 
@@ -237,12 +247,26 @@ def main():
             s.train_batch(xbatch, verbose=4)
 
         if i % 2 == 0:
-            yval_out = s.map_predict(xinput=np.reshape(Xtags_test, (Xtags_test.shape[0], -1)))
-            print(yval_out)
-            print(YSeq_test[:, :30])
-            hm_ts, ex_ts = token_level_loss(yval_out, YSeq_test[:, :30])
+            print('='*100)
+            print('%dTH EPOCH'%i)
+
+            # make prediction
+            y_pred = s.map_predict(xinput=np.reshape(Xtags_test, (Xtags_test.shape[0], -1)))
+
+            # display predictions and ground truths in string
+            np.set_printoptions(threshold=np.nan) # ref: https://stackoverflow.com/questions/1987694/how-to-print-the-full-numpy-array
+            ypred_symbols = np.array([ [ inv_map[int(j)] for j in row ] for row in y_pred ])
+            ytrue_symbols = np.array([ [ inv_map[int(j)] for j in row ] for row in YSeq_test[:, :30] ])
+            print(ypred_symbols)
+            #print(ytrue_symbols)
+            np.set_printoptions(threshold=1000) # default printing setting
+
+            # compute err and acc
+            hm_ts, ex_ts = token_level_loss(y_pred, YSeq_test[:, :30])
             print(hm_ts)
             print(ex_ts)
+
+        print('Trained spen for %d epochs.'%NUM_EPOCHS)
 
 if __name__ == "__main__":
     globals.init()  # Fetch global variables such as PROBLEM_LENGTH
