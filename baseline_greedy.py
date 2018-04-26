@@ -120,8 +120,8 @@ def main():
     print(ypred)
     print(Y[0])
     hm_ts, ex_ts = token_level_loss(ypred, Y)
-    print(hm_ts)  # => 0.975518806744488
-    print(ex_ts)  # => 0.024481193255512318
+    print(hm_ts)  # => 0.9756809338521402
+    print(ex_ts)  # => 0.02431906614785991
 
     # Outputs the first 20 predictions for debugging
 
