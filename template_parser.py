@@ -12,6 +12,7 @@ UNKOWNS = ['m', 'n']
 SLOTS = ['a', 'b', 'c', 'd', 'e', 'f']  # unknowns + coeffs
 vocab_template = {' ': 0, 'm': 1, 'n': 2, 'a': 3, 'b': 4, 'c': 5, 'd': 6, 'e': 7, 'f': 8, '0.01': 9, '*': 10, '+': 11,
                   '-': 12, '=': 13, ',': 14, '0': 15, '1': 16, '2': 17, '3': 18, '4': 19, '5': 20}
+template_vocab_size = len(list(vocab_template.keys()))
 
 # the index where the vector starts listing coeff values
 # 3 because we are using a representation like this: [ template_index, m,n, a,b,c,d,e,f ]
@@ -97,8 +98,8 @@ def get_gold_derivations(dataset, vocab):
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 
     for index, data_sample in enumerate(dataset):
-        print('=' * 50)
-        print(index)
+        #print('=' * 50)
+        #print(index)
         sentence_list = tokenizer.tokenize(data_sample['sQuestion'])
         cum_len = np.zeros(len(sentence_list))
         for i in range(1, len(sentence_list)):

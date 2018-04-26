@@ -291,6 +291,7 @@ class SPEN:
 
         y_a = y_a[-10:]
 
+        '''
         if np.random.random() > 0.5:
             yp = y_a[-1]
             print("search")
@@ -298,6 +299,7 @@ class SPEN:
             y_better = self.var_to_indicator(y_better)
 
             y_a = np.vstack((y_a, np.expand_dims(y_better, 0)))
+        '''
 
         y_a = y_a[-3:]
 
