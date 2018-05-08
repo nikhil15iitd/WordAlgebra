@@ -68,7 +68,7 @@ class Scorer(object):
         # there should be at least one '=' symbol
         if not '=' in ypred_symbol: score -= pnlty
         # there shouldn't be more than two '=' symbols or equation seperators
-        if '=' in cnt_dict.keys() and cnt_dict['='] > 2:score -= pnlty
+        if '=' in cnt_dict.keys() and cnt_dict['='] > 2: score -= pnlty
         if ',' in cnt_dict.keys() and cnt_dict[','] > 2: score -= pnlty
 
 
@@ -78,7 +78,7 @@ class Scorer(object):
             # Scores from ypred and x only
             #####################################################
             if i > 0 and i <= MAX_TEMPLATE_LENGTH:
-                # no operators/coeffs/unknowns, etc should be repeated in a row
+                # no operators/coeffs/unknowns, etc. should be repeated in a row
                 # 9C2 combinations?
                 if ypred_symbol[i-1] in operators:
                     if ypred_symbol[i] in opseppad: score -= pnlty
@@ -99,7 +99,7 @@ class Scorer(object):
                 # there shouldn't be any '0 + ...' or '0 * ...'
                 if ypred_symbol[i-1] == '0' and ypred_symbol[i] in operators: score -= pnlty
 
-                # reward consecutive pad symbols a bit so that the model wants to put a series of pad in the end?
+                # reward consecutive pad symbols a bit so that the model wants to put a series of pads in the end?
                 if ypred_symbol[i-1] == PAD and ypred_symbol[i] == PAD: score += reward
                 if ypred_symbol[i-1] == PAD and ypred_symbol[i] in all_valid_symbols: score -= strong_pnlty
 

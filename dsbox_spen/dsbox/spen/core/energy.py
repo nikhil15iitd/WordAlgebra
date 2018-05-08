@@ -157,8 +157,19 @@ class EnergyModel:
         with tf.variable_scope(self.config.spen_variable_scope):
             with tf.variable_scope(self.config.fx_variable_scope) as scope:
                 #logits2 = self.get_feature_net_custom(xinput, output_size, reuse=reuse)
-                logits2 = self.get_feature_net_custom(xinput, output_size, reuse=reuse)
+                logits2 = self.get_feature_net_rnn(xinput, reuse=reuse)
                 logits3 = self.get_feature_net_mlp(xinput, output_size, reuse=reuse)
+
+                print(logits2.get_shape())
+                with tf.variable_scope("logits2") as scope2:
+                    if reuse:
+                        scope2.reuse_variables()
+                    # Add another dense layer to project it to the dimension of derivation y
+                    WW = tf.get_variable("WW", dtype=tf.float32,
+                                        shape=[self.config.input_num * self.config.dimension, self.config.output_num * self.config.dimension])
+                    bb = tf.get_variable("bb", shape=[self.config.output_num * self.config.dimension],
+                                        dtype=tf.float32, initializer=tf.zeros_initializer())
+                    logits2 = tf.matmul(logits2, WW) + bb
 
                 # mult_ = tf.multiply(logits, yinput)
                 print(output_size) # 630????
@@ -169,7 +180,7 @@ class EnergyModel:
                 #tf.print(logits2.get_shape())
                 #tf.print(yinput.get_shape())
 
-                ##mult2 = tf.multiply(logits2, yinput)
+                mult2 = tf.multiply(logits2, yinput)
                 ##mult2 = tf.multiply(print_out0, print_out1)
                 mult3 = tf.multiply(logits3, yinput)
 
@@ -178,11 +189,12 @@ class EnergyModel:
                                                    bias=None,
                                                    bias_init=tfi.zeros(), reuse=reuse, scope=("fx3.b0"))
 
-                '''
+
                 local_e2 = tflearn.fully_connected(mult2, 1, activation='linear', weight_decay=self.config.weight_decay,
                                                    weights_init=tfi.variance_scaling(),
                                                    bias=None,
                                                    bias_init=tfi.zeros(), reuse=reuse, scope=("fx2.b0"))
+                '''
                 '''
 
 
@@ -219,8 +231,8 @@ class EnergyModel:
                 if reuse:
                     scope.reuse_variables()
 
-                #net = global_e + local_e2 + local_e3  # + local_e + local_e3
-                net = global_e + local_e3  # + local_e + local_e3
+                net = global_e + local_e2 + local_e3  # + local_e + local_e3
+                #net = global_e + local_e3  # + local_e + local_e3
 
             return tf.squeeze(net)
 

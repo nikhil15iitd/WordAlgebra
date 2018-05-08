@@ -111,25 +111,24 @@ class SPEN:
 
     def ssvm_training(self):
         self.margin_weight_ph = tf.placeholder(tf.float32, shape=[], name="Margin")
-        self.yp = tf.placeholder(tf.float32, shape=[None, self.config.output_num * self.config.dimension],
-                                 name="OutputYP")
-        self.yt = tf.placeholder(tf.float32, shape=[None, self.config.output_num * self.config.dimension],
-                                 name="OutputYT")
+        self.yp = tf.placeholder(tf.float32, shape=[None, self.config.output_num * self.config.dimension], name="OutputYP")
+        self.yt = tf.placeholder(tf.float32, shape=[None, self.config.output_num * self.config.dimension], name="OutputYT")
+
+
 
         self.energy_yp = self.get_energy(xinput=self.x, yinput=self.yp, embedding=self.embedding)
         self.energy_yt = self.get_energy(xinput=self.x, yinput=self.yt, embedding=self.embedding, reuse=True)
 
-        self.ce = -tf.reduce_sum(self.yt * tf.log(tf.maximum(self.yp, 1e-20)), 1)
+        self.ce = -tf.reduce_sum(self.yt * tf.log( tf.maximum(self.yp, 1e-20)), 1)
         self.loss_augmented_energy = self.energy_yp + self.ce * self.margin_weight_ph
         self.loss_augmented_energy_ygradient = tf.gradients(self.loss_augmented_energy, self.yp)[0]
 
         self.energy_ygradient = tf.gradients(self.energy_yp, self.yp)[0]
 
-        self.objective = tf.reduce_sum(tf.maximum(self.loss_augmented_energy - self.energy_yt, 0.0)) \
+        self.objective = tf.reduce_sum( tf.maximum( self.loss_augmented_energy - self.energy_yt, 0.0)) \
                          + self.config.l2_penalty * self.get_l2_loss()
 
-        self.num_update = tf.reduce_sum(
-            tf.cast(self.ce * self.margin_weight_ph > self.energy_yt - self.energy_yp, tf.float32))
+        self.num_update = tf.reduce_sum(tf.cast( self.ce * self.margin_weight_ph > self.energy_yt - self.energy_yp, tf.float32))
         self.total_energy_yt = tf.reduce_sum(self.energy_yt)
         self.total_energy_yp = tf.reduce_sum(self.energy_yp)
 
@@ -291,7 +290,7 @@ class SPEN:
 
         y_a = y_a[-10:]
 
-        '''
+
         if np.random.random() > 0.5:
             yp = y_a[-1]
             print("search")
@@ -299,6 +298,7 @@ class SPEN:
             y_better = self.var_to_indicator(y_better)
 
             y_a = np.vstack((y_a, np.expand_dims(y_better, 0)))
+        '''
         '''
 
         y_a = y_a[-3:]
@@ -485,21 +485,20 @@ class SPEN:
     def train_supervised_batch(self, xbatch, ybatch, verbose=0):
         tflearn.is_training(True, self.sess)
 
-        yt_ind = self.var_to_indicator(ybatch)
-        yt_ind = np.reshape(yt_ind, (-1, self.config.output_num * self.config.dimension))
-        yp_ind = self.loss_augmented_soft_predict(xinput=xbatch, yinput=yt_ind, train=True, ascent=True)
-        yp_ind = np.reshape(yp_ind, (-1, self.config.output_num * self.config.dimension))
 
-        feeddic = {self.x: xbatch, self.yp: yp_ind, self.yt: yt_ind,
-                   self.learning_rate_ph: self.config.learning_rate,
+        yt_ind = self.var_to_indicator(ybatch)
+        yt_ind = np.reshape(yt_ind, (-1, self.config.output_num*self.config.dimension))
+        yp_ind = self.loss_augmented_soft_predict(xinput=xbatch, yinput=yt_ind, train=True, ascent=True)
+        yp_ind = np.reshape(yp_ind, (-1, self.config.output_num*self.config.dimension))
+
+        feeddic = {self.x:xbatch, self.yp: yp_ind, self.yt: yt_ind,
+                   self.learning_rate_ph:self.config.learning_rate,
                    self.margin_weight_ph: self.config.margin_weight,
                    self.dropout_ph: self.config.dropout}
 
-        _, o, ce, n, en_yt, en_yhat = self.sess.run(
-            [self.train_step, self.objective, self.ce, self.num_update, self.total_energy_yt, self.total_energy_yp],
-            feed_dict=feeddic)
+        _, o,ce, n, en_yt, en_yhat = self.sess.run([self.train_step, self.objective, self.ce, self.num_update, self.total_energy_yt, self.total_energy_yp], feed_dict=feeddic)
         if verbose > 0:
-            print(self.train_iter, o, n, en_yt, en_yhat)
+          print (self.train_iter ,o,n, en_yt, en_yhat)
         return n
 
     def train_supervised_e2e_batch(self, xbatch, ybatch, verbose=0):

@@ -17,6 +17,7 @@ from dsbox_spen.dsbox.spen.utils.metrics import token_level_loss_ar, token_level
 GLOVE_DIR = 'glove.6B'
 EMBEDDING_DIM = 50  # 50
 MAX_SEQUENCE_LENGTH = 105
+MAX_TEMPLATE_LENGTH = 30
 
 worddict = {}
 text2sols = {}
@@ -45,8 +46,20 @@ def feed_forward_mlp_model(input_shape, b_vocab, emb_layer):
     '''
     inputs = Input(shape=input_shape)
     emb = emb_layer(inputs)
-    l0 = Bidirectional(LSTM(32, return_sequences=True))(emb)
-    l0 = Bidirectional(LSTM(32, return_sequences=True))(l0)
+    l0 = Bidirectional(LSTM(128, return_sequences=True))(emb)
+    l0 = Bidirectional(LSTM(128, return_sequences=True))(l0)
+    l0 = TimeDistributed(Dense(21, activation='softmax'))(l0) # 21: vocab size for template
+    model = Model(inputs=inputs, outputs=l0)
+    model.compile('adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+def feed_forward_mlp_model_onehot(input_shape):
+    '''
+    Deep neural network model to get F(x) which is to be fed to SPENs
+    '''
+    inputs = Input(shape=input_shape)
+    l0 = Bidirectional(LSTM(128, return_sequences=True))(inputs)
+    l0 = Bidirectional(LSTM(128, return_sequences=True))(l0)
     l0 = TimeDistributed(Dense(21, activation='softmax'))(l0) # 21: vocab size for template
     model = Model(inputs=inputs, outputs=l0)
     model.compile('adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
@@ -55,7 +68,7 @@ def feed_forward_mlp_model(input_shape, b_vocab, emb_layer):
 
 def get_layers():
     layers = [(1000, 'relu')]
-    enlayers = [(250, 'softplus')]
+    enlayers = [ (250, 'softplus'), (250, 'softplus'), (250, 'softplus') ]
     return (layers, enlayers)
 
 
@@ -130,31 +143,54 @@ def main():
         text2align[str(X[i])] = Y[i]
         text2YSeq[str(X[i])] = YSeq[i]
     emb_layer = load_glove(vocab_dataset)
+
+
+
+    ###########################################
+    #  (1) Train F with glove word embeddings
+    ##########################################
     F = feed_forward_mlp_model(X.shape[1:], 36, emb_layer)
     X_train, X_test, Y_train, Y_test, Xtags_train, Xtags_test, YSeq_train, YSeq_test = train_test_split(X, Y, Xtags,
                                                                                                         YSeq,
                                                                                                         test_size=0.2,
                                                                                                         random_state=23)
     ntrain = X_train.shape[0]
+    #F.fit([Xtrain], [YSeq_train], batch_size=128, epochs=20, validation_data=([X_test], [YSeq_test]))
+    F.fit(X_train, YSeq_train, batch_size=128, epochs=20, validation_data=(X_test, YSeq_test))
+
+
+    ################################
+    #  (2) Train F with one-hot X
+    ################################
+    '''
+    print('X.shape')
+    print(X.shape)
+    X = X.reshape(-1, 105, 1)
+    F = feed_forward_mlp_model_onehot(X.shape[1:])
+    X_train, X_test, YSeq_train, YSeq_test = train_test_split(X, YSeq, test_size=0.2, random_state=23)
+    ntrain = X_train.shape[0]
     print(X_train.shape)
     print(YSeq.shape)
-    #F.fit([Xtrain], [YSeq_train], batch_size=128, epochs=20, validation_data=([X_test], [YSeq_test]))
-    F.fit(X_train, YSeq_train, batch_size=128, epochs=10, validation_data=(X_test, YSeq_test))
+    F.fit(X_train, YSeq_train, batch_size=128, epochs=20, validation_data=(X_test, YSeq_test))
+    '''
 
-
-    y_pred = np.argmax(F.predict(X_test), axis=2)
-    y_true = np.squeeze(YSeq_test, axis=2)
-    print(y_pred.shape)
-    print(YSeq_test.shape)
-    print(y_true.shape)
-
-    ypred_symbol = [ inv_map[i] for i in y_pred[0] ]
-    print(y_pred[0])
-    #print(y_true[0])
-    print(ypred_symbol)
 
     YSeq_train = np.squeeze(YSeq_train, axis=2)
     YSeq_test = np.squeeze(YSeq_test, axis=2)
+    ## print predictions for X_train
+    y_pred = np.argmax(F.predict(X_train), axis=2)
+    #ypred_symbol = [ inv_map[i] for i in y_pred[0] ]
+    ypred_symbols = np.array([ [ inv_map[int(j)] for j in row ] for row in y_pred ])
+    np.set_printoptions(threshold=np.nan)
+    print(ypred_symbols)
+
+    ## print predictions for X_test
+    y_pred = np.argmax(F.predict(X_test), axis=2)
+    #y_true = np.squeeze(YSeq_test, axis=2)
+    ypred_symbols = np.array([ [ inv_map[int(j)] for j in row ] for row in y_pred ])
+    print(ypred_symbols)
+    np.set_printoptions(threshold=1000)
+
 
     # display the actual predictions of the model:
     # ref: https://stackoverflow.com/questions/25345770/list-comprehension-replace-for-loop-in-2d-matrix?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
@@ -171,10 +207,12 @@ def main():
     for i in range(y_pred.shape[0]):
         acc = 0.0
         for j in range(y_pred.shape[1]):
-            if y_pred[i][j] == YSeq_test[i][j] and j < 20:
+            if y_pred[i][j] == YSeq_test[i][j] and j < 30:
                 acc += 1
         global_acc += (acc / y_pred.shape[1])
-    print(global_acc)
+        #print(acc / y_pred.shape[1])
+    print(global_acc/ y_pred.shape[0])
+
 
     ###Configurable parameters START
     ln = 1e10
@@ -186,7 +224,7 @@ def main():
     dp = 0.0
     bs = 100
     ip = 0.0
-    output_num = 30#YSeq.shape[1]
+    output_num = MAX_TEMPLATE_LENGTH#30#YSeq.shape[1]
     input_num = X.shape[1]
     f_layers, en_layers = get_layers()
 
@@ -201,8 +239,8 @@ def main():
     config.en_layer_info = en_layers
     config.layer_info = f_layers
     config.margin_weight = mw
-    config.lstm_hidden_size = 16
-    config.sequence_length = 30#105
+    config.lstm_hidden_size = 128##16
+    config.sequence_length = MAX_TEMPLATE_LENGTH#30#105
     config.inf_penalty = ip
     ###Configurable parameters END
     s = sp.SPEN(config)
@@ -210,10 +248,12 @@ def main():
     s.get_energy = e.get_energy_rnn_mlp_emb
     s.evaluate = evaluation_function
     s.train_batch = s.train_unsupervised_batch
+    ###s.train_batch = s.train_supervised_batch
 
     s.createOptimizer()
     s.construct_embedding(EMBEDDING_DIM, len(vocab_dataset.keys()) + 1)
     s.construct(training_type=sp.TrainingType.Rank_Based)
+    ###s.construct(training_type=sp.TrainingType.SSVM)
     s.print_vars()
 
     s.init()
@@ -222,7 +262,7 @@ def main():
     indices = np.arange(labeled_num)
 
     xlabeled = X_train[indices][:]
-    ylabeled = YSeq_train[indices][:, :30]#YSeq_train[indices][:]
+    ylabeled = YSeq_train[indices][:, :MAX_TEMPLATE_LENGTH]#YSeq_train[indices][:]
     xtags_labeled = Xtags_train[indices][:]
     print('Training spen...')
     print(xlabeled.shape)
@@ -241,13 +281,12 @@ def main():
             xbatch = np.reshape(xbatch, (xbatch.shape[0], -1))
             ybatch = ylabeled[indices][:]
             ybatch = np.reshape(ybatch, (ybatch.shape[0], -1))
-            #print('ybatch')
-            #print(ybatch.shape)
             xtags_batch = xtags_labeled[indices][:]
             xtags_batch = np.reshape(xtags_batch, (xtags_batch.shape[0], -1))
             s.set_train_iter(i)
 
             s.train_batch(xbatch, verbose=4)
+            ###s.train_batch(xbatch, ybatch, verbose=4)
 
         if i % 2 == 0:
             print('='*100)
@@ -265,13 +304,17 @@ def main():
             # display predictions and ground truths in string
             np.set_printoptions(threshold=np.nan) # ref: https://stackoverflow.com/questions/1987694/how-to-print-the-full-numpy-array
             ypred_symbols = np.array([ [ inv_map[int(j)] for j in row ] for row in y_pred ])
-            ytrue_symbols = np.array([ [ inv_map[int(j)] for j in row ] for row in YSeq_test[:, :30] ])
+            ytrue_symbols = np.array([ [ inv_map[int(j)] for j in row ] for row in YSeq_test[:, :MAX_TEMPLATE_LENGTH] ])
             print(ypred_symbols)
-            #print(ytrue_symbols)
+
+
+            if i == 0:
+                print('DISPLAYING TRUE Y:')
+                print(ytrue_symbols)
             np.set_printoptions(threshold=1000) # default printing setting
 
             # compute err and acc
-            hm_ts, ex_ts = token_level_loss(y_pred, YSeq_test[:, :30])
+            hm_ts, ex_ts = token_level_loss(y_pred, YSeq_test[:, :MAX_TEMPLATE_LENGTH])
             print(hm_ts)
             print(ex_ts)
 
