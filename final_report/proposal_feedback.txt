@@ -1,0 +1,46 @@
+Automatically Solving Word Algebra Problems with Structured Prediction Energy Networks
+Arpit Jain, Gota Gando, Krishna Prasad Sankaranarayanan, Nikhil Yadav
+
+Summary:
+
+* Very Nicely Done! I think you're off to a great start. I'm excited to see the outcome of your project.
+
+* Two minor writing comments: (1) It would have been nice to see more motivation for modeling dependencies rather than independent predictions (2) Please take care to properly and consistently format your references [-1]
+
+Abstract: 30/30
+Models: 39/40
+Evaluation: 30/30
+
+99/100
+
+Technical Comments:
+
+/ * I think you've done a great job presenting the problem and coming up with experiments that test and interesting hypothesis. Great work!
+
+X * Would it be helpful to consider a baseline method that greedily predicts alignments/templates conditioned on the aligned templates predicted so far?
+
+Writing Comments:
+
+X * Abstract: "albegra" typo in 1st sentence
+
+X[copied] * Abstract: I might re-write the first three sentences as:
+
+To solve algebra word problems automatically, typical approaches find a transformation from the given word problem into a set of equations which correctly represents the input word problem.
+
+X[tackle=>approach] * Abstract: I would remove "to tackle this task" as it is informal
+
+X[copied] * Abstract: Last sentence: We compare SPENs to a baseline of a simple feed-forward neural network model to determine the effectiveness of modeling structural dependencies in this problem.
+
+X[added the caption] * Introduction: Figure 2 missing a caption / label
+
+/ * Introduction: Thanks for adding this! It's helpful in understanding your problem.
+
+* Introduction/Structured Prediction: It would be good to motivate why modeling this problem as a structured prediction is important. Why are modeling these dependencies important? When do we expect it to help over independent prediction?
+
+/ * Structured Prediction: Good technical explanation!
+
+X * Problem Definition: I would define a "template"  in the first section.
+
+X * SPEN: Delete the phrase "The different point is that"
+
+X[unified to “ACL”]* References: Please use consistent formatting in your references, i.e. either do "ACL" or "Association for Computation Linguistics" but not both.
