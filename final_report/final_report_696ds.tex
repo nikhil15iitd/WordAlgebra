@@ -153,8 +153,18 @@ We use two datasets; the ALG-514 dataset proposed by \cite{Kushman2014LearningTA
 %%%
 \section{Methods}
 \subsection{Scoring function}
+\subsubsection{Rules for the template index}
+%
+\subsubsection{Rules for the derivation}
 We first describe our manually constructed scoring function, which is used for both the baseline model and SPEN. This function takes in as a predicted derivation and the true derivation, and returns the score of how good the prediction is. We also pass the problem text and the solution (e.g. $x=2, y=3$) of the true equation to this function so that it can utilize the full information. It first compares the predicted template index with the true template index, and punishes significantly if the predicted index differs from the true index. This is because if the derivation uses a different template, two derivations would be completely different. If the template index matches, then the function examines how the coefficients are matching; for each coefficient slot, it computes the distance between the predicted token index and the true token index, and add a negative value to the score proportional to the distance. Finally, the function solves the predicted equations and checks if the solutions are matching the actual solutions of the true equations. If the solution does not match, it penalizes the final score. Often times, the alignments in the predicted derivation do not point to actual number words such as "two" or "1,000". In those cases we search for the nearest number word in the problem text, and build the predicted equation with the filled out coefficients.
-% TODO: Add more details here
+%
+\subsubsection{Rules for the template sequence}
+As we are predicting a set of equations for the template sequence structure, we create a scoring function which penalizes invalid predictions. For example, a valid equation does not contain the equal symbol "=" nor operator symbols (e.g. "+", "-") at the very beginning.
+% Two operator symbols do not occur in a row such as "+, +" or "/, -".
+% No symbols come after the padding symbol
+% 
+%%
+%%
 \subsection{Baseline model}
 % [NOTE] The mlp model is more of a preliminary experiment so here we need to talk about the greedy baseline, which we actually compare the result of SPEN with.
 To evaluate the performance of SPEN, We build a greedy baseline which determines the prediction for a word problem component by component. It first determines the component for template index by checking the scores from all the possible indices with the above mentioned scoring function. After fixing the template, it then proceeds with determining the value for each coefficient slot greedily.
@@ -220,7 +230,7 @@ To check if our structure of the output $\mathbf{y}$ is actually learnable by a 
 \end{figure}
 %
 \subsection{Experimental settings for SPEN}
-Next, we evaluated the performance of the baseline model and the SPEN with the full dataset of ALG-514. We split the data into the train set containing 412 examples and the validation set containing 102 examples. We show the architecture of the energy networks in Figure \ref{spen-architecture}. The whole network is end-to-end; We first pass the input to the pretrained bi-LSTM layer to extract useful features from the input. This is the equivalent to $F(\mathbf{x})$ in SPEN. The output of this layer will be passed into the global energy network and local energy network, and then we take the sum of the output values from those networks and compute the scalar energy value in the end. We implemented our scoring function using sympy, and we trained the SPEN with both the SSVM loss and the rank-based loss. On training SPEN, we first trained a neural network with a supervised sequence-to-sequence task with the dataset and fine-tuned the glove initialized embedding layer. Then, we initialized the embedding layer of SPEN with the pretrained deep neural network and trained the model with a rank-based loss. Hyperparameters used during the training are shown in Table \ref{params}.
+Next, we evaluated the performance of the baseline model and the SPEN with the full dataset of ALG-514. We split the data into the train set containing 412 examples and the validation set containing 102 examples. We show the architecture of the energy networks in Figure \ref{spen-architecture}. The whole network is end-to-end; We first pass the input to the pretrained bi-LSTM layer to extract useful features from the input. This is the equivalent to $F(\mathbf{x})$ in SPEN. The output of this layer will be passed into the global energy network and local energy network, and then we take the sum of the output values from those networks and compute the scalar energy value in the end. We implemented our scoring function using sympy, and we trained the SPEN with both the SSVM loss and the rank-based loss. On training SPEN, we first trained a neural network with a supervised sequence-to-sequence task with the dataset and fine-tuned the glove initialized embedding layer. Then, we initialized the embedding layer of SPEN with the pretrained deep neural network and trained the model with a rank-based loss. Hyperparameters used during the training are shown in Table \ref{params}. We tested the three output structure types as described in a previous section; template index, template index with alignments, and template sequence. We performed experiments for each of the output structure with the same architecture except the scoring function. In the following sections, we call the experiments for template index, tempalte alignments, template sequence as Experiment 1, Experiment2, and Experiment 3 respectively.
 \begin{figure}[ht]
 	\centering
 	%\hspace*{-10mm}
@@ -247,40 +257,52 @@ Margin weight           & 100
 %%%
 %%%
 \section{Results and Discussion}
-Table \ref{result} shows the accuracies for the second experiment. Both approaches of the SPEN outperformed the greedy baseline model, and the model trained with the rank-based loss achieved about a 4\% higher accuracy. However, this result is very lower than the accuracy reported by \cite{Kushman2014LearningTA},
-%\begin{table*}[!htbp]
-\begin{table*}[htbp]
+Tables \ref{exp1} - \ref{exp3} show the accuracies for the second experiment. In the Experiment 2 and Experiment 3, both approaches of the SPEN outperformed the greedy baseline model, and the model trained with the rank-based loss achieved about a 4\% higher accuracy. However, this result is very lower than the accuracy reported by \cite{Kushman2014LearningTA},
+%
+\begin{table}[]
 \centering
-\caption{Experimental results with the ALG-514 dataset. Each cell represents the accuracy of a method.}
-\label{result}
-\begin{tabular}{lll}
-\textbf{Baseline (greedy)} & \textbf{SPEN (SSVM loss)} & \textbf{SPEN (Rank-based loss)} \\
-0.0127                     & 0.0898                    & 0.1323                         
+\caption{Experimental results for Experiment 1 on the ALG-514 dataest. Each cell represents the accuracy of a method.}
+\label{exp1}
+\begin{tabular}{ll}
+\textbf{Method}        & \textbf{Accuracy} \\
+MLP                    & 0.631             \\
+SPEN (SSVM loss)       & 0.420             \\
+SPEN (Rank-based loss) &                  
 \end{tabular}
-\end{table*}
+\end{table}
+%
+\begin{table}[]
+\centering
+\caption{Results for Experiment 2.}
+\label{exp2}
+\begin{tabular}{ll}
+\textbf{Method}        & \textbf{Accuracy} \\
+Baseline (greedy)      & 0.024             \\
+MLP                    & 0.14              \\
+SPEN (SSVM loss)       & 0.05              \\
+SPEN (Rank-based loss) & 0.15             
+\end{tabular}
+\end{table}
+%
+\begin{table}[]
+\centering
+\caption{Results for Experiment 2.}
+\label{exp3}
+\begin{tabular}{ll}
+\textbf{Method}        & \textbf{Accuracy} \\
+MLP                    & 0.173             \\
+SPEN (SSVM loss)       & 0.055             \\
+SPEN (Rank-based loss) & 0.368            
+\end{tabular}
+\end{table}
 % TODO: Write our analysis on the results or problems of the current scoring function, etc.
 %%%
 %%%
 \section{Conclusion \& Future Work}
-As the greedy baseline performed very poorly, we plan to implement a better baseline using beam search, to see if the SPEN's performance is actually higher than much simpler methods. We are suspecting that our scoring function is not sophisticated enough, as we achieved lower accuracies than we expected, and plan to improve our scoring function. Also, in the second experiment we used a derivation which does not contain unknowns variables. As our initial motivation was the lack of the annotations for unknown alignments, we plan to perform another experiment with a derivation that contains all the alignment information. Lastly, we are planning to explore better architectures for energy networks and tune the optimization and inference parameters of SPEN to obtain a higher accuracy.
-% Write our plan of improving the scoring function??
+We have created a minimal pipeline to apply SPEN to algebra word problems, and evaluated SPEN in both supervised and unsupervised settings on the ALG-514 dataset. However, experimental results show that SPEN did not perform as well as we expected. We are suspecting that our scoring function is not sophisticated enough, and our SPEN architecture is not tuned sufficiently to fit to this task. In future, aside from tuning the model further, we are interested in adopting a structure which can scale to the number of types in equations, such as rationales proposed by \cite{DBLP:journals/corr/LingYDB17}.
 %%%
 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% previous sections in the proposal
-\if0
-\section{Evaluation}
-Following the existing works, we evaluate the model's performance with the overall accuracy on the ALG-514 and DRAW datasets. The predicted equation system is marked as correct if all the characters of the output exactly matches the ground truth equations. We also plan to evaluate the accuracy on several subsets of word problems to further analyze problems the model can perform well.
-%%%
-%%%
-\section{Datasets}
-We plan to use two datasets; the ALG-514 dataset proposed by \cite{Kushman2014LearningTA} which contains 514 word problems, and the DRAW dataset provided by Microsoft that contains about 1000 independent examples. Each data sample contains the problem text, template structure, alignments annotation for coefficients, and the solution for the answer equations. One issue we are currently aware of these datasets is that, while they include template structure of output equations for each problem, they do not provide the mapping of unknowns to text values. Instead of manually annotating such alignment information, we use the scoring function with the solutions to address this problem, which we describe in Section 4.1. %We plan to manually annotate such alignment information on these datasets so that we can fully make use of the template structure and its alignments.
-%%%
-%%%
-\section{Scope}
-Although it might be interesting to explore how we can improve the model itself, we limit the scope of this project to applying and evaluating the baseline MLP and SPEN model. Application of the SPEN includes designing structured representation of the output variable $y$. We are also planning to utilize the "implicit" data samples described in \cite{UpChChYi16}, which only contain the solutions of equations and not equation themselves if we have time after evaluating the baselines and the SPEN model. In this approach, we hope to jointly learn from data samples with equation labels and without such labels.
-\fi
-%
 \nocite{*}
 \bibliography{696ds_bib}
 \bibliographystyle{emnlp_natbib}
