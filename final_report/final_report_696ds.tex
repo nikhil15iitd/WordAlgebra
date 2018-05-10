@@ -153,13 +153,24 @@ We use two datasets; the ALG-514 dataset proposed by \cite{Kushman2014LearningTA
 %%%
 \section{Methods}
 \subsection{Scoring function}
-\subsubsection{Rules for the template index}
+We first describe our manually constructed scoring function, which is used for both the baseline model and SPEN. This function takes in as a predicted derivation and the true derivation, and returns the score of how good the prediction is.
+\subsubsection{Rules for the template index prediction}
+
 %
 \subsubsection{Rules for the derivation}
-We first describe our manually constructed scoring function, which is used for both the baseline model and SPEN. This function takes in as a predicted derivation and the true derivation, and returns the score of how good the prediction is. We also pass the problem text and the solution (e.g. $x=2, y=3$) of the true equation to this function so that it can utilize the full information. It first compares the predicted template index with the true template index, and punishes significantly if the predicted index differs from the true index. This is because if the derivation uses a different template, two derivations would be completely different. If the template index matches, then the function examines how the coefficients are matching; for each coefficient slot, it computes the distance between the predicted token index and the true token index, and add a negative value to the score proportional to the distance. Finally, the function solves the predicted equations and checks if the solutions are matching the actual solutions of the true equations. If the solution does not match, it penalizes the final score. Often times, the alignments in the predicted derivation do not point to actual number words such as "two" or "1,000". In those cases we search for the nearest number word in the problem text, and build the predicted equation with the filled out coefficients.
+For the structure with template alignments, we pass the problem text and the solution (e.g. $x=2, y=3$) of the true equation to this function so that it can utilize the full information. It first compares the predicted template index with the true template index, and punishes significantly if the predicted index differs from the true index. This is because if the derivation uses a different template, two derivations would be completely different. If the template index matches, then the function examines how the coefficients are matching; for each coefficient slot, it computes the distance between the predicted token index and the true token index, and add a negative value to the score proportional to the distance. Finally, the function solves the predicted equations and checks if the solutions are matching the actual solutions of the true equations. If the solution does not match, it penalizes the final score. Often times, the alignments in the predicted derivation do not point to actual number words such as "two" or "1,000". In those cases we search for the nearest number word in the problem text, and build the predicted equation with the filled out coefficients.
 %
 \subsubsection{Rules for the template sequence}
-As we are predicting a set of equations for the template sequence structure, we create a scoring function which penalizes invalid predictions. For example, a valid equation does not contain the equal symbol "=" nor operator symbols (e.g. "+", "-") at the very beginning.
+As we are predicting a set of equations for this structure, we create a scoring function which penalizes invalid predictions for equations. For example, a valid equation does not contain the equal symbol "=" nor operator symbols (e.g. "+", "-") at the very beginning of a sequence. We enumerate the other rules in the following list:
+\begin{itemize}
+\item There should be at least one equal symbol, as each text problem has at least one equation to represent.
+\item There should not be more than two "equal" symbols, as the maximum number of equations in the ALG-514 dataset is two.
+\item There should not be more than one "," symbol which denotes the separator between equations
+\item There should not be any operator/equal/equation separator symbols at the last position of a sequence
+\item Two operator symbols do not occur in a row such as "+, +" or "/, -".
+\item No symbols come after the padding symbol " ".
+\end{itemize}
+% There should not be more than two "equal" symbols
 % Two operator symbols do not occur in a row such as "+, +" or "/, -".
 % No symbols come after the padding symbol
 % 
@@ -257,7 +268,7 @@ Margin weight           & 100
 %%%
 %%%
 \section{Results and Discussion}
-Tables \ref{exp1} - \ref{exp3} show the accuracies for the second experiment. In the Experiment 2 and Experiment 3, both approaches of the SPEN outperformed the greedy baseline model, and the model trained with the rank-based loss achieved about a 4\% higher accuracy. However, this result is very lower than the accuracy reported by \cite{Kushman2014LearningTA},
+Tables \ref{exp1} - \ref{exp3} show the accuracies for the second experiment. In the Experiment 2, both approaches of the SPEN outperformed the greedy baseline model, and the model trained with the rank-based loss achieved about a 10\% higher accuracy. However, this result is very lower than the accuracy reported by \cite{Kushman2014LearningTA}. In Experiment 3, SPEN with the rank-based loss outperformed the other two methods including the baseline. However, we believe that this is because the ground truth for the output contains many padding symbol (which is " " in our implementation), and it is possible that the accuracy will be much lower if measure it at the positions without the padding symbol. We also observed that SPEN models tend to only predict the marjority element for any inputs. For example for the templat prediction task, the SPEN predicted "2" for all the test set data samples as it is the most occurred template index in the train set. We obserbed the same tendency for Experiment 2 and 3 as well.
 %
 \begin{table}[]
 \centering
@@ -278,9 +289,9 @@ SPEN (Rank-based loss) &
 \begin{tabular}{ll}
 \textbf{Method}        & \textbf{Accuracy} \\
 Baseline (greedy)      & 0.024             \\
-MLP                    & 0.14              \\
-SPEN (SSVM loss)       & 0.05              \\
-SPEN (Rank-based loss) & 0.15             
+MLP                    & 0.140              \\
+SPEN (SSVM loss)       & 0.050              \\
+SPEN (Rank-based loss) & 0.150             
 \end{tabular}
 \end{table}
 %
