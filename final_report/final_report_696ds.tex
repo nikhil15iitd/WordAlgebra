@@ -84,7 +84,7 @@ To solve algebra word problems automatically, typical approaches find a transfor
 %%%
 %%%
 \section{Introduction}
-Algebra word problems in general describe some particular world situation and pose a question about it. In this project, we only consider the problems where we can use a system of equations to solve the questions. Figure \ref{algebra-example} shows one example of such problems. In this case, we can express the problem as a set of algebraic equations that describe the mathematical relationship of entities in the problem: for example $m = 4 \times n$ and $m-4 = 6 \times (n-4)$ where $m$ and $n$ represent the age of Maria and Kate, respectively. To answer the question, we need to solve these equations and get the solution. However, we focus on finding a mapping from the word problem into an equation system in this project, as there are many automated solvers for this process.
+Algebra word problems, in general, describe some particular world situation and pose a question about it. In this project, we only consider the problems where we can use a system of equations to solve the questions. Figure \ref{algebra-example} shows one example of such problems. In this case, we can express the problem as a set of algebraic equations that describe the mathematical relationship of entities in the problem: for example $m = 4 \times n$ and $m-4 = 6 \times (n-4)$ where $m$ and $n$ represent the age of Maria and Kate, respectively. To answer the question, we need to solve these equations and get the solution. However, we focus on finding a mapping from the word problem into an equation system in this project, as there are many automated solvers for this process.
 \begin{figure}[ht]
 	\centering
 	Maria is now four times as old as Kate.\\
@@ -98,7 +98,7 @@ If we consider each character of the output equations as a random variable, then
 
 In many machine learning tasks, we try to predict $\textbf{y}$ given an input $\textbf{x}$. In some cases it is sufficient to use a discriminative function $F$ to predict the output such as $\textbf{y} = F( \textbf{x} )$. However, this model fails to model the structure of the output and the interactions among output components and may perform poor on more complex tasks. We can instead use \textit{an energy function} $E$ that both depends on $\textbf{x}$ and $\textbf{y}$ to model such structure and seek the optimal $\textbf{y}$ that minimizes the energy:
 \begin{equation}
-\hat{\mathbf{y}} = argmin_{\mathbf{y}} E( \mathbf{y}, \mathbf{x} )%E_{\mathbf{x}} (\mathbf{y})
+\hat{\mathbf{y}} = argmin_{\mathbf{y}} E( \mathbf{y}, \mathbf{x} )
 \label{ebm0}
 \end{equation}
 Energy function can be seen as a scoring function that returns how compatible $\mathbf{x}$ and $\mathbf{y}$ are, or how likely they occur together.
@@ -118,15 +118,14 @@ Solving word algebra problems automatically is a long-standing task in natural l
 
 \cite{roy2016solving} proposed a novel method for solving multi-step arithmetic word problems without the assistance of predefined annotations and templates. The algorithm is based on multiple classification problems on the target arithmetic equation and then combining these results to obtain the solutions. Grounding is the task taking an input word problem in the natural language and representing it as a formal language such as a set of equations, expression trees or states. This paper achieves grounding as a single step process. On the other hand,\citep{mitra2016learning}, split this up into two parts. In the first step, the system learns to connect the assertions in a word problems to formula and in the second step, maps the formula into an algebraic equation.
 
-\cite{KoncelKedziorski2015ParsingAW} formalizes solving algebraic word problems as that of generating and evaluating equation trees.Unlike in \cite{roy2017reasoning}, wherein a system for reasoning about quantities is introduced for arithmetic word problems involving only two values from the text and an arithmetic operator, this method (ALGES) learns to solve complex problems with multiple operands where the space of possible solutions is larger. Quantified sets (Qsets) are used a building block for equation trees to model natural language text quantities. These Qsets are combined with operator to yield a semantically augmented equation tree. With respect to grounding, the Qset properties are extracted and then ordered based on semantic and textual constraints followed by which Qsets are combined with arithmetic operators in an equation tree representation. The inference is to find the most likely equation tree with minimum violation of hard and soft constraints. This is facilitated by calculating a likelihood score for each operand t and the Qsets over which it is operated. Comparison results between template based methods and ALGES show
-that although the template based methods are able to solve a wider range of problems than ALGES, ALGES fairs well fairs well even in systems with fewer repeated templates or less spurious lexical overlap between problems. In conclusion ALGES is a hybrid of template based and verb categorization methods.
+\cite{KoncelKedziorski2015ParsingAW} formalizes solving algebraic word problems as that of generating and evaluating equation trees. Unlike in \cite{roy2017reasoning}, wherein a system for reasoning about quantities is introduced for arithmetic word problems involving only two values from the text and an arithmetic operator, this method (ALGES) learns to solve complex problems with multiple operands where the space of possible solutions is larger. Quantified sets (Qsets) are used a building block for equation trees to model natural language text quantities. These Qsets are combined with operator to yield a semantically augmented equation tree. With respect to grounding, the Qset properties are extracted and then ordered based on semantic and textual constraints followed by which Qsets are combined with arithmetic operators in an equation tree representation. The inference is to find the most likely equation tree with minimum violation of hard and soft constraints. This is facilitated by calculating a likelihood score for each operand t and the Qsets over which it is operated. Comparison results between template based methods and ALGES show that although the template based methods are able to solve a wider range of problems than ALGES, ALGES fairs well fairs well even in systems with fewer repeated templates or less spurious lexical overlap between problems. In conclusion ALGES is a hybrid of template based and verb categorization methods.
 
 \cite{UpChChYi16} demonstrates a state of the art approach for solving algebra word problems with little or no manual annotation of equations. In this novel structured-output learning ) algorithm (MixedSP), both explicit (eg., equations) and implicit(eg.,solutions) supervision signals are leveraged jointly.In the case of using algorithms that learn from implicit supervision, the system does not model directly the relation between input x and solution z. Also, multiple combinations of templates and alignments could end up with the same solution making implicit supervision slow, intractable and noisy. To overcome this limitation, MixedSP uses a standard structured prediction update procedure to find the best scoring candidate structures among the templates and alignments. Th algorithm starts with just explicit signals since it leads to a better intermediate model which later allows exploring the output space more efficiently using the implicit signals. The results clearly demonstrate that a joint learning approach benefits from noisy implicit supervision. The accuracies are represented for Explicit, Implicit, Pseudo, Pseudo + Explicit and MixedSP. Mixed SP outperforms it's counterparts even without manual annotation.
 %%%
 %%%
 \section{Problem Definition}
 \subsection{Template}
-Following \cite{Kushman2014LearningTA}, we define the space of possible equations by a set of "templates". A template represents a structure for a set of equations for an algebra problem, consisting of slots for unknown variables and coefficients. As we express equations as a sequence of symbol indices, there can be many possible correct equations. Therefore, we assume that each text problem has only one correct set of equations, and express the structure with a template. Figure \ref{template} shows an example of template selection and instantiation. In this case the template has $u_i$ slots that represent unknown variables, and $n_j$ slots for coefficients values. In this scheme, transformation of word problems to equations as a two step process. First, a template is selected to define the structure of the target equation system. Second, the selected template is instantiated with actual texts for unknowns and values for coefficients. 
+Following \cite{Kushman2014LearningTA}, we define the space of possible equations by a set of "templates". A template represents a structure for a set of equations for an algebra problem, consisting of slots for unknown variables and coefficients. As we express equations as a sequence of symbol indices, there can be many possible correct equations. Therefore, we assume that each text problem has only one correct set of equations, and express the structure with a template. Figure \ref{template} shows an example of template selection and instantiation. In this case, the template has $u_i$ slots that represent unknown variables, and $n_j$ slots for coefficients values. In this scheme, transformation of word problems to equations as a two step process. First, a template is selected to define the structure of the target equation system. Second, the selected template is instantiated with actual texts for unknowns and values for coefficients.
 \begin{figure*}[ht]
 	\centering
 	%\includegraphics[bb=0 0 912 419, natheight=5cm]{figs/fig_encdec.pdf}%scale=0.8, 
@@ -135,7 +134,7 @@ Following \cite{Kushman2014LearningTA}, we define the space of possible equation
     \label{template}
 \end{figure*}
 \subsection{Derivation}
-In this section, we review the problem formulation described in \cite{Kushman2014LearningTA} and \cite{UpChChYi16}. We denote the input word problem as $\textbf{x}$, and the output as $\textbf{y}$. We call the output as a derivation, which consists of a template $T$ and an alignment $A$. Therefore we can express the output as $\textbf{y} = (T, A)$. More specifically, template $T$ is a set of equations $= \{t_0, ..., t_l\}$, and an alignment $A$ is defined as a set of pairs $(w, s)$, where where $w$ is a token in $\textbf{x}$ and $s$ is a slot instance in $T$. In the methods we describe in the following sections, we use this joint structure for training the models. More precisely, this is a vector of the template index and values for the template's slots as shown in Figure \ref{derivation}.
+In this section, we review the problem formulation described in \cite{Kushman2014LearningTA} and \cite{UpChChYi16}. We denote the input word problem as $\textbf{x}$, and the output as $\textbf{y}$. We call the output as a derivation, which consists of a template $T$ and an alignment $A$. Therefore we can express the output as $\textbf{y} = (T, A)$. More specifically, template $T$ is a set of equations $= \{t_0, ..., t_l\}$, and an alignment $A$ is defined as a set of pairs $(w, s)$, where where $w$ is a token in $\textbf{x}$ and $s$ is a slot instance in $T$. In the methods, we describe in the following sections, we use this joint structure for training the models. More precisely, this is a vector of the template index and values for the template's slots as shown in Figure \ref{derivation}.
 \begin{figure}[ht]
 	\centering
 	%\includegraphics[bb=0 0 426 112, scale=0.5]{derivation.pdf}
@@ -148,14 +147,21 @@ We also evaluate the SPEN with two extra structures: one is a structure only con
 %%
 %%
 \subsection{Datasets}
-We use two datasets; the ALG-514 dataset proposed by \cite{Kushman2014LearningTA} which contains 514 word problems, and the DRAW dataset provided by Microsoft that contains about 1000 independent examples. One issue we are currently aware of these datasets is that, while they include template structure of output equations for each problem, they do not provide the mapping of unknowns to text values. We plan to manually annotate such alignment information on these datasets so that we can fully make use of the template structure and its alignments.
+We use the ALG-514 dataset proposed by \cite{Kushman2014LearningTA} which contains 514 word problems. Each word problem is annotated with the corresponding template structure and its alignment information for coefficients. We annotated each data sample with coressponding template index to provide a supervised signal for the template index and the derivation structures. 
 %%%
 %%%
 \section{Methods}
 \subsection{Scoring function}
 We first describe our manually constructed scoring function, which is used for both the baseline model and SPEN. This function takes in as a predicted derivation and the true derivation, and returns the score of how good the prediction is.
 \subsubsection{Rules for the template index prediction}
-
+We examine the original text and POS tagged version of the problem and calculate the reward / penalties for the SPEN prediction. Following are a few examples of the hand-crafted rules we have written for template index prediction:
+%\begin{itemize}[]
+\begin{itemize}
+\item By counting the number of Numerical Values in POS tagged word equations we can identify the potential templates for a word problem. If the prediction belongs to the set of potential templates, we do nothing. Else we penalize the prediction.\\
+\item By examining sentences of the word problem, for example: based on occurrence of Conjunction terms and Multiple Noun terms in the last sentence, we can predict the number of unknowns in the word problem and hence a subsequent set of potential templates for prediction.\\
+\item The existence of some words / phrases in the text increases the selection of certain templates. For example: the presence of “percent”, “\%”, “dollar” and “cents” together increases the chances that certain templates with prefix 0.01 with unknows get selected. Therefore, prediction of anything else gets penalized.\\
+%%\begin{itemize}
+\end{itemize}
 %
 \subsubsection{Rules for the derivation}
 For the structure with template alignments, we pass the problem text and the solution (e.g. $x=2, y=3$) of the true equation to this function so that it can utilize the full information. It first compares the predicted template index with the true template index, and punishes significantly if the predicted index differs from the true index. This is because if the derivation uses a different template, two derivations would be completely different. If the template index matches, then the function examines how the coefficients are matching; for each coefficient slot, it computes the distance between the predicted token index and the true token index, and add a negative value to the score proportional to the distance. Finally, the function solves the predicted equations and checks if the solutions are matching the actual solutions of the true equations. If the solution does not match, it penalizes the final score. Often times, the alignments in the predicted derivation do not point to actual number words such as "two" or "1,000". In those cases we search for the nearest number word in the problem text, and build the predicted equation with the filled out coefficients.
@@ -241,7 +247,7 @@ To check if our structure of the output $\mathbf{y}$ is actually learnable by a 
 \end{figure}
 %
 \subsection{Experimental settings for SPEN}
-Next, we evaluated the performance of the baseline model and the SPEN with the full dataset of ALG-514. We split the data into the train set containing 412 examples and the validation set containing 102 examples. We show the architecture of the energy networks in Figure \ref{spen-architecture}. The whole network is end-to-end; We first pass the input to the pretrained bi-LSTM layer to extract useful features from the input. This is the equivalent to $F(\mathbf{x})$ in SPEN. The output of this layer will be passed into the global energy network and local energy network, and then we take the sum of the output values from those networks and compute the scalar energy value in the end. We implemented our scoring function using sympy, and we trained the SPEN with both the SSVM loss and the rank-based loss. On training SPEN, we first trained a neural network with a supervised sequence-to-sequence task with the dataset and fine-tuned the glove initialized embedding layer. Then, we initialized the embedding layer of SPEN with the pretrained deep neural network and trained the model with a rank-based loss. Hyperparameters used during the training are shown in Table \ref{params}. We tested the three output structure types as described in a previous section; template index, template index with alignments, and template sequence. We performed experiments for each of the output structure with the same architecture except the scoring function. In the following sections, we call the experiments for template index, tempalte alignments, template sequence as Experiment 1, Experiment2, and Experiment 3 respectively.
+Next, we evaluated the performance of the baseline model and the SPEN on the full ALG-514 dataset. We split the data into the train set containing 412 examples and the validation set containing 102 examples. We show the architecture of the energy networks in Figure \ref{spen-architecture}. The whole network is end-to-end; We first pass the input to the pretrained bi-LSTM layer to extract useful features from the input. This is the equivalent to $F(\mathbf{x})$ in SPEN. The output of this layer will be passed into the global energy network and local energy network, and then we take the sum of the output values from those networks and compute the scalar energy value in the end. We implemented our scoring function using sympy, and we trained the SPEN with both the SSVM loss and the rank-based loss. On training SPEN, we first trained a neural network with a supervised sequence-to-sequence task with the dataset and fine-tuned the glove initialized embedding layer. Then, we initialized the embedding layer of SPEN with the pretrained deep neural network and trained the model with a rank-based loss. Hyperparameters used during the training are shown in Table \ref{params}. We tested the three output structure types as described in a previous section; template index, template index with alignments, and template sequence. We performed experiments for each of the output structure with the same architecture except the scoring function. In the following sections, we call the experiments for template index, template alignments, template sequence as Experiment 1, Experiment2, and Experiment 3 respectively.
 \begin{figure}[ht]
 	\centering
 	%\hspace*{-10mm}
@@ -272,19 +278,18 @@ Tables \ref{exp1} - \ref{exp3} show the accuracies for the second experiment. In
 %
 \begin{table}[]
 \centering
-\caption{Experimental results for Experiment 1 on the ALG-514 dataest. Each cell represents the accuracy of a method.}
+\caption{Experimental results for Experiment 1 on the ALG-514 dataset. Each cell represents the accuracy of a method.}
 \label{exp1}
 \begin{tabular}{ll}
 \textbf{Method}        & \textbf{Accuracy} \\
 MLP                    & 0.631             \\
-SPEN (SSVM loss)       & 0.420             \\
-SPEN (Rank-based loss) &                  
+SPEN (SSVM loss)       & 0.420             \\           
 \end{tabular}
 \end{table}
 %
 \begin{table}[]
 \centering
-\caption{Results for Experiment 2.}
+\caption{Results of Experiment 2.}
 \label{exp2}
 \begin{tabular}{ll}
 \textbf{Method}        & \textbf{Accuracy} \\
@@ -297,7 +302,7 @@ SPEN (Rank-based loss) & 0.150
 %
 \begin{table}[]
 \centering
-\caption{Results for Experiment 2.}
+\caption{Results of Experiment 2.}
 \label{exp3}
 \begin{tabular}{ll}
 \textbf{Method}        & \textbf{Accuracy} \\
@@ -310,7 +315,7 @@ SPEN (Rank-based loss) & 0.368
 %%%
 %%%
 \section{Conclusion \& Future Work}
-We have created a minimal pipeline to apply SPEN to algebra word problems, and evaluated SPEN in both supervised and unsupervised settings on the ALG-514 dataset. However, experimental results show that SPEN did not perform as well as we expected. We are suspecting that our scoring function is not sophisticated enough, and our SPEN architecture is not tuned sufficiently to fit to this task. In future, aside from tuning the model further, we are interested in adopting a structure which can scale to the number of types in equations, such as rationales proposed by \cite{DBLP:journals/corr/LingYDB17}.
+We have created a minimal pipeline to apply SPEN to algebra word problems, and evaluated SPEN in both supervised and unsupervised settings on the ALG-514 dataset. However, experimental results show that SPEN did not perform as well as we expected. We are suspecting that our scoring function is not sophisticated enough, and our SPEN architecture is not tuned sufficiently to fit this task. In future, aside from tuning the model further, we are interested in adopting a structure which can scale to the number of types in equations, such as rationales proposed by \cite{DBLP:journals/corr/LingYDB17}.
 %%%
 %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
